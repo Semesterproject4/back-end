@@ -8,5 +8,3 @@ assignees: ''
 ---
 
 **Description of the feature to be developed:**
-
-**Issues that this issue depends on:**
