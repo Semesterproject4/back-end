@@ -1,0 +1,34 @@
+version: '3'
+
+services:
+  #postgres database
+  database:
+    image: postgres
+    volumes: #make init.sql visible to container
+      - ./database/init.sql:/docker-entrypoint-initdb.d/init2.sql
+    ports:
+      - 5432:5432
+    env_file: #databse configuration
+      - ./database/database.env
+
+  #java project
+  backend:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+    ports:
+      - 8080:8080
+    depends_on:
+      - frontend
+
+  #maybe a webserver to serve frontend files
+  frontend:
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile
+    ports:
+      - 3000:3000
+
+volumes:
+  database:
+
