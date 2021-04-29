@@ -9,6 +9,12 @@
     <version>1.0-SNAPSHOT</version>
     <packaging>pom</packaging>
 
+    <properties>
+        <sonar.projectKey>Semesterproject4_back-end</sonar.projectKey>
+        <sonar.organization>semesterproject4</sonar.organization>
+        <sonar.host.url>https://sonarcloud.io</sonar.host.url>
+    </properties>
+
 
     <modules>
         <module>common</module>
