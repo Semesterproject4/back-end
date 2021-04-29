@@ -1,12 +1,6 @@
 name: Build
 
-on:
-  pull_request:
-    branches:
-      - main
-  push:
-    branches:
-      - main
+on: [push, pull_request]
 
 jobs:
   test:
@@ -19,6 +13,7 @@ jobs:
           java-version: '15'
       - name: Run all tests with Maven
         run: make test
+        working-directory: BrewMesModulesParent
         env:
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
