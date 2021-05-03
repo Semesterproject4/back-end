@@ -7,19 +7,20 @@ import com.brewmes.common.util.Products;
 import java.util.List;
 
 public interface IMachineService {
-    public void controlMachine(Command command, String machineId);
 
-    public void setVariables(double speed, Products beertype, int batchSize, String machineId);
+    void controlMachine(Command command, String machineId);
 
-    public void subscibeToMachineValues(String machineId);
+    void setVariables(double speed, Products beertype, int batchSize, String machineId);
 
-    public List<Connection> getConnections();
+    void subscibeToMachineValues(String machineId);
 
-    public boolean addConnection(String ip, String name);
+    List<Connection> getConnections();
 
-    public boolean removeConnection(String machineId);
+    boolean addConnection(String ip, String name);
 
-    public void startAutoBrew(String machineId);
+    boolean removeConnection(String machineId);
 
-    public void stopAutoBrew(String machineId);
+    void startAutoBrew(String machineId);
+
+    void stopAutoBrew(String machineId);
 }
