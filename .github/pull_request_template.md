@@ -6,8 +6,8 @@ changes.
 
 ## Checklist:
 - [ ] My code follows the code style of this project.
-- [ ] I have added tests to cover my changes.
-- [ ] All new and existing tests pass.
+- [ ] I have added tests to cover my changes, if necessary.
+- [ ] All tests pass (existing and potential new).
 - [ ] Sonar check has passed
 - [ ] No codesmells or bugs
 
