@@ -1,5 +1,5 @@
 package com.brewmes.common.services;
 
 public interface IBatchReportService {
-    public String prepareBatchReportService(int id);
+    public String prepareBatchReportService(String id);
 }
