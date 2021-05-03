@@ -28,7 +28,7 @@ public interface IMachineService {
      * Sets up the desired subscriptions to a machines values.
      * @param machineId The ID of the machine desired for the subscription
      */
-    void subscribeToMachineValues(String machineId);
+    boolean subscribeToMachineValues(String machineId);
 
     /**
      * Gets all the connections from the database
