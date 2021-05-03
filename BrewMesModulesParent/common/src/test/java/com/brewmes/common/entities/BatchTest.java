@@ -21,7 +21,7 @@ class BatchTest {
     @Test
     void getID() {
         this.batch.setID("1");
-        String id = this.batch.getId();
+        String id = this.batch.getID();
         assertEquals("1", id);
     }
 
