@@ -1,11 +1,11 @@
 package com.brewmes.common.entities;
 
 public class Connection {
-    private int id;
+    private String id;
     private String ip;
     private String name;
 
-    public Connection(int id, String ip, String name) {
+    public Connection(String id, String ip, String name) {
         this.id = id;
         this.ip = ip;
         this.name = name;
@@ -16,11 +16,11 @@ public class Connection {
         this.name = name;
     }
 
-    public int getId() {
+    public String getId() {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(String id) {
         this.id = id;
     }
 
