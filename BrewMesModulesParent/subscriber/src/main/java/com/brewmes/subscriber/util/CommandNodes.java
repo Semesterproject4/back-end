@@ -1,4 +1,4 @@
-package com.brewmes.common.util.node_enums;
+package com.brewmes.subscriber.util;
 
 import org.eclipse.milo.opcua.stack.core.types.builtin.NodeId;
 

@@ -28,11 +28,6 @@
 			<version>RELEASE</version>
 			<scope>test</scope>
 		</dependency>
-        <dependency>
-            <groupId>org.eclipse.milo</groupId>
-            <artifactId>stack-core</artifactId>
-            <version>0.5.2</version>
-        </dependency>
     </dependencies>
 
 </project>
