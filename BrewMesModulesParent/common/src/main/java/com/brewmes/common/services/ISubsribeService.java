@@ -8,8 +8,9 @@ public interface ISubsribeService {
     /**
      * Sets up a subscribtion to the machine values based on a {@code connectionID} representing the machine.
      * @param connectionID The id og the connection to subscribe to.
+     * @return {@code true} if the subscribtion went successfully, and {@code false} if something went wrong.
      */
- public void subscibeToMachineValues(String connectionID);
+ public boolean subscibeToMachineValues(String connectionID);
 
     /**
      * Should return the latest {@code MachineData} measured.
