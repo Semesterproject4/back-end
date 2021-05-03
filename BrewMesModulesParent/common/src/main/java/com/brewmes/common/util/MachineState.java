@@ -19,11 +19,11 @@ public enum MachineState {
     DEACTIVATING("Deactivating", 18),
     ACTIVATING("Activating", 19);
 
-    public final String output;
+    public final String state;
     public final int value;
 
-    MachineState(String output, int value) {
-        this.output = output;
+    MachineState(String state, int value) {
+        this.state = state;
         this.value = value;
     }
 

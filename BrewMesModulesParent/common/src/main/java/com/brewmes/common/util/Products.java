@@ -8,11 +8,11 @@ public enum Products {
     ALE("Ale", 100),
     ALCOHOL_FREE("Alcohol Free", 125);
 
-    public final String output;
+    public final String productType;
     public final int speedLimit;
 
-    Products(String output, int speedLimit) {
-        this.output = output;
+    Products(String productType, int speedLimit) {
+        this.productType = productType;
         this.speedLimit = speedLimit;
     }
 }
