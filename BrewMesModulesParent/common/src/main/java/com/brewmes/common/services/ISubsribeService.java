@@ -1,0 +1,24 @@
+package com.brewmes.common.services;
+
+
+import com.brewmes.common.entities.MachineData;
+
+public interface ISubsribeService {
+
+    /**
+     * Sets up a subscribtion to the machine values based on a connectionID representing the machine.
+     * @param connectionID The id og the connection to subscribe to.
+     */
+ public void subscibeToMachineValues(String connectionID);
+
+    /**
+     * Should return the latest MachineData measured.
+     * @param connectionID the connectionID representing the machines connection.
+     * @return Returns {@code MachineData} if there exists a current subscribtion on related to the connectionID,
+     * returns {@code null} if no subscribtions were found for the connectionID.
+     */
+
+ public MachineData getLatestMachineData(String connectionID);
+
+
+}
