@@ -61,5 +61,5 @@ public interface IMachineService {
      * Stops the machine from autobrewing
      * @param machineId The id of the machine
      */
-    void stopAutoBrew(String machineId);
+    boolean stopAutoBrew(String machineId);
 }
