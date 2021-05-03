@@ -2,8 +2,6 @@ package com.brewmes.common.util;
 
 import org.junit.jupiter.api.Test;
 
-import javax.crypto.Mac;
-
 import static org.junit.jupiter.api.Assertions.*;
 
 class MachineStateTest {
