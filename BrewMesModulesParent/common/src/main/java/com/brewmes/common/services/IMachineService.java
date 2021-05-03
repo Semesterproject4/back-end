@@ -15,7 +15,7 @@ public interface IMachineService {
 
     public Map<Integer, Connection> getConnections();
 
-    public boolean addConnection(String ip, String id);
+    public boolean addConnection(String ip, String name);
 
     public boolean removeConnection(String id);
 
