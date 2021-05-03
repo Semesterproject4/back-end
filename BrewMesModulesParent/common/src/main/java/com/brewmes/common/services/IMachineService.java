@@ -13,7 +13,7 @@ public interface IMachineService {
      * @param command The command that should be sent to the machine
      * @param machineId The ID of the machine that should receive the command
      */
-    void controlMachine(Command command, String machineId);
+    boolean controlMachine(Command command, String machineId);
 
     /**
      * Sets the desired values for a production
