@@ -19,8 +19,8 @@ class BatchTest {
     }
 
     @Test
-    void getId() {
-        this.batch.setId("1");
+    void getID() {
+        this.batch.setID("1");
         String id = this.batch.getId();
         assertEquals("1", id);
     }
@@ -28,8 +28,8 @@ class BatchTest {
     @Test
     void setId() {
         String id = "2";
-        this.batch.setId("2");
-        assertEquals(id, this.batch.getId());
+        this.batch.setID("2");
+        assertEquals(id, this.batch.getID());
     }
 
     @Test
