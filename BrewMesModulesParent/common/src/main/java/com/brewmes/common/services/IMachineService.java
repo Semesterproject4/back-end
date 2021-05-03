@@ -22,7 +22,7 @@ public interface IMachineService {
      * @param batchSize The desired amount of beer to be produced
      * @param machineId The ID of the desired machine the values should be set on
      */
-    void setVariables(double speed, Products beerType, int batchSize, String machineId);
+    boolean setVariables(double speed, Products beerType, int batchSize, String machineId);
 
     /**
      * Sets up the desired subscriptions to a machines values.
