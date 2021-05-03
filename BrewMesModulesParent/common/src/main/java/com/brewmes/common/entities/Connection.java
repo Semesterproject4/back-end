@@ -11,6 +11,11 @@ public class Connection {
         this.name = name;
     }
 
+    public Connection(String ip, String name) {
+        this.ip = ip;
+        this.name = name;
+    }
+
     public int getId() {
         return id;
     }
