@@ -55,7 +55,7 @@ public interface IMachineService {
      * Sets the machine in the autobrewing mode so it brews from the queue.
      * @param machineId The id of the machine
      */
-    void startAutoBrew(String machineId);
+    boolean startAutoBrew(String machineId);
 
     /**
      * Stops the machine from autobrewing
