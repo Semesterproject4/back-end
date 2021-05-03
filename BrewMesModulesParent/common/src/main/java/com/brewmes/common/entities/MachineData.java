@@ -15,7 +15,8 @@ public class MachineData {
     private double maintenance;
     private LocalDateTime timestamp;
 
-    public MachineData(double normSpeed, int state, double temperature, double vibration, double humidity, Ingredients ingredients, int acceptableProducts, int defectProducts, int processed, double maintenance, LocalDateTime timestamp) {
+
+    public MachineData(double normSpeed, int state, double temperature, double vibration, double humidity, Ingredients ingredients, int acceptableProducts, int defectProducts, int processed, double maintenance, LocalDateTime timestamp) { //NOSONAR
         this.normSpeed = normSpeed;
         this.state = state;
         this.temperature = temperature;
