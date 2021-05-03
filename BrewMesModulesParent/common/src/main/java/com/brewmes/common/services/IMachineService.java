@@ -40,7 +40,7 @@ public interface IMachineService {
      * Adds a connection to a Machine
      * @param ip The IP address of the machine
      * @param name The desired name of the machine, used for easy identification of the machine
-     * @return Returns true if the connection was successfully made, returns false if the connection failed.
+     * @return Returns true if the connection was successfully made, returns {@code false} if the connection failed.
      */
     boolean addConnection(String ip, String name);
 
