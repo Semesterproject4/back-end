@@ -10,12 +10,14 @@ import static org.junit.jupiter.api.Assertions.*;
 class MachineDataTest {
 
     MachineData machineData;
+    MachineData machineDataNoArg;
 
     @BeforeEach
     void setUp() {
         machineData = new MachineData(50.0, 2, 2.0, 3.0, 4.0,
                 new Ingredients(100.0, 200.0, 300.0, 400.0, 500.0),
                 25, 10, 35, 20.0, LocalDateTime.of(1995, 5, 2, 3, 25));
+        machineDataNoArg = new MachineData();
     }
 
     @Test
@@ -145,5 +147,11 @@ class MachineDataTest {
     void setTimestamp() {
         machineData.setTimestamp(LocalDateTime.of(1998, 3, 7, 9, 5));
         assertEquals(LocalDateTime.of(1998, 3, 7, 9, 5), machineData.getTimestamp());
+    }
+
+    @Test
+    void getNullValue() {
+        assertEquals(0, machineDataNoArg.getState());
+        assertEquals(0.0, machineDataNoArg.getMaintenance());
     }
 }
