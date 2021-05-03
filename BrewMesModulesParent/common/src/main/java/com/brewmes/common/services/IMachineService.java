@@ -4,7 +4,7 @@ import com.brewmes.common.entities.Connection;
 import com.brewmes.common.util.Command;
 import com.brewmes.common.util.Products;
 
-import java.util.Map;
+import java.util.List;
 
 public interface IMachineService {
     public void controlMachine(Command command, String machineId);
@@ -13,7 +13,7 @@ public interface IMachineService {
 
     public void subscibeToMachineValues(String machineId);
 
-    public Map<Integer, Connection> getConnections();
+    public List<Connection> getConnections();
 
     public boolean addConnection(String ip, String name);
 
