@@ -7,19 +7,19 @@ import com.brewmes.common.util.Products;
 import java.util.Map;
 
 public interface IMachineService {
-    public void controlMachine(Command command, int id);
+    public void controlMachine(Command command, String id);
 
-    public void setVariables(double speed, Products beertype, int batchSize, int id);
+    public void setVariables(double speed, Products beertype, int batchSize, String id);
 
-    public void subscibeToMachineValues(int machineId);
+    public void subscibeToMachineValues(String machineId);
 
     public Map<Integer, Connection> getConnections();
 
-    public boolean addConnection(String ip, int id);
+    public boolean addConnection(String ip, String id);
 
-    public boolean removeConnection(int id);
+    public boolean removeConnection(String id);
 
-    public void startAutoBrew(int machineId);
+    public void startAutoBrew(String machineId);
 
-    public void stopAutoBrew(int machineId);
+    public void stopAutoBrew(String machineId);
 }
