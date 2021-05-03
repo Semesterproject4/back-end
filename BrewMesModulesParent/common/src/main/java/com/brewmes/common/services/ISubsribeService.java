@@ -6,7 +6,7 @@ import com.brewmes.common.entities.MachineData;
 public interface ISubsribeService {
 
     /**
-     * Sets up a subscribtion to the machine values based on a connectionID representing the machine.
+     * Sets up a subscribtion to the machine values based on a {@code connectionID} representing the machine.
      * @param connectionID The id og the connection to subscribe to.
      */
  public void subscibeToMachineValues(String connectionID);
