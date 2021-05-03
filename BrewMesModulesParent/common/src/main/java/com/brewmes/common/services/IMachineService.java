@@ -9,8 +9,8 @@ import java.util.List;
 public interface IMachineService {
 
     /**
-     * Takes a command and send it to the desired machine
-     * @param command The command that should be send to the machine
+     * Takes a command and sends it to the desired machine
+     * @param command The command that should be sent to the machine
      * @param machineId The ID of the machine that should receive the command
      */
     void controlMachine(Command command, String machineId);
