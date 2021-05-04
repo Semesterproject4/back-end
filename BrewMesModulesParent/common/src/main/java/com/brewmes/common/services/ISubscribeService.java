@@ -10,7 +10,7 @@ public interface ISubscribeService {
      * @param connectionID The id of the connection to subscribe to.
      * @return {@code true} if the subscribtion went successfully, and {@code false} if something went wrong.
      */
- public boolean subscribeToMachineValues(String connectionID);
+ boolean subscribeToMachineValues(String connectionID);
 
     /**
      * Should return the latest {@code MachineData} measured.
