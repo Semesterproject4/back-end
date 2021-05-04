@@ -3,7 +3,7 @@ package com.brewmes.common.services;
 
 import com.brewmes.common.entities.MachineData;
 
-public interface ISubsribeService {
+public interface ISubscribeService {
 
     /**
      * Sets up a subscribtion to the machine values based on a {@code connectionID} representing the machine.
