@@ -19,7 +19,7 @@ public interface ISubscribeService {
      * returns {@code null} if no subscribtions were found for the {@code connectionID}.
      */
 
- public MachineData getLatestMachineData(String connectionID);
+ MachineData getLatestMachineData(String connectionID);
 
 
 }
