@@ -7,7 +7,7 @@ public interface ISubscribeService {
 
     /**
      * Sets up a subscribtion to the machine values based on a {@code connectionID} representing the machine.
-     * @param connectionID The id og the connection to subscribe to.
+     * @param connectionID The id of the connection to subscribe to.
      * @return {@code true} if the subscribtion went successfully, and {@code false} if something went wrong.
      */
  public boolean subscribeToMachineValues(String connectionID);
