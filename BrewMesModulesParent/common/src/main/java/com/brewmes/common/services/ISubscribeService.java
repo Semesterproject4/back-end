@@ -15,7 +15,7 @@ public interface ISubscribeService {
     /**
      * Returns the latest {@code MachineData} measured from a given machine.
      * @param connectionID the connectionID representing the machines connection.
-     * @return {@code MachineData} if there exists a current subscribtion on related to the {@code connectionID},
+     * @return {@code MachineData} if there exists an active subscribtion on the {@code connectionID},
      * returns {@code null} if no subscribtions were found for the {@code connectionID}.
      */
 
