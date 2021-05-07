@@ -30,9 +30,9 @@ public interface IScheduleService {
     List<ScheduledBatch> getQueue();
 
     /**
-     * Gets the entity in the queue.
+     * Gets the first entity in the queue.
      *
-     * @return the next batch to produce.
+     * @return the next batch to produce; {@code null} if no {@code ScheduledBatch} is found in the queue.
      */
     ScheduledBatch getFirstInQueue();
 
