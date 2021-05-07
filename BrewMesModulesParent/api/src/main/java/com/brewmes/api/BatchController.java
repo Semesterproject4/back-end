@@ -65,9 +65,7 @@ public class BatchController {
     @GetMapping(value = "/{id}/pdf")
     public ResponseEntity<Object> getBatchPdfReport(@PathVariable("id") String id) {
         if (getter.containsId(id)) {
-            pdfService.prepareBatchReportService(id);
-
-            String fileName = "batch_report.pdf"; //NOSONAR
+            String fileName = pdfService.prepareBatchReportService(id); //NOSONAR
             File file = new File(fileName); //NOSONAR
             InputStreamResource resource = null;
 
