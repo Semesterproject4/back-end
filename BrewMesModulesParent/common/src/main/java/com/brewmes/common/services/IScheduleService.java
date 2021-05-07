@@ -9,9 +9,7 @@ public interface IScheduleService {
     /**
      * Adds a batch to the global queue.
      *
-     * @param speed    Speed of the batch.
-     * @param beerType Beer type of the batch.
-     * @param amount   Amount to produce.
+     * @param scheduledBatch The batch to add to the queue.
      * @return the placement of the added {@code ScheduledBatch} in the queue; Returns -1 if the batch could not be placed in the queue.
      */
     int addToQueue(ScheduledBatch scheduledBatch);
@@ -20,8 +18,9 @@ public interface IScheduleService {
      * Removes a batch from the queue.
      *
      * @param scheduleID a {@code ScheduledBatch}'s ID.
+     * @return {@code True} if the {@code ScheduledBatch} was successfully removed; {@code False} if an error occurred.
      */
-    void removeFromQueue(String scheduleID);
+    boolean removeFromQueue(String scheduleID);
 
     /**
      * Looks through the queue and returns it as a {@code List}.
@@ -42,5 +41,22 @@ public interface IScheduleService {
      *
      * @return {@code True} if there is nothing in the queue; {@code False} if there are batches in the queue.
      */
-    boolean isQueueEmpty();
+    boolean queueIsEmpty();
+
+    /**
+     * Moves the {@code ScheduledBatch} forward in the queue by one spot. If the batch was number 4 in the queue, it will now be number 3.
+     *
+     * @param scheduleID a {@code ScheduledBatch}'s ID.
+     * @return {@code True} if the {@code ScheduledBatch} was moved; {@code False} if an error occurred.
+     */
+    boolean moveForwardInQueue(String scheduleID);
+
+    /**
+     * Moves the {@code ScheduledBatch} backward in the queue by one spot. If the batch was number 2 in the queue, it will now be number 3.
+     *
+     * @param scheduleID a {@code ScheduledBatch}'s ID.
+     * @return {@code True} if the {@code ScheduledBatch} was moved; {@code False} if an error occurred.
+     */
+    boolean moveBackwardInQueue(String scheduleID);
+
 }
