@@ -2,11 +2,19 @@ package com.brewmes.common.entities;
 
 import com.brewmes.common.util.Products;
 
+import javax.validation.constraints.NotNull;
+
 public class ScheduledBatch {
     private String id;
-    private int speed;
+
+    @NotNull
+    private Integer speed;
+
+    @NotNull
     private Products type;
-    private int amount;
+
+    @NotNull
+    private Integer amount;
 
     public ScheduledBatch(int speed, Products type, int amount) {
         this.speed = speed;
