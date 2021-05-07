@@ -11,7 +11,6 @@ import java.util.List;
 import java.util.Map;
 
 public abstract class PrepareData implements IBatchReportService {
-
     private double calculateOee(int amountToProduce, double machineSpeed,  int maxMachineSpeed, int acceptedProducts) {
         double plannedProductionTime = (amountToProduce / machineSpeed) * 60;
         double idealCycleTime = (1.0/maxMachineSpeed) * 60;
@@ -30,6 +29,11 @@ public abstract class PrepareData implements IBatchReportService {
         return valueMap.values().stream().mapToDouble(Double::doubleValue).max().orElse(0);
     }
 
+    /**
+     *
+     * @param batchData The Batch object to be calculated on.
+     * @return {@code DataOverTime} object with the calculated values.
+     */
     protected DataOverTime prepareData(Batch batchData) {
         DataOverTime dot = new DataOverTime();
         dot.setBatch(batchData);
