@@ -1,17 +1,17 @@
 package com.brewmes.common.util;
 
 public enum Products {
-    PILSNER("Pilsner", 600),
-    WHEAT("Wheat", 300),
-    IPA("IPA", 150),
-    STOUT("Stout", 200),
-    ALE("Ale", 100),
-    ALCOHOL_FREE("Alcohol Free", 125);
+    PILSNER(0, 600),
+    WHEAT(1, 300),
+    IPA(2, 150),
+    STOUT(3, 200),
+    ALE(4, 100),
+    ALCOHOL_FREE(5, 125);
 
-    public final String productType;
+    public final int productType;
     public final int speedLimit;
 
-    Products(String productType, int speedLimit) {
+    Products(int productType, int speedLimit) {
         this.productType = productType;
         this.speedLimit = speedLimit;
     }
