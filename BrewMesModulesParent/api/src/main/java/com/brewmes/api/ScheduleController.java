@@ -39,14 +39,18 @@ public class ScheduleController {
     }
 
     @GetMapping("/queue")
-    public ResponseEntity<List<ScheduledBatch>> getQueue() {
+    public ResponseEntity<Object> getQueue() {
         List<ScheduledBatch> list = scheduleService.getQueue();
 
-        return new ResponseEntity<>(list, HttpStatus.OK);
+        if(list != null) {
+            return new ResponseEntity<>(list, HttpStatus.OK);
+        }else {
+            return new ResponseEntity<>("Error: something went wrong", HttpStatus.INTERNAL_SERVER_ERROR);
+        }
     }
 
     @PatchMapping("/{id}/prioUp")
-    public ResponseEntity<String> prioritizeUpInQueue(@RequestParam String id) {
+    public ResponseEntity<String> prioritizeUpInQueue(@PathVariable String id) {
         boolean success = scheduleService.prioritizeUpInQueue(id);
 
         if (success) {
@@ -57,7 +61,7 @@ public class ScheduleController {
     }
 
     @PatchMapping("/{id}/prioDown")
-    public ResponseEntity<String> prioritizeDownInQueue(@RequestParam String id) {
+    public ResponseEntity<String> prioritizeDownInQueue(@PathVariable String id) {
         boolean success = scheduleService.prioritizeUpInQueue(id);
 
         if (success) {
