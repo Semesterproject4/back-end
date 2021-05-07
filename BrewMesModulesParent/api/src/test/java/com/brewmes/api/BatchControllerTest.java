@@ -9,7 +9,10 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.core.io.InputStreamResource;
 import org.springframework.http.ResponseEntity;
+
+import java.io.FileNotFoundException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -57,10 +60,10 @@ class BatchControllerTest {
         Mockito.when(getter.containsId("badID")).thenReturn(false);
         Mockito.when(pdfService.prepareBatchReportService("goodID")).thenReturn("whatever");
 
-        ResponseEntity<String> responseEntity = controller.getBatchPdfReport("goodID");
+        ResponseEntity<Object> responseEntity = controller.getBatchPdfReport("goodID");
         assertEquals(200, responseEntity.getStatusCode().value());
 
-        ResponseEntity<String> responseEntity1 = controller.getBatchPdfReport("badID");
+        ResponseEntity<Object> responseEntity1 = controller.getBatchPdfReport("badID");
         assertEquals(404, responseEntity1.getStatusCode().value());
     }
 }

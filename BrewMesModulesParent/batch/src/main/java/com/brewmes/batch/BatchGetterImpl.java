@@ -10,11 +10,11 @@ import java.util.List;
 public class BatchGetterImpl implements IBatchGetterService {
     @Override
     public List<Batch> getBatches(int page, int size) {
-        return null;
+        throw new UnsupportedOperationException();
     }
 
     @Override
     public boolean containsId(String id) {
-        return false;
+        throw new UnsupportedOperationException();
     }
 }

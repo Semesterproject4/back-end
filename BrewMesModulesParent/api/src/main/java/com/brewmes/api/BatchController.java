@@ -5,10 +5,16 @@ import com.brewmes.common.services.IBatchGetterService;
 import com.brewmes.common.services.IBatchReportService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.core.io.InputStreamResource;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.util.List;
 
 @RestController
@@ -57,9 +63,28 @@ public class BatchController {
      * @return The {@code ResponseEntity} containing the path for the PDF report download
      */
     @GetMapping(value = "/{id}/pdf")
-    public ResponseEntity<String> getBatchPdfReport(@PathVariable("id") String id) {
+    public ResponseEntity<Object> getBatchPdfReport(@PathVariable("id") String id) {
         if (getter.containsId(id)) {
-            return new ResponseEntity<>(pdfService.prepareBatchReportService(id), HttpStatus.OK);
+            pdfService.prepareBatchReportService(id);
+
+            String fileName = "batch_report.pdf";
+            File file = new File(fileName);
+            InputStreamResource resource = null;
+
+            try {
+                resource = new InputStreamResource(new FileInputStream(fileName));
+
+                HttpHeaders headers = new HttpHeaders();
+
+                headers.add("Content-Disposition", String.format("attachment; filename=\"%s\"", file.getName()));
+                headers.add("Cache-Control", "no-cache, no-store, must-revalidate");
+                headers.add("Pragma", "no-cache");
+                headers.add("Expires", "0");
+                return ResponseEntity.ok().headers(headers).contentLength(file.length()).contentType(MediaType.parseMediaType("application/pdf")).body(resource);
+            } catch (FileNotFoundException e) {
+                e.printStackTrace();
+                return new ResponseEntity<>("Error: File not found", HttpStatus.NOT_FOUND);
+            }
         } else {
             return new ResponseEntity<>("No batch found with that id", HttpStatus.NOT_FOUND);
         }
