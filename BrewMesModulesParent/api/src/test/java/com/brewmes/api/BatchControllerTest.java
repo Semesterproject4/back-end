@@ -58,12 +58,21 @@ class BatchControllerTest {
     void getBatchPdfReport() {
         Mockito.when(getter.containsId("goodID")).thenReturn(true);
         Mockito.when(getter.containsId("badID")).thenReturn(false);
-        Mockito.when(pdfService.prepareBatchReportService("goodID")).thenReturn("whatever");
+        Mockito.when(pdfService.prepareBatchReportService("goodID")).thenReturn("batch_report.pdf");
 
         ResponseEntity<Object> responseEntity = controller.getBatchPdfReport("goodID");
         assertEquals(200, responseEntity.getStatusCode().value());
 
         ResponseEntity<Object> responseEntity1 = controller.getBatchPdfReport("badID");
         assertEquals(404, responseEntity1.getStatusCode().value());
+    }
+
+    @Test
+    void getBatchPdfReportBadName() {
+        Mockito.when(getter.containsId("goodID")).thenReturn(true);
+        Mockito.when(pdfService.prepareBatchReportService("goodID")).thenReturn("not_batch_report.pdf");
+
+        ResponseEntity<Object> responseEntity = controller.getBatchPdfReport("goodID");
+        assertEquals(404, responseEntity.getStatusCode().value());
     }
 }
