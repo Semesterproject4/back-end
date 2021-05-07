@@ -29,7 +29,7 @@ class ScheduleControllerTest {
         Mockito.when(service.addToQueue(new ScheduledBatch(100, Products.ALE, 100))).thenReturn(1);
         Mockito.when(service.addToqueue(new ScheduledBatch(50, Products.ALCOHOL_FREE, 10))).thenReturn(-1);
 
-        ResponseEntity<String> response =  controller.addToQueue(new ScheduledBatch(100, Products.ALE, 100));
+        ResponseEntity<String> response = controller.addToQueue(new ScheduledBatch(100, Products.ALE, 100));
         ResponseEntity<String> response1 = controller.addToQueue(new ScheduledBatch(50, Products.ALCOHOL_FREE, 10));
 
         assertEquals(200, response.getStatusCode().value());
@@ -47,18 +47,38 @@ class ScheduleControllerTest {
 
     @Test
     void getQueue() {
+        //Checks the best case scenario where a list is actually returned
         Mockito.when(service.getQueue()).thenReturn(new ArrayList<ScheduledBatch>());
+        ResponseEntity<Object> response = controller.getQueue();
+        assertEquals(200, response.getStatusCode().value());
 
-        ResponseEntity<List<ScheduledBatch>> response = controller.getQueue();
-
+        //Checks the worst case scenario where some error has happened in the backend and thereby it has returned null to the controller
         Mockito.when(service.getQueue()).thenReturn(null);
+        response = controller.getQueue();
+        assertEquals(500, response.getStatusCode().value());
     }
 
     @Test
     void prioritizeUpInQueue() {
+        Mockito.when(service.prioritizeUpInQueue("goodID")).thenReturn(true);
+        Mockito.when(service.prioritizeUpInQueue("badID")).thenReturn(false);
+
+        ResponseEntity<String> response = controller.prioritizeUpInQueue("goodID");
+        ResponseEntity<String> response1 = controller.prioritizeUpInQueue("badID");
+
+        assertEquals(200, response.getStatusCode().value());
+        assertEquals(500, response1.getStatusCode().value());
     }
 
     @Test
     void prioritizeDownInQueue() {
+        Mockito.when(service.prioritizeDownInQueue("goodID")).thenReturn(true);
+        Mockito.when(service.prioritizeDownInQueue("badID")).thenReturn(false);
+
+        ResponseEntity<String> response = controller.prioritizeDownInQueue("goodID");
+        ResponseEntity<String> response1 = controller.prioritizeDownInQueue("badID");
+
+        assertEquals(200, response.getStatusCode().value());
+        assertEquals(500, response1.getStatusCode().value());
     }
 }
