@@ -12,7 +12,7 @@ public interface IScheduleService {
      * @param speed    Speed of the batch.
      * @param beerType Beer type of the batch.
      * @param amount   Amount to produce.
-     * @return the placement of the added batch in the queue.
+     * @return the placement of the added {@code ScheduledBatch} in the queue.
      */
     int addToQueue(int speed, int beerType, int amount);
 
