@@ -32,13 +32,11 @@ class ScheduleControllerTest {
         Mockito.when(service.addToQueue(scheduledBatch)).thenReturn(1);
         Mockito.when(service.addToQueue(scheduledBatch)).thenReturn(1);
 
-
         ResponseEntity<String> response = controller.addToQueue(scheduledBatch);
-        ResponseEntity<String> response1 = controller.addToQueue(scheduledBatch);
-
+        ResponseEntity<String> response1 = controller.addToQueue(scheduledBatch1);
 
         assertEquals(200, response.getStatusCode().value());
-        assertEquals(200, response.getStatusCode().value());
+        assertEquals(200, response1.getStatusCode().value());
     }
 
     @Test
