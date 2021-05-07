@@ -44,19 +44,19 @@ public interface IScheduleService {
     boolean queueIsEmpty();
 
     /**
-     * Moves the {@code ScheduledBatch} forward in the queue by one spot. If the batch was number 4 in the queue, it will now be number 3.
+     * Moves the {@code ScheduledBatch} up in the queue by one spot. If the batch was number 4 in the queue, it will now be number 3.
      *
      * @param scheduleID a {@code ScheduledBatch}'s ID.
      * @return {@code True} if the {@code ScheduledBatch} was moved; {@code False} if an error occurred.
      */
-    boolean moveForwardInQueue(String scheduleID);
+    boolean moveUpInQueue(String scheduleID);
 
     /**
-     * Moves the {@code ScheduledBatch} backward in the queue by one spot. If the batch was number 2 in the queue, it will now be number 3.
+     * Moves the {@code ScheduledBatch} down in the queue by one spot. If the batch was number 2 in the queue, it will now be number 3.
      *
      * @param scheduleID a {@code ScheduledBatch}'s ID.
      * @return {@code True} if the {@code ScheduledBatch} was moved; {@code False} if an error occurred.
      */
-    boolean moveBackwardInQueue(String scheduleID);
+    boolean moveDownInQueue(String scheduleID);
 
 }
