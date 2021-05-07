@@ -43,9 +43,9 @@ public class ScheduleController {
     public ResponseEntity<Object> getQueue() {
         List<ScheduledBatch> list = scheduleService.getQueue();
 
-        if(list != null) {
+        if (list != null) {
             return new ResponseEntity<>(list, HttpStatus.OK);
-        }else {
+        } else {
             return new ResponseEntity<>("Error: something went wrong", HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
