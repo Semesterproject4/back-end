@@ -15,9 +15,6 @@ public class DataOverTime {
     private double minHumidity;
     private double maxHumidity;
 
-    public DataOverTime() {
-
-    }
 
     public Batch getBatch() {
         return batch;
