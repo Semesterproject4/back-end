@@ -1,6 +1,7 @@
 package com.brewmes.api;
 
 import com.brewmes.common.services.IMachineService;
+import com.brewmes.common.util.Command;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -47,8 +48,9 @@ public class MachineController {
     }
 
     @PutMapping(value = "/{id}/control")
-    public ResponseEntity<Object> controlMachine(@PathVariable("id") int id, @RequestBody String command) {
-        throw new UnsupportedOperationException();
+    public ResponseEntity<Object> controlMachine(@PathVariable("id") String id, @RequestBody String command) {
+        machineService.controlMachine(Command.START, id); //Change to general command
+        return new ResponseEntity<>("command updated", HttpStatus.OK);
     }
 
     @PutMapping(value = "/{id}/variables")
