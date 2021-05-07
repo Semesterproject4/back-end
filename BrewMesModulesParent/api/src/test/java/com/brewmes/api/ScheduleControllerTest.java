@@ -30,13 +30,13 @@ class ScheduleControllerTest {
         ScheduledBatch scheduledBatch1 = new ScheduledBatch(100, Products.ALCOHOL_FREE, 1);
 
         Mockito.when(service.addToQueue(scheduledBatch)).thenReturn(1);
-        Mockito.when(service.addToQueue(scheduledBatch)).thenReturn(1);
+        Mockito.when(service.addToQueue(scheduledBatch1)).thenReturn(-1);
 
         ResponseEntity<String> response = controller.addToQueue(scheduledBatch);
         ResponseEntity<String> response1 = controller.addToQueue(scheduledBatch1);
 
         assertEquals(200, response.getStatusCode().value());
-        assertEquals(200, response1.getStatusCode().value());
+        assertEquals(500, response1.getStatusCode().value());
     }
 
     @Test
