@@ -1,6 +1,7 @@
 package com.brewmes.api;
 
 import com.brewmes.common.entities.ScheduledBatch;
+import com.brewmes.common.services.IScheduleService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -13,7 +14,7 @@ import java.util.List;
 @RequestMapping("api/schedule")
 public class ScheduleController {
 
-    @Autowired
+    @Autowired(required = false)
     IScheduleService scheduleService;
 
     @PostMapping("/addToQueue")
@@ -51,7 +52,7 @@ public class ScheduleController {
 
     @PatchMapping("/{id}/prioUp")
     public ResponseEntity<String> prioritizeUpInQueue(@PathVariable String id) {
-        boolean success = scheduleService.prioritizeUpInQueue(id);
+        boolean success = scheduleService.moveUpInQueue(id);
 
         if (success) {
             return new ResponseEntity<>("Batch was moved up in the queue", HttpStatus.OK);
@@ -62,7 +63,7 @@ public class ScheduleController {
 
     @PatchMapping("/{id}/prioDown")
     public ResponseEntity<String> prioritizeDownInQueue(@PathVariable String id) {
-        boolean success = scheduleService.prioritizeUpInQueue(id);
+        boolean success = scheduleService.moveDownInQueue(id);
 
         if (success) {
             return new ResponseEntity<>("Batch was moved down in the queue", HttpStatus.OK);
