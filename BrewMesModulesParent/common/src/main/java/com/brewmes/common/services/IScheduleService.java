@@ -12,16 +12,16 @@ public interface IScheduleService {
      * @param speed    Speed of the batch.
      * @param beerType Beer type of the batch.
      * @param amount   Amount to produce.
-     * @return the placement of the added {@code ScheduledBatch} in the queue.
+     * @return the placement of the added {@code ScheduledBatch} in the queue; Returns -1 if the batch could not be placed in the queue.
      */
-    int addToQueue(int speed, int beerType, int amount);
+    int addToQueue(ScheduledBatch scheduledBatch);
 
     /**
      * Removes a batch from the queue.
      *
      * @param scheduleID a {@code ScheduledBatch}'s ID.
      */
-    void removeFromQueue(int scheduleID);
+    void removeFromQueue(String scheduleID);
 
     /**
      * Looks through the queue and returns it as a {@code List}.
