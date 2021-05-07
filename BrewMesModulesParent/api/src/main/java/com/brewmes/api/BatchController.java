@@ -67,14 +67,14 @@ public class BatchController {
         if (getter.containsId(id)) {
             pdfService.prepareBatchReportService(id);
 
-            String fileName = "batch_report.pdf";
-            File file = new File(fileName);
+            String fileName = "batch_report.pdf"; //NOSONAR
+            File file = new File(fileName); //NOSONAR
             InputStreamResource resource = null;
 
             try {
                 resource = new InputStreamResource(new FileInputStream(fileName));
 
-                HttpHeaders headers = new HttpHeaders();
+                HttpHeaders headers = new HttpHeaders(); //NOSONAR
 
                 headers.add("Content-Disposition", String.format("attachment; filename=\"%s\"", file.getName()));
                 headers.add("Cache-Control", "no-cache, no-store, must-revalidate");
@@ -82,7 +82,6 @@ public class BatchController {
                 headers.add("Expires", "0");
                 return ResponseEntity.ok().headers(headers).contentLength(file.length()).contentType(MediaType.parseMediaType("application/pdf")).body(resource);
             } catch (FileNotFoundException e) {
-                e.printStackTrace();
                 return new ResponseEntity<>("Error: File not found", HttpStatus.NOT_FOUND);
             }
         } else {
