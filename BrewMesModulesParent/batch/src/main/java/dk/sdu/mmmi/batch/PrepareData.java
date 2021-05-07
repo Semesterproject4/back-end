@@ -30,7 +30,7 @@ public abstract class PrepareData implements IBatchReportService {
         return valueMap.values().stream().mapToDouble(Double::doubleValue).max().orElse(0);
     }
 
-    public DataOverTime prepareData(Batch batchData) {
+    protected DataOverTime prepareData(Batch batchData) {
         DataOverTime dot = new DataOverTime();
         dot.setBatch(batchData);
         List<MachineData> machineData = dot.getBatch().getData();
