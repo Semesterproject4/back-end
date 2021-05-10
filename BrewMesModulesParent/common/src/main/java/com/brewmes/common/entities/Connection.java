@@ -1,9 +1,19 @@
 package com.brewmes.common.entities;
 
+import javax.validation.constraints.NotNull;
+
+
 public class Connection {
     private String id;
+
+    @NotNull
     private String ip;
+
+    @NotNull
     private String name;
+
+    public Connection() {
+    }
 
     public Connection(String id, String ip, String name) {
         this.id = id;

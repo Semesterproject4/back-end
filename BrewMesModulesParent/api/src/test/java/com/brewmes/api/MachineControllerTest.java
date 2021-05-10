@@ -24,9 +24,9 @@ class MachineControllerTest {
 
     private static final List<Connection> connectionList = new ArrayList<>();
     private static final JsonObject jsonObject = new JsonObject();
+    private static final Connection connection = new Connection("T-800", "1.1.1.1", "Arnold");
     @Mock
     IMachineService machineService;
-
     @InjectMocks
     MachineController machineController;
 
@@ -90,18 +90,18 @@ class MachineControllerTest {
 
     @Test
     void addConnection_succes() {
-        Mockito.when(machineService.addConnection("1.2.3.4", "T-1000")).thenReturn(true);
+        Mockito.when(machineService.addConnection(connection)).thenReturn(true);
 
-        ResponseEntity<String> response = machineController.addConnection("1.2.3.4", "T-1000");
+        ResponseEntity<String> response = machineController.addConnection(connection);
 
         assertEquals(200, response.getStatusCodeValue());
     }
 
     @Test
     void addConnection_failure() {
-        Mockito.when(machineService.addConnection("4.3.2.1", "T-800")).thenReturn(false);
+        Mockito.when(machineService.addConnection(connection)).thenReturn(false);
 
-        ResponseEntity<String> response = machineController.addConnection("4.3.2.1", "T-800");
+        ResponseEntity<String> response = machineController.addConnection(connection);
 
         assertEquals(404, response.getStatusCodeValue());
     }

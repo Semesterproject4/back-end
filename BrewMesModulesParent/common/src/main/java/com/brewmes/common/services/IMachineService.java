@@ -46,11 +46,10 @@ public interface IMachineService {
     /**
      * Adds a connection to a Machine
      *
-     * @param ip   The IP address of the machine
-     * @param name The desired name of the machine, used for easy identification of the machine
+     * @param connection The {@code Connection Object} representation of the machine
      * @return Returns {@code true} if the connection was successfully made, returns {@code false} if the connection failed
      */
-    boolean addConnection(String ip, String name);
+    boolean addConnection(Connection connection);
 
     /**
      * Removes a connection from the database and from the system in general

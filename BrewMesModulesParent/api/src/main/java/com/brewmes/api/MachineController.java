@@ -11,6 +11,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
 import java.util.Optional;
 
 @RestController
@@ -46,8 +47,8 @@ public class MachineController {
     }
 
     @PostMapping()
-    public ResponseEntity<String> addConnection(@RequestBody String id, @RequestBody String name) {
-        if (machineService.addConnection(id, name)) {
+    public ResponseEntity<String> addConnection(@Valid @RequestBody Connection connection) {
+        if (machineService.addConnection(connection)) {
             return new ResponseEntity<>("Machine is added", HttpStatus.OK);
         } else {
             return new ResponseEntity<>("Could not add machine", HttpStatus.NOT_FOUND);
