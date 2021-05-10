@@ -1,4 +1,4 @@
-package dk.sdu.mmmi.batch;
+package com.brewmes.batch;
 
 import com.brewmes.common.entities.Batch;
 
