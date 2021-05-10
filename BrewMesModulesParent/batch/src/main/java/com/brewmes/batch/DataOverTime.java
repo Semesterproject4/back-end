@@ -2,9 +2,6 @@ package com.brewmes.batch;
 
 import com.brewmes.common.entities.Batch;
 
-import java.time.LocalDateTime;
-import java.util.TreeMap;
-
 public class DataOverTime {
     private Batch batch;
     private double oee;

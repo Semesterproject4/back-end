@@ -1,16 +1,12 @@
 package com.brewmes.batch;
 
-import com.brewmes.batch.DataOverTime;
-import com.brewmes.batch.PrepareData;
 import com.brewmes.common.entities.Batch;
 import com.brewmes.common.entities.MachineData;
 import com.brewmes.common.util.Products;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
-
 import java.time.LocalDateTime;
 import java.util.ArrayList;
-import java.util.TreeMap;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
@@ -21,10 +17,6 @@ class PrepareDataTest {
     private static final int MAX_MACHINE_SPEED = Products.PILSNER.speedLimit;
     private static final int ACCEPTED_PRODUCTS = 80;
     private static DataOverTime overTime;
-    private static TreeMap<LocalDateTime, Double> HUMIDITY_MAP = new TreeMap<>();
-    private static TreeMap<LocalDateTime, Double> VIBRATION_MAP = new TreeMap<>();
-    private static TreeMap<LocalDateTime, Double> TEMPERATURE_MAP = new TreeMap<>();
-    private static TreeMap<LocalDateTime, Integer> TIME_IN_STATES_MAP = new TreeMap<>();
 
     @BeforeAll
     static void setUp() {
@@ -43,10 +35,6 @@ class PrepareDataTest {
             data.setAcceptableProducts(ACCEPTED_PRODUCTS);
             LocalDateTime now = LocalDateTime.now();
             data.setTimestamp(now);
-            HUMIDITY_MAP.put(now, Double.valueOf(i));
-            TEMPERATURE_MAP.put(now, Double.valueOf(i));
-            VIBRATION_MAP.put(now, Double.valueOf(i));
-            TIME_IN_STATES_MAP.put(now, i);
             batch.addMachineData(data);
         }
 
