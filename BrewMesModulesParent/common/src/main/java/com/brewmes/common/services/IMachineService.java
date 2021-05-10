@@ -28,13 +28,6 @@ public interface IMachineService {
     boolean setVariables(double speed, Products beerType, int batchSize, String machineID);
 
     /**
-     * Sets up the desired subscriptions to a machines values
-     * @param machineID The ID of the machine desired for the subscription
-     * @return Returns {@code true} if the subscription was successfully started, returns {@code false} if the subscription failed
-     */
-    boolean subscribeToMachineValues(String machineID);
-
-    /**
      * Gets all the connections from the database
      * @return The list of {@code Connection} objects gotten from the database
      */
