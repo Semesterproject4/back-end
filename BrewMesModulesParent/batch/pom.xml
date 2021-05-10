@@ -30,7 +30,6 @@
 			    <groupId>com.brewmes</groupId>
 			    <artifactId>common_repository</artifactId>
 			    <version>${project.version}</version>
-			    <scope>compile</scope>
 		    </dependency>
 		    <dependency>
 			    <groupId>com.google.code.gson</groupId>
