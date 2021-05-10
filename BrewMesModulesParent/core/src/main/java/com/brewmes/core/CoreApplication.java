@@ -3,7 +3,6 @@ package com.brewmes.core;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
-
 @SpringBootApplication(scanBasePackages = "com.brewmes.*")
 public class CoreApplication {
 
