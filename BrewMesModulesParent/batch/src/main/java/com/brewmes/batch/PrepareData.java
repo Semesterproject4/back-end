@@ -29,8 +29,9 @@ public abstract class PrepareData implements IBatchReportService {
         return valueMap.values().stream().mapToDouble(Double::doubleValue).max().orElse(0);
     }
 
+
     /**
-     *
+     * Prepares the data for the IBatchReportService
      * @param batchData The Batch object to be calculated on.
      * @return {@code DataOverTime} object with the calculated values.
      */

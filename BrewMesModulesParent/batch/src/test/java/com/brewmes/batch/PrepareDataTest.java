@@ -1,10 +1,10 @@
 package com.brewmes.batch;
+
 import com.brewmes.common.entities.Batch;
 import com.brewmes.common.entities.MachineData;
 import com.brewmes.common.util.Products;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
-
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 
@@ -76,6 +76,54 @@ class PrepareDataTest {
     void findMinTest() {
         double expected = 0;
         double actual = overTime.getMinTemp();
+
+        assertEquals(expected, actual);
+    }
+
+    @Test
+    void findMinHumidity() {
+        double expected = 0;
+        double actual = overTime.getMinHumidity();
+
+        assertEquals(expected, actual);
+    }
+
+    @Test
+    void findAvgHumidity() {
+        double expected = 1;
+        double actual = overTime.getAvgHumidity();
+
+        assertEquals(expected, actual);
+    }
+
+    @Test
+    void findMaxHumidity() {
+        double expected = 2;
+        double actual = overTime.getMaxHumidity();
+
+        assertEquals(expected, actual);
+    }
+
+    @Test
+    void findMinVibration() {
+        double expected = 0;
+        double actual = overTime.getMinVibration();
+
+        assertEquals(expected, actual);
+    }
+
+    @Test
+    void findAvgVibration() {
+        double expected = 1;
+        double actual = overTime.getAvgVibration();
+
+        assertEquals(expected, actual);
+    }
+
+    @Test
+    void findMaxVibration() {
+        double expected = 2;
+        double actual = overTime.getMaxVibration();
 
         assertEquals(expected, actual);
     }
