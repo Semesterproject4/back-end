@@ -5,6 +5,7 @@ import com.brewmes.common.services.IMachineService;
 import com.brewmes.common.util.Command;
 import com.brewmes.common.util.Products;
 import com.google.gson.JsonObject;
+import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
@@ -21,19 +22,28 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 @ExtendWith(MockitoExtension.class)
 class MachineControllerTest {
 
+    private static final List<Connection> connectionList = new ArrayList<>();
+    private static final JsonObject jsonObject = new JsonObject();
     @Mock
     IMachineService machineService;
 
     @InjectMocks
     MachineController machineController;
 
+    @BeforeAll
+    static void init() {
+        connectionList.add(new Connection("123", "0.0.0.0", "Machine1"));
+
+        double speed = 50.0;
+        String beerType = "ale";
+        int BatchSize = 100;
+        jsonObject.addProperty("speed", speed);
+        jsonObject.addProperty("beerType", beerType);
+        jsonObject.addProperty("batchSize", BatchSize);
+    }
 
     @Test
     void getConnections() {
-        List<Connection> connectionList = new ArrayList<>();
-        connectionList.add(new Connection("123", "0.0.0.0", "Machine1"));
-
-
         Mockito.when(machineService.getConnections()).thenReturn(connectionList);
         ResponseEntity<Object> response = machineController.getConnections();
 
@@ -46,15 +56,11 @@ class MachineControllerTest {
         Mockito.when(machineService.getConnection("789")).thenReturn(null);
         ResponseEntity<Object> response = machineController.getConnection("789");
 
-
         assertEquals(404, response.getStatusCodeValue());
     }
 
     @Test
     void getConnection_present() {
-        List<Connection> connectionList = new ArrayList<>();
-        connectionList.add(new Connection("123", "0.0.0.0", "Machine1"));
-
         Mockito.when(machineService.getConnection("123")).thenReturn(connectionList.get(0));
 
         ResponseEntity<Object> response = machineController.getConnection("123");
@@ -120,16 +126,10 @@ class MachineControllerTest {
 
     @Test
     void setMachineVariables_success() {
-        Mockito.when(machineService.setVariables(50.0, Products.ALE, 100, "123")).thenReturn(true);
-
-        double speed = 50.0;
-        String beerType = "ale";
-        int BatchSize = 100;
-
-        JsonObject jsonObject = new JsonObject();
-        jsonObject.addProperty("speed", speed);
-        jsonObject.addProperty("beerType", beerType);
-        jsonObject.addProperty("batchSize", BatchSize);
+        Mockito.when(machineService.setVariables(
+                jsonObject.get("speed").getAsDouble(),
+                Products.valueOf(jsonObject.get("beerType").getAsString().toUpperCase()),
+                jsonObject.get("batchSize").getAsInt(), "123")).thenReturn(true);
 
         ResponseEntity<String> response = machineController.setMachineVariables("123", String.valueOf(jsonObject));
 
@@ -138,16 +138,10 @@ class MachineControllerTest {
 
     @Test
     void setMachineVariables_failure() {
-        Mockito.when(machineService.setVariables(50.0, Products.ALE, 100, "789")).thenReturn(false);
-
-        double speed = 50.0;
-        String beerType = "ale";
-        int BatchSize = 100;
-
-        JsonObject jsonObject = new JsonObject();
-        jsonObject.addProperty("speed", speed);
-        jsonObject.addProperty("beerType", beerType);
-        jsonObject.addProperty("batchSize", BatchSize);
+        Mockito.when(machineService.setVariables(
+                jsonObject.get("speed").getAsDouble(),
+                Products.valueOf(jsonObject.get("beerType").getAsString().toUpperCase()),
+                jsonObject.get("batchSize").getAsInt(), "789")).thenReturn(false);
 
         ResponseEntity<String> response = machineController.setMachineVariables("789", String.valueOf(jsonObject));
 

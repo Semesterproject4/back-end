@@ -39,7 +39,7 @@ public interface IMachineService {
      * Gets the specified connection from the database.
      *
      * @param machineID ID of the desired {@code Connection}.
-     * @return The {@code Connection} object associated with the given id; {@code null} if no {@code Connection} was found.
+     * @return The {@code Connection} object associated with the given ID; {@code null} if no {@code Connection} was found.
      */
     Connection getConnection(String machineID);
 
