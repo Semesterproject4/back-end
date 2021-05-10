@@ -13,7 +13,6 @@
         <sonar.projectKey>Semesterproject4_back-end</sonar.projectKey>
         <sonar.organization>semesterproject4</sonar.organization>
         <sonar.host.url>https://sonarcloud.io</sonar.host.url>
-        <sonar.issue.ignore.multicriteria.e1.ruleKey>java:S6212</sonar.issue.ignore.multicriteria.e1.ruleKey>
     </properties>
 
 
@@ -28,4 +27,41 @@
         <module>schedule</module>
         <module>machine</module>
     </modules>
+
+
+    <!-- Plugings for all projects! -->
+    <build>
+        <plugins>
+            <plugin>
+                <!-- JUnit 5 requires Surefire version 2.22.0 or higher -->
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-surefire-plugin</artifactId>
+                <version>3.0.0-M5</version>
+            </plugin>
+
+            <plugin>
+                <!-- Jacoco requires for sonar to get coverage of files -->
+                <groupId>org.jacoco</groupId>
+                <artifactId>jacoco-maven-plugin</artifactId>
+                <version>0.8.7</version>
+                <executions>
+                    <execution>
+                        <id>coverage-initialize</id>
+                        <goals>
+                            <goal>prepare-agent</goal>
+                        </goals>
+                    </execution>
+
+                    <execution>
+                        <id>coverage-report</id>
+                        <phase>post-integration-test</phase>
+                        <goals>
+                            <goal>report</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
+        </plugins>
+    </build>
+
 </project>
