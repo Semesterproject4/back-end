@@ -19,7 +19,7 @@
         <sonar.host.url>https://sonarcloud.io</sonar.host.url>
         <sonar.issue.ignore.multicriteria.e1.ruleKey>java:S6212</sonar.issue.ignore.multicriteria.e1.ruleKey>
         <sonar.exclusions>
-            /batch/src/main/java/com/brewmes/batch/PdfReportGenerator.java
+            /batch/src/main/java/com/brewmes/batch/PdfReportGenerator.java,
             /livedata/src/main/java/com/brewmes/livedata/WebSocketConfig.java
         </sonar.exclusions>
     </properties>
