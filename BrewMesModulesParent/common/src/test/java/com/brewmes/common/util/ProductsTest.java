@@ -15,4 +15,9 @@ class ProductsTest {
     void valueOf() {
         assertEquals(Products.PILSNER, Products.valueOf("PILSNER"));
     }
+
+    @Test
+    void getNameByID() {
+        assertEquals("Pilsner", Products.getNameByID(0));
+    }
 }
