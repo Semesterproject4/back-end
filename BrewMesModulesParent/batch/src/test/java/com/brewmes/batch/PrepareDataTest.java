@@ -1,5 +1,7 @@
-package dk.sdu.mmmi.batch;
+package com.brewmes.batch;
 
+import com.brewmes.batch.DataOverTime;
+import com.brewmes.batch.PrepareData;
 import com.brewmes.common.entities.Batch;
 import com.brewmes.common.entities.MachineData;
 import com.brewmes.common.util.Products;
