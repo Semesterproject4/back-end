@@ -10,6 +10,7 @@ import org.junit.jupiter.api.Test;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.TreeMap;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
@@ -20,6 +21,10 @@ class PrepareDataTest {
     private static final int MAX_MACHINE_SPEED = Products.PILSNER.speedLimit;
     private static final int ACCEPTED_PRODUCTS = 80;
     private static DataOverTime overTime;
+    private static TreeMap<LocalDateTime, Double> HUMIDITY_MAP = new TreeMap<>();
+    private static TreeMap<LocalDateTime, Double> VIBRATION_MAP = new TreeMap<>();
+    private static TreeMap<LocalDateTime, Double> TEMPERATURE_MAP = new TreeMap<>();
+    private static TreeMap<LocalDateTime, Integer> TIME_IN_STATES_MAP = new TreeMap<>();
 
     @BeforeAll
     static void setUp() {
@@ -31,11 +36,17 @@ class PrepareDataTest {
 
         for (int i = 0; i < 3; i++) {
             MachineData data = new MachineData();
-            data.setTimestamp(LocalDateTime.now());
             data.setHumidity(i);
             data.setTemperature(i);
             data.setVibration(i);
+            data.setState(i);
             data.setAcceptableProducts(ACCEPTED_PRODUCTS);
+            LocalDateTime now = LocalDateTime.now();
+            data.setTimestamp(now);
+            HUMIDITY_MAP.put(now, Double.valueOf(i));
+            TEMPERATURE_MAP.put(now, Double.valueOf(i));
+            VIBRATION_MAP.put(now, Double.valueOf(i));
+            TIME_IN_STATES_MAP.put(now, i);
             batch.addMachineData(data);
         }
 
@@ -79,6 +90,38 @@ class PrepareDataTest {
     void findMinTest() {
         double expected = 0;
         double actual = overTime.getMinTemp();
+
+        assertEquals(expected, actual);
+    }
+
+    @Test
+    void sortHumidity(){
+        TreeMap<LocalDateTime, Double> expected = HUMIDITY_MAP;
+        TreeMap<LocalDateTime, Double> actual = overTime.getSortedHumidity();
+
+        assertEquals(expected, actual);
+    }
+
+    @Test
+    void sortTemperature(){
+        TreeMap<LocalDateTime, Double> expected = TEMPERATURE_MAP;
+        TreeMap<LocalDateTime, Double> actual = overTime.getSortedTemperature();
+
+        assertEquals(expected, actual);
+    }
+
+    @Test
+    void sortVibration(){
+        TreeMap<LocalDateTime, Double> expected = VIBRATION_MAP;
+        TreeMap<LocalDateTime, Double> actual = overTime.getSortedVibration();
+
+        assertEquals(expected, actual);
+    }
+
+    @Test
+    void sortTimeInState(){
+        TreeMap<LocalDateTime, Integer> expected = TIME_IN_STATES_MAP;
+        TreeMap<LocalDateTime, Integer> actual = overTime.getSortedTimeInStates();
 
         assertEquals(expected, actual);
     }

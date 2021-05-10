@@ -2,6 +2,9 @@ package com.brewmes.batch;
 
 import com.brewmes.common.entities.Batch;
 
+import java.time.LocalDateTime;
+import java.util.TreeMap;
+
 public class DataOverTime {
     private Batch batch;
     private double oee;
@@ -14,6 +17,10 @@ public class DataOverTime {
     private double avgHumidity;
     private double minHumidity;
     private double maxHumidity;
+    private TreeMap<LocalDateTime, Double> sortedHumidity = new TreeMap<>();
+    private TreeMap<LocalDateTime, Double> sortedVibration = new TreeMap<>();
+    private TreeMap<LocalDateTime, Double> sortedTemperature = new TreeMap<>();
+    private TreeMap<LocalDateTime, Integer> sortedTimeInStates = new TreeMap<>();
 
 
     public Batch getBatch() {
@@ -102,5 +109,37 @@ public class DataOverTime {
 
     public void setOee(double oee) {
         this.oee = oee;
+    }
+
+    public TreeMap<LocalDateTime, Double> getSortedHumidity() {
+        return sortedHumidity;
+    }
+
+    public void setSortedHumidity(TreeMap<LocalDateTime, Double> sortedHumidity) {
+        this.sortedHumidity = sortedHumidity;
+    }
+
+    public TreeMap<LocalDateTime, Double> getSortedVibration() {
+        return sortedVibration;
+    }
+
+    public void setSortedVibration(TreeMap<LocalDateTime, Double> sortedVibration) {
+        this.sortedVibration = sortedVibration;
+    }
+
+    public TreeMap<LocalDateTime, Double> getSortedTemperature() {
+        return sortedTemperature;
+    }
+
+    public void setSortedTemperature(TreeMap<LocalDateTime, Double> sortedTemperature) {
+        this.sortedTemperature = sortedTemperature;
+    }
+
+    public TreeMap<LocalDateTime, Integer> getSortedTimeInStates() {
+        return sortedTimeInStates;
+    }
+
+    public void setSortedTimeInStates(TreeMap<LocalDateTime, Integer> sortedTimeInStates) {
+        this.sortedTimeInStates = sortedTimeInStates;
     }
 }

@@ -9,6 +9,7 @@ import java.time.LocalDateTime;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.TreeMap;
 
 public abstract class PrepareData implements IBatchReportService {
     private double calculateOee(int amountToProduce, double machineSpeed,  int maxMachineSpeed, int acceptedProducts) {
@@ -29,8 +30,48 @@ public abstract class PrepareData implements IBatchReportService {
         return valueMap.values().stream().mapToDouble(Double::doubleValue).max().orElse(0);
     }
 
+    private TreeMap<LocalDateTime, Double> sortHumidity(Batch batch) {
+        TreeMap<LocalDateTime, Double> map = new TreeMap<>();
+
+        for(MachineData data : batch.getData()) {
+            map.put(data.getTimestamp(), data.getHumidity());
+        }
+
+        return map;
+    }
+
+    private TreeMap<LocalDateTime, Double> sortVibration(Batch batch) {
+        TreeMap<LocalDateTime, Double> map = new TreeMap<>();
+
+        for(MachineData data : batch.getData()) {
+            map.put(data.getTimestamp(), data.getVibration());
+        }
+
+        return map;
+    }
+
+    private TreeMap<LocalDateTime, Double> sortTemperature(Batch batch) {
+        TreeMap<LocalDateTime, Double> map = new TreeMap<>();
+
+        for(MachineData data : batch.getData()) {
+            map.put(data.getTimestamp(), data.getTemperature());
+        }
+
+        return map;
+    }
+
+    private TreeMap<LocalDateTime, Integer> sortTimeInStates(Batch batch) {
+        TreeMap<LocalDateTime, Integer> map = new TreeMap<>();
+
+        for(MachineData data : batch.getData()) {
+            map.put(data.getTimestamp(), data.getState());
+        }
+
+        return map;
+    }
+
     /**
-     *
+     * Prepares the data for the IBatchReportService
      * @param batchData The Batch object to be calculated on.
      * @return {@code DataOverTime} object with the calculated values.
      */
@@ -59,6 +100,11 @@ public abstract class PrepareData implements IBatchReportService {
         dot.setAvgHumidity(findAvgValueInMap(humList));
         dot.setMaxHumidity(findMaxValueInMap(humList));
         dot.setMinHumidity(findMinValueInMap(humList));
+
+        dot.setSortedHumidity(sortHumidity(batchData));
+        dot.setSortedVibration(sortVibration(batchData));
+        dot.setSortedTemperature(sortTemperature(batchData));
+        dot.setSortedTimeInStates(sortTimeInStates(batchData));
 
         double oee = calculateOee(batchData.getAmountToProduce(), batchData.getDesiredSpeed(), Products.values()[batchData.getProductType()].speedLimit, machineData.get(machineData.size()-1).getAcceptableProducts());
         dot.setOee(oee);
