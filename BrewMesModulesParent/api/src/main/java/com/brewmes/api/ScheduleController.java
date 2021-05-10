@@ -11,14 +11,14 @@ import javax.validation.Valid;
 import java.util.List;
 
 @RestController
-@RequestMapping("api/schedule")
+@RequestMapping("api/scheduled")
 public class ScheduleController {
 
     @Autowired(required = false)
     IScheduleService scheduleService;
 
-    @PostMapping("/addToQueue")
-    public ResponseEntity<String> addToQueue(@Valid @ModelAttribute("scheduledBatch") ScheduledBatch scheduledBatch) {
+    @PostMapping("/")
+    public ResponseEntity<String> addToQueue(@Valid @RequestBody ScheduledBatch scheduledBatch) {
         int index = scheduleService.addToQueue(scheduledBatch);
 
         if (index != -1) {
@@ -28,8 +28,8 @@ public class ScheduleController {
         }
     }
 
-    @DeleteMapping("/removeFromQueue")
-    public ResponseEntity<String> removeFromQueue(@RequestBody String id) {
+    @DeleteMapping("/{id}")
+    public ResponseEntity<String> removeFromQueue(@PathVariable String id) {
         boolean success = scheduleService.removeFromQueue(id);
 
         if (success) {
@@ -39,7 +39,7 @@ public class ScheduleController {
         }
     }
 
-    @GetMapping("/queue")
+    @GetMapping("/")
     public ResponseEntity<Object> getQueue() {
         List<ScheduledBatch> list = scheduleService.getQueue();
 
