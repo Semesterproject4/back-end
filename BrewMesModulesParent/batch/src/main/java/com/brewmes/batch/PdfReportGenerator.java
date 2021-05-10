@@ -274,6 +274,8 @@ public class PdfReportGenerator {
         Image chartImage = Image.getInstance(template);
         paragraph.add(chartImage);
 
+        paragraph.add(new Paragraph("                                                                             " + xaxis));
+        addEmptyLine(paragraph, 1);
         document.add(paragraph);
     }
 
@@ -304,7 +306,7 @@ public class PdfReportGenerator {
         }
 
         dataset.addSeries(series);
-        JFreeChart lineChart = ChartFactory.createXYStepChart("Machine state", "Time (s)", "State"
+        JFreeChart lineChart = ChartFactory.createXYStepChart("Machine state", xaxis, "State"
                 , dataset, PlotOrientation.VERTICAL, false, true, false);
         makeStepPlot(document, timeState, width, height, lineChart);
     }
