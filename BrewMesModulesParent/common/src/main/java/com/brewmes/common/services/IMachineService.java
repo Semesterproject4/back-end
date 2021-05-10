@@ -5,6 +5,7 @@ import com.brewmes.common.util.Command;
 import com.brewmes.common.util.Products;
 
 import java.util.List;
+import java.util.Optional;
 
 public interface IMachineService {
 
@@ -38,6 +39,13 @@ public interface IMachineService {
      * @return The list of {@code Connection} objects gotten from the database
      */
     List<Connection> getConnections();
+
+    /**
+     * Gets the specified connection from the database.
+     * @param machineID ID of the desired {@code Connection}.
+     * @return The {@code Connection} object associated with the given id; {@code null} if no {@code Connection} was found.
+     */
+    Connection getConnection(String machineID);
 
     /**
      * Adds a connection to a Machine
