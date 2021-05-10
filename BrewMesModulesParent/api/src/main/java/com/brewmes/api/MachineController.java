@@ -41,25 +41,25 @@ public class MachineController {
         if (machineService.removeConnection(id)) {
             return new ResponseEntity<>("Machine is removed", HttpStatus.OK);
         } else {
-            return new ResponseEntity<>("Could not remove machine", HttpStatus.NOT_ACCEPTABLE);
+            return new ResponseEntity<>("Could not remove machine", HttpStatus.NOT_FOUND);
         }
     }
 
-    @PostMapping(value = "/{id}")
-    public ResponseEntity<String> addConnection(@PathVariable("id") String id, @RequestBody String name) {
+    @PostMapping()
+    public ResponseEntity<String> addConnection(@RequestBody String id, @RequestBody String name) {
         if (machineService.addConnection(id, name)) {
             return new ResponseEntity<>("Machine is added", HttpStatus.OK);
         } else {
-            return new ResponseEntity<>("Could not add machine", HttpStatus.NOT_ACCEPTABLE);
+            return new ResponseEntity<>("Could not add machine", HttpStatus.NOT_FOUND);
         }
     }
 
-    @PutMapping(value = "/{id}/control")
-    public ResponseEntity<String> controlMachine(@PathVariable("id") String id, @RequestBody String command) {
+    @PutMapping(value = "/{id}")
+    public ResponseEntity<String> controlMachine(@PathVariable("id") String id, @RequestParam String command) {
         if (machineService.controlMachine(Command.valueOf(command.toUpperCase()), id)) {
             return new ResponseEntity<>("Command successful", HttpStatus.OK);
         } else {
-            return new ResponseEntity<>("Command unsuccessful", HttpStatus.NOT_ACCEPTABLE);
+            return new ResponseEntity<>("Command unsuccessful", HttpStatus.NOT_FOUND);
         }
     }
 
@@ -69,7 +69,7 @@ public class MachineController {
      * @param id    is the {@code machineID}
      * @param input consists of three variables; speed ({@code double}), {@code beerType} ({@code String}) and batchSize ({@code int}).
      *              These should be mapped as JSON objects.
-     * @return {@code 200 OK} if successful, {@code 406 NOT ACCEPTABLE} if unsuccessful.
+     * @return {@code 200 OK} if successful, {@code 404 NOT FOUND} if unsuccessful.
      */
     @PutMapping(value = "/{id}/variables")
     public ResponseEntity<String> setMachineVariables(@PathVariable("id") String id, @RequestBody String input) {
@@ -81,7 +81,7 @@ public class MachineController {
         if (machineService.setVariables(speed, beerType, batchSize, id)) {
             return new ResponseEntity<>("Machine Variables set", HttpStatus.OK);
         } else {
-            return new ResponseEntity<>("Could not set Machine Variables", HttpStatus.NOT_ACCEPTABLE);
+            return new ResponseEntity<>("Could not set Machine Variables", HttpStatus.NOT_FOUND);
         }
     }
 
@@ -90,7 +90,7 @@ public class MachineController {
         if (machineService.startAutoBrew(id)) {
             return new ResponseEntity<>("Auto Brew started", HttpStatus.OK);
         } else {
-            return new ResponseEntity<>("Failed to start Auto Brew", HttpStatus.NOT_ACCEPTABLE);
+            return new ResponseEntity<>("Failed to start Auto Brew", HttpStatus.NOT_FOUND);
         }
     }
 
@@ -99,7 +99,7 @@ public class MachineController {
         if (machineService.stopAutoBrew(id)) {
             return new ResponseEntity<>("Auto Brew stopped", HttpStatus.OK);
         } else {
-            return new ResponseEntity<>("Failed to stop Auto Brew", HttpStatus.NOT_ACCEPTABLE);
+            return new ResponseEntity<>("Failed to stop Auto Brew", HttpStatus.NOT_FOUND);
         }
     }
 }

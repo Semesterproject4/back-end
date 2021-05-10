@@ -79,7 +79,7 @@ class MachineControllerTest {
 
         ResponseEntity<String> response = machineController.removeConnection("123");
 
-        assertEquals(406, response.getStatusCodeValue());
+        assertEquals(404, response.getStatusCodeValue());
     }
 
     @Test
@@ -97,7 +97,7 @@ class MachineControllerTest {
 
         ResponseEntity<String> response = machineController.addConnection("4.3.2.1", "T-800");
 
-        assertEquals(406, response.getStatusCodeValue());
+        assertEquals(404, response.getStatusCodeValue());
     }
 
     @Test
@@ -115,7 +115,7 @@ class MachineControllerTest {
 
         ResponseEntity<String> response = machineController.controlMachine("123", "stop");
 
-        assertEquals(406, response.getStatusCodeValue());
+        assertEquals(404, response.getStatusCodeValue());
     }
 
     @Test
@@ -151,7 +151,7 @@ class MachineControllerTest {
 
         ResponseEntity<String> response = machineController.setMachineVariables("789", String.valueOf(jsonObject));
 
-        assertEquals(406, response.getStatusCodeValue());
+        assertEquals(404, response.getStatusCodeValue());
     }
 
     @Test
@@ -169,7 +169,7 @@ class MachineControllerTest {
 
         ResponseEntity<String> response = machineController.startAutoBrew("789");
 
-        assertEquals(406, response.getStatusCodeValue());
+        assertEquals(404, response.getStatusCodeValue());
     }
 
     @Test
@@ -187,6 +187,6 @@ class MachineControllerTest {
 
         ResponseEntity<String> response = machineController.stopAutoBrew("789");
 
-        assertEquals(406, response.getStatusCodeValue());
+        assertEquals(404, response.getStatusCodeValue());
     }
 }
