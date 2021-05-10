@@ -65,9 +65,10 @@ public class MachineController {
 
     /**
      * Sets variables of the machine.
-     * @param id is the {@code machineID}
+     *
+     * @param id    is the {@code machineID}
      * @param input consists of three variables; speed ({@code double}), {@code beerType} ({@code String}) and batchSize ({@code int}).
-     *        These should be mapped as JSON objects.
+     *              These should be mapped as JSON objects.
      * @return {@code 200 OK} if successful, {@code 406 NOT ACCEPTABLE} if unsuccessful.
      */
     @PutMapping(value = "/{id}/variables")
