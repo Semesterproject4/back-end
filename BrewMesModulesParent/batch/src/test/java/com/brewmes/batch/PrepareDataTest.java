@@ -28,13 +28,11 @@ class PrepareDataTest {
 
         for (int i = 0; i < 3; i++) {
             MachineData data = new MachineData();
+            data.setTimestamp(LocalDateTime.now());
             data.setHumidity(i);
             data.setTemperature(i);
             data.setVibration(i);
-            data.setState(i);
             data.setAcceptableProducts(ACCEPTED_PRODUCTS);
-            LocalDateTime now = LocalDateTime.now();
-            data.setTimestamp(now);
             batch.addMachineData(data);
         }
 
