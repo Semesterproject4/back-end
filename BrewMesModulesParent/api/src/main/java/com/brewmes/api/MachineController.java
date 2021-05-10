@@ -33,7 +33,7 @@ public class MachineController {
         if (connection.isPresent()) {
             return new ResponseEntity<>(connection.get(), HttpStatus.OK);
         } else {
-            return new ResponseEntity<>("Sorry I don't know that machine :(", HttpStatus.NOT_FOUND);
+            return new ResponseEntity<>("Could not find that machine ", HttpStatus.NOT_FOUND);
         }
     }
 
