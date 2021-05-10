@@ -33,15 +33,20 @@ public class PdfReportGenerator {
     private static PdfWriter pdfWriter;
     private static DataOverTime dataOverTime;
     private static Batch batch;
+    static String xaxis = "Time (s)";
 
 
     private PdfReportGenerator() {
 
     }
 
-    public static void generatePDF(DataOverTime dot) {
+    /**
+     * Method makes a pdf report of a batch named "batch_report.pdf"
+     * @param data is an object of {@code DataOverTime} which represents a batch and its data which is reliant on time
+     */
+    public static void generatePdf(DataOverTime data) {
         try {
-            dataOverTime = dot;
+            dataOverTime = data;
             batch = dataOverTime.getBatch();
             MachineData lastMachineData = batch.getData().get(batch.getData().size() - 1);
 
@@ -134,7 +139,7 @@ public class PdfReportGenerator {
     }
 
 
-    public static void addHumiditySection(Document document) throws DocumentException {
+    private static void addHumiditySection(Document document) throws DocumentException {
         Paragraph humidity = new Paragraph();
         addEmptyLine(humidity, 1);
 
@@ -146,27 +151,25 @@ public class PdfReportGenerator {
         XYSeries series = new XYSeries("Humidity");
         long totalTime = 0L;
 
-
-                
-        if (dataOverTime.getSortedHumidity().keySet().stream().findFirst().isPresent()) {
+        if (!batch.getData().isEmpty()) {
             LocalDateTime startTime;
 
-            startTime = dataOverTime.getSortedHumidity().keySet().stream().findFirst().get();
-            for (LocalDateTime time : dataOverTime.getSortedHumidity().keySet()) {
-                long timeElapsed = Math.abs(startTime.toEpochSecond(ZoneOffset.MAX) - time.toEpochSecond(ZoneOffset.MAX));
+            startTime = batch.getData().get(0).getTimestamp();
+            for (MachineData data : batch.getData()) {
+                long timeElapsed = Math.abs(startTime.toEpochSecond(ZoneOffset.MAX) - data.getTimestamp().toEpochSecond(ZoneOffset.MAX));
                 if (totalTime < timeElapsed) {
                     totalTime = timeElapsed;
                 }
-                series.add((Number) (time.toEpochSecond(ZoneOffset.MAX) - startTime.toEpochSecond(ZoneOffset.MAX)), dataOverTime.getSortedHumidity().get(time));
+                series.add((Number) Math.abs(startTime.toEpochSecond(ZoneOffset.MAX) - data.getTimestamp().toEpochSecond(ZoneOffset.MAX)), data.getHumidity());
             }
         }
         dataset.addSeries(series);
-        JFreeChart lineChart = ChartFactory.createXYLineChart("Humidity", "Time (s)", "Humidity"
+        JFreeChart lineChart = ChartFactory.createXYLineChart("Humidity", xaxis, "Humidity"
                 , dataset, PlotOrientation.VERTICAL, false, true, false);
-        makeTables(document, humidity, width, height, lineChart, dataOverTime.getAvgHumidity(), dataOverTime.getMinHumidity(), dataOverTime.getMaxHumidity(), totalTime);
+        makeTables(document, humidity, width, height, lineChart, dataOverTime.getAvgHumidity(), dataOverTime.getMinHumidity(), dataOverTime.getMaxHumidity());
     }
 
-    public static void addVibrationSection(Document document) throws DocumentException {
+    private static void addVibrationSection(Document document) throws DocumentException {
         Paragraph vibration = new Paragraph();
         addEmptyLine(vibration, 1);
 
@@ -177,25 +180,25 @@ public class PdfReportGenerator {
         XYSeriesCollection dataset = new XYSeriesCollection();
         XYSeries series = new XYSeries("Vibration");
         long totalTime = 0L;
-        if (dataOverTime.getSortedVibration().keySet().stream().findFirst().isPresent()) {
+        if (!batch.getData().isEmpty()) {
             LocalDateTime startTime;
 
-            startTime = dataOverTime.getSortedVibration().keySet().stream().findFirst().get();
-            for (LocalDateTime time : dataOverTime.getSortedVibration().keySet()) {
-                long timeElapsed = Math.abs(startTime.toEpochSecond(ZoneOffset.UTC) - time.toEpochSecond(ZoneOffset.UTC));
+            startTime = batch.getData().get(0).getTimestamp();
+            for (MachineData data : batch.getData()) {
+                long timeElapsed = Math.abs(startTime.toEpochSecond(ZoneOffset.MAX) - data.getTimestamp().toEpochSecond(ZoneOffset.MAX));
                 if (totalTime < timeElapsed) {
                     totalTime = timeElapsed;
                 }
-                series.add((Number) (time.toEpochSecond(ZoneOffset.UTC) - startTime.toEpochSecond(ZoneOffset.UTC)), dataOverTime.getSortedVibration().get(time));
+                series.add((Number) Math.abs(startTime.toEpochSecond(ZoneOffset.MAX) - data.getTimestamp().toEpochSecond(ZoneOffset.MAX)), data.getVibration());
             }
         }
         dataset.addSeries(series);
-        JFreeChart lineChart = ChartFactory.createXYLineChart("Vibration", "Time (s)", "Vibration"
+        JFreeChart lineChart = ChartFactory.createXYLineChart("Vibration", xaxis, "Vibration"
                 , dataset, PlotOrientation.VERTICAL, false, true, false);
-        makeTables(document, vibration, width, height, lineChart, dataOverTime.getAvgVibration(), dataOverTime.getMinVibration(), dataOverTime.getMaxVibration(), totalTime);
+        makeTables(document, vibration, width, height, lineChart, dataOverTime.getAvgVibration(), dataOverTime.getMinVibration(), dataOverTime.getMaxVibration());
     }
 
-    public static void addTemperatureSection(Document document) throws DocumentException {
+    private static void addTemperatureSection(Document document) throws DocumentException {
         Paragraph temperature = new Paragraph();
         addEmptyLine(temperature, 1);
 
@@ -205,26 +208,27 @@ public class PdfReportGenerator {
         XYSeriesCollection dataset = new XYSeriesCollection();
         XYSeries series = new XYSeries("Temperature");
         long totalTime = 0;
-        if (dataOverTime.getSortedTemperature().keySet().stream().findFirst().isPresent()) {
+
+        if (!batch.getData().isEmpty()) {
             LocalDateTime startTime;
 
-            startTime = dataOverTime.getSortedTemperature().keySet().stream().findFirst().get();
-            for (LocalDateTime time : dataOverTime.getSortedTemperature().keySet()) {
-                long timeElapsed = Math.abs(startTime.toEpochSecond(ZoneOffset.MAX) - time.toEpochSecond(ZoneOffset.MAX));
+            startTime = batch.getData().get(0).getTimestamp();
+            for (MachineData data : batch.getData()) {
+                long timeElapsed = Math.abs(startTime.toEpochSecond(ZoneOffset.MAX) - data.getTimestamp().toEpochSecond(ZoneOffset.MAX));
                 if (totalTime < timeElapsed) {
                     totalTime = timeElapsed;
                 }
-                series.add((Number) Math.abs(startTime.toEpochSecond(ZoneOffset.MAX) - time.toEpochSecond(ZoneOffset.MAX)), dataOverTime.getSortedTemperature().get(time));
+                series.add((Number) Math.abs(startTime.toEpochSecond(ZoneOffset.MAX) - data.getTimestamp().toEpochSecond(ZoneOffset.MAX)), data.getTemperature());
             }
         }
         dataset.addSeries(series);
-        JFreeChart lineChart = ChartFactory.createXYLineChart("Temperature", "Time (s)", "Temperature"
+        JFreeChart lineChart = ChartFactory.createXYLineChart("Temperature", xaxis, "Temperature"
                 , dataset, PlotOrientation.VERTICAL, false, true, false);
-        makeTables(document, temperature, width, height, lineChart, dataOverTime.getAvgTemp(), dataOverTime.getMinTemp(), dataOverTime.getMaxTemp(), totalTime);
+        makeTables(document, temperature, width, height, lineChart, dataOverTime.getAvgTemp(), dataOverTime.getMinTemp(), dataOverTime.getMaxTemp());
     }
 
 
-    private static void makeTables(Document document, Paragraph paragraph, int width, int height, JFreeChart lineChart, double average, double min, double max, long totalTime) throws DocumentException {
+    private static void makeTables(Document document, Paragraph paragraph, int width, int height, JFreeChart lineChart, double average, double min, double max) throws DocumentException {
         NumberAxis range = (NumberAxis) lineChart.getXYPlot().getRangeAxis();
 
         range.setRange((min - 0.5), (max + 0.5));
@@ -254,7 +258,7 @@ public class PdfReportGenerator {
         document.add(paragraph);
     }
 
-    private static void makeStepPlot(Document document, Paragraph paragraph, int width, int height, JFreeChart stepChart, long totalTime) throws DocumentException {
+    private static void makeStepPlot(Document document, Paragraph paragraph, int width, int height, JFreeChart stepChart) throws DocumentException {
         stepChart.getXYPlot().setDomainAxis(new NumberAxis());
         NumberAxis range = (NumberAxis) stepChart.getXYPlot().getRangeAxis();
 
@@ -273,45 +277,36 @@ public class PdfReportGenerator {
         document.add(paragraph);
     }
 
-    public static void addTimeSection(Document document) throws DocumentException {
+    private static void addTimeSection(Document document) throws DocumentException {
         Paragraph timeState = new Paragraph();
         addEmptyLine(timeState, 1);
 
         int width = 500;
         int height = 400;
 
-        for(LocalDateTime time: dataOverTime.getSortedTimeInStates().keySet()) {
-            System.out.println("Time: " + time);
-        }
-
-        for(int value: dataOverTime.getSortedTimeInStates().values()) {
-            System.out.println("Value: " + value);
-        }
 
         // Create line chart of vibration over time
         XYSeriesCollection dataset = new XYSeriesCollection();
         XYSeries series = new XYSeries("States");
         long totalTime = 0L;
-        if (dataOverTime.getSortedTimeInStates().keySet().stream().findFirst().isPresent()) {
+
+        if (!batch.getData().isEmpty()) {
             LocalDateTime startTime;
 
-            startTime = dataOverTime.getSortedTimeInStates().keySet().stream().findFirst().get();
-
-            for (LocalDateTime time : dataOverTime.getSortedTimeInStates().keySet()) {
-
-                long timeElapsed = Math.abs(startTime.toEpochSecond(ZoneOffset.UTC) - time.toEpochSecond(ZoneOffset.UTC));
+            startTime = batch.getData().get(0).getTimestamp();
+            for (MachineData data : batch.getData()) {
+                long timeElapsed = Math.abs(startTime.toEpochSecond(ZoneOffset.MAX) - data.getTimestamp().toEpochSecond(ZoneOffset.MAX));
                 if (totalTime < timeElapsed) {
                     totalTime = timeElapsed;
                 }
-                series.add((Number) (time.toEpochSecond(ZoneOffset.UTC) - startTime.toEpochSecond(ZoneOffset.UTC)), dataOverTime.getSortedTimeInStates().get(time));
+                series.add((Number) Math.abs(startTime.toEpochSecond(ZoneOffset.MAX) - data.getTimestamp().toEpochSecond(ZoneOffset.MAX)), data.getState());
             }
-
-
         }
+
         dataset.addSeries(series);
         JFreeChart lineChart = ChartFactory.createXYStepChart("Machine state", "Time (s)", "State"
                 , dataset, PlotOrientation.VERTICAL, false, true, false);
-        makeStepPlot(document, timeState, width, height, lineChart, totalTime);
+        makeStepPlot(document, timeState, width, height, lineChart);
     }
 
     // Add line space in text

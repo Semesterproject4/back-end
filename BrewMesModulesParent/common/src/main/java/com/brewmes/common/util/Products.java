@@ -21,15 +21,15 @@ public enum Products {
 
     public final int productType;
     public final int speedLimit;
-    public final String name;
+    public final String productName;
 
     Products(int productType, int speedLimit, String name) {
         this.productType = productType;
         this.speedLimit = speedLimit;
-        this.name = name;
+        this.productName = name;
     }
 
     public static String getNameByID(int id) {
-        return BY_LABEL.get(id).name;
+        return BY_LABEL.get(id).productName;
     }
 }

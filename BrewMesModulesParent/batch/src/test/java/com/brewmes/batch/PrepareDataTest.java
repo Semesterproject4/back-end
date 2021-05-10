@@ -95,33 +95,49 @@ class PrepareDataTest {
     }
 
     @Test
-    void sortHumidity(){
-        TreeMap<LocalDateTime, Double> expected = HUMIDITY_MAP;
-        TreeMap<LocalDateTime, Double> actual = overTime.getSortedHumidity();
+    void findMinHumidity() {
+        double expected = 0;
+        double actual = overTime.getMinHumidity();
 
         assertEquals(expected, actual);
     }
 
     @Test
-    void sortTemperature(){
-        TreeMap<LocalDateTime, Double> expected = TEMPERATURE_MAP;
-        TreeMap<LocalDateTime, Double> actual = overTime.getSortedTemperature();
+    void findAvgHumidity() {
+        double expected = 1;
+        double actual = overTime.getAvgHumidity();
 
         assertEquals(expected, actual);
     }
 
     @Test
-    void sortVibration(){
-        TreeMap<LocalDateTime, Double> expected = VIBRATION_MAP;
-        TreeMap<LocalDateTime, Double> actual = overTime.getSortedVibration();
+    void findMaxHumidity() {
+        double expected = 2;
+        double actual = overTime.getMaxHumidity();
 
         assertEquals(expected, actual);
     }
 
     @Test
-    void sortTimeInState(){
-        TreeMap<LocalDateTime, Integer> expected = TIME_IN_STATES_MAP;
-        TreeMap<LocalDateTime, Integer> actual = overTime.getSortedTimeInStates();
+    void findMinVibration() {
+        double expected = 0;
+        double actual = overTime.getMinVibration();
+
+        assertEquals(expected, actual);
+    }
+
+    @Test
+    void findAvgVibration() {
+        double expected = 1;
+        double actual = overTime.getAvgVibration();
+
+        assertEquals(expected, actual);
+    }
+
+    @Test
+    void findMaxVibration() {
+        double expected = 2;
+        double actual = overTime.getMaxVibration();
 
         assertEquals(expected, actual);
     }
