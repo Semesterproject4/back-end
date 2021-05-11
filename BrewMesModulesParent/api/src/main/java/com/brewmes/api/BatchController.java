@@ -18,7 +18,7 @@ import java.io.FileNotFoundException;
 import java.util.List;
 
 @RestController
-@RequestMapping("/api/batch")
+@RequestMapping("/api/batches")
 public class BatchController {
 
     @Autowired(required = false)

@@ -12,13 +12,13 @@ import java.util.Arrays;
 import java.util.List;
 
 @RestController
-@RequestMapping("api/scheduled")
+@RequestMapping("/api/scheduled-batches")
 public class ScheduleController {
 
     @Autowired(required = false)
     IScheduleService scheduleService;
 
-    @PostMapping("/")
+    @PostMapping
     public ResponseEntity<String> addToQueue(@Valid @RequestBody ScheduledBatch scheduledBatch) {
         int index = scheduleService.addToQueue(scheduledBatch);
 
@@ -40,7 +40,7 @@ public class ScheduleController {
         }
     }
 
-    @GetMapping("/")
+    @GetMapping
     public ResponseEntity<Object> getQueue() {
         List<ScheduledBatch> list = scheduleService.getQueue();
 
@@ -50,7 +50,7 @@ public class ScheduleController {
             return new ResponseEntity<>("Error: something went wrong", HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
-
+  
     @PatchMapping("/prioritizeQueue")
     public ResponseEntity<Object> prioritizeQueue(@RequestBody @Valid ScheduledBatch[] prioritizedList) {
         boolean success = scheduleService.prioritizeQueue(Arrays.asList(prioritizedList));
