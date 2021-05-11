@@ -2,13 +2,26 @@
 <project>
 	<modelVersion>4.0.0</modelVersion>
 
-	<parent>
-		<groupId>com.brewmes</groupId>
-		<artifactId>BrewMesModulesParent</artifactId>
-		<version>1.0-SNAPSHOT</version>
-	</parent>
+    <parent>
+        <groupId>com.brewmes</groupId>
+        <artifactId>BrewMesModulesParent</artifactId>
+        <version>1.0-SNAPSHOT</version>
+    </parent>
 
-	<artifactId>schedule</artifactId>
-	<description>schedule module for BrewMes</description>
+    <artifactId>schedule</artifactId>
+    <description>schedule module for BrewMes</description>
+
+    <dependencies>
+        <dependency>
+            <groupId>com.brewmes</groupId>
+            <artifactId>common</artifactId>
+            <version>${project.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>com.brewmes</groupId>
+            <artifactId>common_repository</artifactId>
+            <version>${project.version}</version>
+        </dependency>
+    </dependencies>
 
 </project>
