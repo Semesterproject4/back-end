@@ -9,7 +9,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.Optional;
 
-@Service
+@Service("pdf")
 public class PdfBatchServiceImpl extends PrepareData {
 
 
