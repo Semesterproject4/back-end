@@ -1,10 +1,14 @@
 package com.brewmes.common.entities;
 
 import com.brewmes.common.util.Products;
+import org.springframework.data.annotation.Id;
+import org.springframework.data.mongodb.core.mapping.Document;
 
 import javax.validation.constraints.NotNull;
 
+@Document(collection = "scheduled")
 public class ScheduledBatch {
+    @Id
     private String id;
 
     @NotNull
@@ -16,14 +20,10 @@ public class ScheduledBatch {
     @NotNull
     private Integer amount;
 
-    public ScheduledBatch(int speed, Products type, int amount) {
-        this.speed = speed;
-        this.type = type;
-        this.amount = amount;
+    public ScheduledBatch() {
     }
 
-    public ScheduledBatch(String id, int speed, Products type, int amount) {
-        this.id = id;
+    public ScheduledBatch(int speed, Products type, int amount) {
         this.speed = speed;
         this.type = type;
         this.amount = amount;

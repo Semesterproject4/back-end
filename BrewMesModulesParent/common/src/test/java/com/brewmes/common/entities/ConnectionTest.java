@@ -13,7 +13,7 @@ class ConnectionTest {
 
     @BeforeEach
     void setUp() {
-        this.connection = new Connection("1","128.0.0.1", "testMachine");
+        this.connection = new Connection("1", "128.0.0.1", "testMachine");
         this.connectionNoId = new Connection("420.69.69.69", "YeetYootMachine");
     }
 

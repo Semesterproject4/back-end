@@ -8,30 +8,38 @@ import static org.junit.jupiter.api.Assertions.*;
 
 class ScheduledBatchTest {
     ScheduledBatch batch;
-    ScheduledBatch batchWithId;
+    ScheduledBatch batchNoArg;
 
     @BeforeEach
     void setUp() {
         this.batch = new ScheduledBatch(1, Products.ALCOHOL_FREE, 200);
-        this.batchWithId = new ScheduledBatch("1", 1, Products.ALCOHOL_FREE, 200);
+        this.batchNoArg = new ScheduledBatch();
     }
 
     @Test
+    void testNoArg() {
+        assertNotNull(this.batchNoArg);
+    }
+
+
+    @Test
     void getId() {
-        assertEquals("1", batchWithId.getId());
+        batch.setId("1");
+
+        assertEquals("1", batch.getId());
     }
 
     @Test
     void setId() {
         String newId = "2";
-        batchWithId.setId(newId);
+        batch.setId(newId);
 
-        assertEquals(newId, batchWithId.getId());
+        assertEquals(newId, batch.getId());
     }
 
     @Test
     void getSpeed() {
-        assertEquals(1,batchWithId.getSpeed());
+        assertEquals(1, batch.getSpeed());
     }
 
     @Test
