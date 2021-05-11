@@ -19,18 +19,16 @@ import static org.junit.jupiter.api.Assertions.*;
 
 @ExtendWith(MockitoExtension.class)
 class BatchGetterImplTest {
+    private static List<Batch> expected = new ArrayList<>();
     @Mock
     BatchRepository batchRepository;
-
     @InjectMocks
     BatchGetterImpl batchGetterService;
 
-    private static List<Batch> expected = new ArrayList<>();
-
     @BeforeAll
     static void setUp() {
-        Batch batch = new Batch("connectionID", 0, 20,100);
-        Batch batch2 = new Batch("connectionID2", 1,200, 20);
+        Batch batch = new Batch("connectionID", 0, 20, 100);
+        Batch batch2 = new Batch("connectionID2", 1, 200, 20);
 
         expected.add(batch);
         expected.add(batch2);
@@ -38,7 +36,7 @@ class BatchGetterImplTest {
 
     @Test
     void getBatches() {
-        Mockito.when(batchRepository.findAll(PageRequest.of(0,2))).thenReturn(new PageImpl<>(expected));
+        Mockito.when(batchRepository.findAll(PageRequest.of(0, 2))).thenReturn(new PageImpl<>(expected));
 
         List<Batch> batches = batchGetterService.getBatches(0, 2);
 
