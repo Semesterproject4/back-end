@@ -15,6 +15,8 @@ public class Connection {
     @NotNull
     private String name;
 
+    private boolean autobrewing = false;
+
     public Connection() {
     }
 
@@ -51,5 +53,13 @@ public class Connection {
 
     public void setName(String name) {
         this.name = name;
+    }
+
+    public boolean isAutobrewing() {
+        return autobrewing;
+    }
+
+    public void setAutobrew(boolean autobrew) {
+        this.autobrewing = autobrew;
     }
 }
