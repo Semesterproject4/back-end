@@ -49,5 +49,5 @@ public interface IScheduleService {
      * @param prioritizedIDList a {@code list} of {@code ScheduledBatch} IDs.
      * @return {@code True} if the prioritization was successful; {@code False} if an error occurred.
      */
-    boolean prioritizeQueue(List<String> prioritizedIDList);
+    boolean prioritizeQueue(List<ScheduledBatch> prioritizedIDList);
 }

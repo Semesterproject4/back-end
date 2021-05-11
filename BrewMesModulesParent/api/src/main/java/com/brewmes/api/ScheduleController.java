@@ -8,6 +8,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
+import java.util.Arrays;
 import java.util.List;
 
 @RestController
@@ -51,8 +52,8 @@ public class ScheduleController {
     }
 
     @PatchMapping("/prioritizeQueue")
-    public ResponseEntity<Object> prioritizeQueue(List<String> prioritizedList) {
-        boolean success = scheduleService.prioritizeQueue(prioritizedList);
+    public ResponseEntity<Object> prioritizeQueue(@RequestBody @Valid ScheduledBatch[] prioritizedList) {
+        boolean success = scheduleService.prioritizeQueue(Arrays.asList(prioritizedList));
 
         if (success) {
             return new ResponseEntity<>("Queue has been updated based on the prioritization", HttpStatus.OK);

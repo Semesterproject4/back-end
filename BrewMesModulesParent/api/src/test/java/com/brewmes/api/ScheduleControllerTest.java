@@ -11,7 +11,7 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.http.ResponseEntity;
 
 import java.util.ArrayList;
-import java.util.List;
+import java.util.Arrays;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.when;
@@ -25,7 +25,7 @@ class ScheduleControllerTest {
     @InjectMocks
     ScheduleController controller;
 
-    private final List<String> prioQueue = new ArrayList<>();
+    private final ScheduledBatch[] prioQueue = new ScheduledBatch[3];
 
     @Test
     void addToQueue() {
@@ -70,7 +70,7 @@ class ScheduleControllerTest {
 
     @Test
     void prioritizeQueue_succes() {
-        when(service.prioritizeQueue(prioQueue)).thenReturn(true);
+        when(service.prioritizeQueue(Arrays.asList(prioQueue))).thenReturn(true);
         ResponseEntity<Object> responseEntity = controller.prioritizeQueue(prioQueue);
 
         assertEquals(200, responseEntity.getStatusCode().value());
@@ -79,7 +79,7 @@ class ScheduleControllerTest {
 
     @Test
     void prioritizeQueue_failure() {
-        when(service.prioritizeQueue(prioQueue)).thenReturn(false);
+        when(service.prioritizeQueue(Arrays.asList(prioQueue))).thenReturn(false);
         ResponseEntity<Object> responseEntity = controller.prioritizeQueue(prioQueue);
 
         assertEquals(500, responseEntity.getStatusCode().value());
