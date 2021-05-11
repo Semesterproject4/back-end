@@ -50,7 +50,18 @@ public class ScheduleController {
         }
     }
 
-    @PatchMapping("/{id}/prioUp")
+    @PatchMapping("/prioritizeQueue")
+    public ResponseEntity<Object> prioritizeQueue(List<String> prioritizedList) {
+        boolean success = scheduleService.prioritizeQueue(prioritizedList);
+
+        if (success) {
+            return new ResponseEntity<>("Queue has been updated based on the prioritization", HttpStatus.OK);
+        } else {
+            return new ResponseEntity<>("Error: Queue has not been prioritized", HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+
+/*    @PatchMapping("/{id}/prioUp")
     public ResponseEntity<String> prioritizeUpInQueue(@PathVariable String id) {
         boolean success = scheduleService.moveUpInQueue(id);
 
@@ -70,5 +81,5 @@ public class ScheduleController {
         } else {
             return new ResponseEntity<>("Error: Batch was not reprioritized", HttpStatus.INTERNAL_SERVER_ERROR);
         }
-    }
+    }*/
 }
