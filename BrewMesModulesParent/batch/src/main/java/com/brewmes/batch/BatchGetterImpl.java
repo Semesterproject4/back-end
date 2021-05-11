@@ -20,9 +20,4 @@ public class BatchGetterImpl implements IBatchGetterService {
         Page<Batch> batchPage = batchRepository.findAll(PageRequest.of(page, size));
         return batchPage.getContent();
     }
-
-    @Override
-    public boolean containsID(String id) {
-        return batchRepository.existsById(id);
-    }
 }

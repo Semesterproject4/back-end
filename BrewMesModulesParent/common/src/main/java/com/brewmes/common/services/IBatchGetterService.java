@@ -12,11 +12,4 @@ public interface IBatchGetterService {
      * @return The list of {@code Batch}es
      */
     List<Batch> getBatches(int page, int size);
-
-    /**
-     * Checks whether a {@code Batch} exists in the database
-     * @param id of the {@code Batch} which is desired to be checked
-     * @return {@code true} if the {@code Batch} exists in the database, otherwise {@code false}
-     */
-    boolean containsID(String id);
 }
