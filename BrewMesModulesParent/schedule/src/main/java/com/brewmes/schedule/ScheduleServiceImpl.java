@@ -46,12 +46,16 @@ public class ScheduleServiceImpl implements IScheduleService {
     }
 
     @Override
-    public boolean moveUpInQueue(String scheduleID) {
-        return false;
-    }
+    public boolean prioritizeQueue(List<ScheduledBatch> prioritizedIDList) {
+        scheduleRepository.deleteAll();
 
-    @Override
-    public boolean moveDownInQueue(String scheduleID) {
-        return false;
+        if (scheduleRepository.findAll().isEmpty()) {
+            for (ScheduledBatch scheduledBatch : prioritizedIDList) {
+                scheduleRepository.insert(scheduledBatch);
+            }
+            return true;
+        } else {
+            return false;
+        }
     }
 }
