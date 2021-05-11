@@ -27,7 +27,7 @@ class PdfReportGeneratorTest {
         File file = new File("batch_report.pdf");
         file.delete();
 
-        PdfReportGenerator.generatePdf(dataOverTime);
+        PdfReportGenerator.generatePdf(dataOverTime, "batch_report.pdf");
 
         assertTrue(file.exists());
     }
