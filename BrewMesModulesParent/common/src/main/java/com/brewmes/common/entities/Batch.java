@@ -1,15 +1,30 @@
 package com.brewmes.common.entities;
 
+import org.springframework.data.annotation.Id;
+import org.springframework.data.mongodb.core.mapping.Document;
+
+import javax.validation.constraints.NotNull;
 import java.util.ArrayList;
 import java.util.List;
 
+@Document(collection = "batch")
 public class Batch {
+    @Id
     private String id;
+
+    @NotNull
     private String connectionID;
+
+    @NotNull
     private int productType;
+
+    @NotNull
     private int amountToProduce;
-    private double oee;
+
+    @NotNull
     private double desiredSpeed;
+
+    private double oee;
     private List<MachineData> data;
 
 
