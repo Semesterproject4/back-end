@@ -38,7 +38,7 @@ public class Batch {
     }
 
     public Batch() {
-        
+
     }
 
     public String getID() {

@@ -20,7 +20,8 @@ public class ScheduledBatch {
     @NotNull
     private Integer amount;
 
-    public ScheduledBatch(){}
+    public ScheduledBatch() {
+    }
 
     public ScheduledBatch(int speed, Products type, int amount) {
         this.speed = speed;

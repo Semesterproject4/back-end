@@ -17,7 +17,7 @@ class ScheduledBatchTest {
     }
 
     @Test
-    void testNoArg(){
+    void testNoArg() {
         assertNotNull(this.batchNoArg);
     }
 
@@ -39,7 +39,7 @@ class ScheduledBatchTest {
 
     @Test
     void getSpeed() {
-        assertEquals(1,batch.getSpeed());
+        assertEquals(1, batch.getSpeed());
     }
 
     @Test

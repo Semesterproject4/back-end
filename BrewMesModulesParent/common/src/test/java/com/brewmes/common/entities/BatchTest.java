@@ -20,7 +20,7 @@ class BatchTest {
         this.batchNoArg = new Batch();
     }
 
-    void testNoArg(){
+    void testNoArg() {
         assertNotNull(batchNoArg);
     }
 
