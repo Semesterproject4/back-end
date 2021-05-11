@@ -2,13 +2,21 @@ package com.brewmes.common.entities;
 
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
+import javax.validation.constraints.NotNull;
 
 @Document(collection = "connection")
 public class Connection {
     @Id
     private String id;
+
+    @NotNull
     private String ip;
+
+    @NotNull
     private String name;
+
+    public Connection() {
+    }
 
     public Connection(String id, String ip, String name) {
         this.id = id;

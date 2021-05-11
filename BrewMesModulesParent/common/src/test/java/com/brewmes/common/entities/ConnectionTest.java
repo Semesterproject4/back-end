@@ -9,6 +9,7 @@ import static org.junit.jupiter.api.Assertions.*;
 class ConnectionTest {
     Connection connection;
     Connection connectionNoId;
+    Connection connectionNoArg = new Connection();
 
     @BeforeEach
     void setUp() {

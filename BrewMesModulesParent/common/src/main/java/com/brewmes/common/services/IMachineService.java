@@ -10,16 +10,18 @@ public interface IMachineService {
 
     /**
      * Takes a command and sends it to the desired machine
-     * @param command The command that should be sent to the machine
-     * @param machineID The ID of the machine that should receive the command
-     * @return Returns {@code true} if the control command was successfully sent, returns {@code false} if the control command failed
+     *
+     * @param command   The {@code command} that should be sent to the machine
+     * @param machineID The ID of the machine that should receive the {@code command}
+     * @return Returns {@code true} if the control {@code command} was successfully sent, returns {@code false} if the control {@code command} failed
      */
     boolean controlMachine(Command command, String machineID);
 
     /**
      * Sets the desired values for a production
-     * @param speed The desired speed that the production should run at
-     * @param beerType The desired beer type of the production
+     *
+     * @param speed     The desired speed that the production should run at
+     * @param beerType  The desired beer type of the production
      * @param batchSize The desired amount of beer to be produced
      * @param machineID The ID of the desired machine the values should be set on
      * @return Returns {@code true} if the variables were successfully set, returns {@code false} if the setting of the variables failed
@@ -27,35 +29,39 @@ public interface IMachineService {
     boolean setVariables(double speed, Products beerType, int batchSize, String machineID);
 
     /**
-     * Sets up the desired subscriptions to a machines values
-     * @param machineID The ID of the machine desired for the subscription
-     * @return Returns {@code true} if the subscription was successfully started, returns {@code false} if the subscription failed
-     */
-    boolean subscribeToMachineValues(String machineID);
-
-    /**
      * Gets all the connections from the database
+     *
      * @return The list of {@code Connection} objects gotten from the database
      */
     List<Connection> getConnections();
 
     /**
+     * Gets the specified connection from the database.
+     *
+     * @param machineID ID of the desired {@code Connection}.
+     * @return The {@code Connection} object associated with the given ID; {@code null} if no {@code Connection} was found.
+     */
+    Connection getConnection(String machineID);
+
+    /**
      * Adds a connection to a Machine
-     * @param ip The IP address of the machine
-     * @param name The desired name of the machine, used for easy identification of the machine
+     *
+     * @param connection The {@code Connection Object} representation of the machine
      * @return Returns {@code true} if the connection was successfully made, returns {@code false} if the connection failed
      */
-    boolean addConnection(String ip, String name);
+    boolean addConnection(Connection connection);
 
     /**
      * Removes a connection from the database and from the system in general
+     *
      * @param machineID The ID of the desired machine
-     * @return Returns true if the connection was successfully removed, returns false if the removal failed
+     * @return {@code true} if the connection was successfully removed, returns {@code false} if the removal failed
      */
     boolean removeConnection(String machineID);
 
     /**
      * Sets the machine in the autobrewing mode so it brews from the queue
+     *
      * @param machineID The ID of the machine
      * @return Returns {@code true} if the autobrewing was successfully started, returns {@code false} if the autobrew starting failed
      */
@@ -63,6 +69,7 @@ public interface IMachineService {
 
     /**
      * Stops the machine from autobrewing
+     *
      * @param machineID The ID of the machine
      * @return Returns {@code true} if the autobrewing was successfully stopped, returns {@code false} if the autobrew stop failed
      */
