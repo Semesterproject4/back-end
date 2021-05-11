@@ -14,7 +14,6 @@ import org.mockito.junit.jupiter.MockitoExtension;
 
 import java.io.File;
 import java.time.LocalDateTime;
-import java.time.ZoneOffset;
 import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -24,18 +23,15 @@ import static org.mockito.Mockito.when;
 class PdfBatchServiceImplTest {
 
 
+    private static final String ID = "1";
     @Mock
     BatchRepository batchRepo;
-
     @InjectMocks
     PdfBatchServiceImpl batchService;
-
-
-    private static final String ID = "1";
-
     private Batch batch;
     private MachineData data;
     private File file;
+    private String filePath;
 
     @BeforeEach
     void setUp() {
@@ -48,22 +44,35 @@ class PdfBatchServiceImplTest {
 
     @AfterEach
     void tearDown() {
-        file.delete();
+        if (this.file.exists()) {
+            this.file.delete();
+        }
+        filePath = null;
+
     }
 
     @Test
-    public void PreparePdfReportSucces() {
+    void PreparePdfReportSucces() {
 
         when(batchRepo.findById(ID)).thenReturn(Optional.of(batch));
 
-        batchService.prepareBatchReportService(ID);
-        File file = new File("batch_report.pdf");
+        this.filePath = batchService.prepareBatchReportService(ID);
+        this.file = new File(this.filePath);
 
         assertTrue(file.exists());
+        assertEquals("batch_report.pdf", this.filePath);
+
     }
 
     @Test
-    public void PreparePdfReportFail() {
+    void PreparePdfReportFail() {
+        when(batchRepo.findById(ID)).thenReturn(Optional.empty());
+
+        this.filePath = batchService.prepareBatchReportService(ID);
+        this.file = new File(this.filePath);
+
+        assertFalse(file.exists());
+        assertEquals("", filePath);
 
     }
 

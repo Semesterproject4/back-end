@@ -22,8 +22,8 @@ public class PdfBatchServiceImpl extends PrepareData {
         String path;
         if (optional.isPresent()) {
             data = prepareData(optional.get());
-            PdfReportGenerator.generatePdf(data);   //maybe this method needs to return a String path or at least take one as parameter.
-            path = "realPath";
+            path = "batch_report.pdf";
+            PdfReportGenerator.generatePdf(data, path);
         } else {
             path = "";
         }
