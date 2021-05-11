@@ -26,8 +26,9 @@ public class MachineServiceImpl implements IMachineService {
     @Autowired
     ConnectionRepository connectionRepository;
 
-    @Autowired
+    @Autowired(required = false)
     ISubscribeService subscribeService;
+
     Map<String, Thread> autobrewers = new HashMap<>();
     private Connection currentConnection;
     private OpcUaClient client;
