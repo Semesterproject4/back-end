@@ -11,9 +11,9 @@ public interface IMachineService {
     /**
      * Takes a command and sends it to the desired machine
      *
-     * @param command   The command that should be sent to the machine
-     * @param machineID The ID of the machine that should receive the command
-     * @return Returns {@code true} if the control command was successfully sent, returns {@code false} if the control command failed
+     * @param command   The {@code command} that should be sent to the machine
+     * @param machineID The ID of the machine that should receive the {@code command}
+     * @return Returns {@code true} if the control {@code command} was successfully sent, returns {@code false} if the control {@code command} failed
      */
     boolean controlMachine(Command command, String machineID);
 
@@ -55,7 +55,7 @@ public interface IMachineService {
      * Removes a connection from the database and from the system in general
      *
      * @param machineID The ID of the desired machine
-     * @return Returns true if the connection was successfully removed, returns false if the removal failed
+     * @return {@code true} if the connection was successfully removed, returns {@code false} if the removal failed
      */
     boolean removeConnection(String machineID);
 
