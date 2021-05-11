@@ -12,8 +12,7 @@ import java.util.Optional;
 @Service("pdf")
 public class PdfBatchServiceImpl extends PrepareData {
 
-
-    @Autowired(required = false)
+    @Autowired
     public BatchRepository batchRepo;
 
     @Override
