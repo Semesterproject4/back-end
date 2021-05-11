@@ -42,18 +42,4 @@ class BatchGetterImplTest {
 
         assertEquals(expected, batches);
     }
-
-    @Test
-    void containsId_correctID() {
-        Mockito.when(batchRepository.existsById("testID")).thenReturn(true);
-
-        assertTrue(batchGetterService.containsID("testID"));
-    }
-
-    @Test
-    void containsId_incorrectID() {
-        Mockito.when(batchRepository.existsById("testID")).thenReturn(false);
-
-        assertFalse(batchGetterService.containsID("testID"));
-    }
 }
