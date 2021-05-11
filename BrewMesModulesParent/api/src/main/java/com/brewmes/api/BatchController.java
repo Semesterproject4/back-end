@@ -57,7 +57,7 @@ public class BatchController {
         if (response != null) {
             return new ResponseEntity<>(response, HttpStatus.OK);
         } else {
-            return new ResponseEntity<>("Error: Batch now found", HttpStatus.NOT_FOUND);
+            return new ResponseEntity<>("Error: Batch not found", HttpStatus.NOT_FOUND);
         }
     }
 
