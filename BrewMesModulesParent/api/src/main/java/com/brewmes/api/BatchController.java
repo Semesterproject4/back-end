@@ -50,7 +50,7 @@ public class BatchController {
      */
     @GetMapping(value = "/{id}/dashboard")
     public ResponseEntity<String> getBatch(@PathVariable("id") String id) {
-        if (getter.containsId(id)) {
+        if (getter.containsID(id)) {
             return new ResponseEntity<>(dashboardService.prepareBatchReportService(id), HttpStatus.OK);
         } else {
             return new ResponseEntity<>("No batch found with that id", HttpStatus.NOT_FOUND);
@@ -64,7 +64,7 @@ public class BatchController {
      */
     @GetMapping(value = "/{id}/pdf")
     public ResponseEntity<Object> getBatchPdfReport(@PathVariable("id") String id) {
-        if (getter.containsId(id)) {
+        if (getter.containsID(id)) {
             String fileName = pdfService.prepareBatchReportService(id); //NOSONAR
             File file = new File(fileName); //NOSONAR
             InputStreamResource resource = null;

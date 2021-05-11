@@ -43,8 +43,8 @@ class BatchControllerTest {
 
     @Test
     void getBatch() {
-        Mockito.when(getter.containsId("goodID")).thenReturn(true);
-        Mockito.when(getter.containsId("badID")).thenReturn(false);
+        Mockito.when(getter.containsID("goodID")).thenReturn(true);
+        Mockito.when(getter.containsID("badID")).thenReturn(false);
         Mockito.when(dashboardService.prepareBatchReportService("goodID")).thenReturn("whatever");
 
         ResponseEntity<String> responseEntity = controller.getBatch("goodID");
@@ -56,8 +56,8 @@ class BatchControllerTest {
 
     @Test
     void getBatchPdfReport() {
-        Mockito.when(getter.containsId("goodID")).thenReturn(true);
-        Mockito.when(getter.containsId("badID")).thenReturn(false);
+        Mockito.when(getter.containsID("goodID")).thenReturn(true);
+        Mockito.when(getter.containsID("badID")).thenReturn(false);
         Mockito.when(pdfService.prepareBatchReportService("goodID")).thenReturn("batch_report.pdf");
 
         ResponseEntity<Object> responseEntity = controller.getBatchPdfReport("goodID");
@@ -69,7 +69,7 @@ class BatchControllerTest {
 
     @Test
     void getBatchPdfReportBadName() {
-        Mockito.when(getter.containsId("goodID")).thenReturn(true);
+        Mockito.when(getter.containsID("goodID")).thenReturn(true);
         Mockito.when(pdfService.prepareBatchReportService("goodID")).thenReturn("not_batch_report.pdf");
 
         ResponseEntity<Object> responseEntity = controller.getBatchPdfReport("goodID");

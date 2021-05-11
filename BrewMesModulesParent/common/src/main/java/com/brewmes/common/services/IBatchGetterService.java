@@ -18,5 +18,5 @@ public interface IBatchGetterService {
      * @param id of the {@code Batch} which is desired to be checked
      * @return {@code true} if the {@code Batch} exists in the database, otherwise {@code false}
      */
-    boolean containsId(String id);
+    boolean containsID(String id);
 }
