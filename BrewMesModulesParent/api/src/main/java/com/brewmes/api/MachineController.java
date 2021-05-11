@@ -15,7 +15,7 @@ import javax.validation.Valid;
 import java.util.Optional;
 
 @RestController
-@RequestMapping(value = "/api/machine")
+@RequestMapping(value = "/api/machines")
 public class MachineController {
 
     @Autowired(required = false)
@@ -46,7 +46,7 @@ public class MachineController {
         }
     }
 
-    @PostMapping()
+    @PostMapping
     public ResponseEntity<String> addConnection(@Valid @RequestBody Connection connection) {
         if (machineService.addConnection(connection)) {
             return new ResponseEntity<>("Machine is added", HttpStatus.OK);
@@ -55,7 +55,7 @@ public class MachineController {
         }
     }
 
-    @PutMapping(value = "/{id}")
+    @PatchMapping(value = "/{id}")
     public ResponseEntity<String> controlMachine(@PathVariable("id") String id, @RequestParam String command) {
         if (machineService.controlMachine(Command.valueOf(command.toUpperCase()), id)) {
             return new ResponseEntity<>("Command successful", HttpStatus.OK);
@@ -86,7 +86,7 @@ public class MachineController {
         }
     }
 
-    @PutMapping(value = "/{id}/autobrew/start")
+    @PatchMapping(value = "/{id}/autobrew/start")
     public ResponseEntity<String> startAutoBrew(@PathVariable("id") String id) {
         if (machineService.startAutoBrew(id)) {
             return new ResponseEntity<>("Auto Brew started", HttpStatus.OK);
@@ -95,7 +95,7 @@ public class MachineController {
         }
     }
 
-    @PutMapping(value = "/{id}/autobrew/stop")
+    @PatchMapping(value = "/{id}/autobrew/stop")
     public ResponseEntity<String> stopAutoBrew(@PathVariable("id") String id) {
         if (machineService.stopAutoBrew(id)) {
             return new ResponseEntity<>("Auto Brew stopped", HttpStatus.OK);

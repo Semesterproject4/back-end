@@ -11,13 +11,13 @@ import javax.validation.Valid;
 import java.util.List;
 
 @RestController
-@RequestMapping("api/scheduled")
+@RequestMapping("/api/scheduled-batches")
 public class ScheduleController {
 
     @Autowired(required = false)
     IScheduleService scheduleService;
 
-    @PostMapping("/")
+    @PostMapping
     public ResponseEntity<String> addToQueue(@Valid @RequestBody ScheduledBatch scheduledBatch) {
         int index = scheduleService.addToQueue(scheduledBatch);
 
@@ -39,7 +39,7 @@ public class ScheduleController {
         }
     }
 
-    @GetMapping("/")
+    @GetMapping
     public ResponseEntity<Object> getQueue() {
         List<ScheduledBatch> list = scheduleService.getQueue();
 
@@ -50,7 +50,7 @@ public class ScheduleController {
         }
     }
 
-    @PatchMapping("/{id}/prioUp")
+    @PatchMapping("/{id}/prioritize/up")
     public ResponseEntity<String> prioritizeUpInQueue(@PathVariable String id) {
         boolean success = scheduleService.moveUpInQueue(id);
 
@@ -61,7 +61,7 @@ public class ScheduleController {
         }
     }
 
-    @PatchMapping("/{id}/prioDown")
+    @PatchMapping("/{id}/prioritize/down")
     public ResponseEntity<String> prioritizeDownInQueue(@PathVariable String id) {
         boolean success = scheduleService.moveDownInQueue(id);
 
