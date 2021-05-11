@@ -4,6 +4,7 @@ import com.brewmes.common.entities.Batch;
 import com.brewmes.common.entities.Ingredients;
 import com.brewmes.common.entities.MachineData;
 import com.brewmes.common_repository.BatchRepository;
+import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -44,19 +45,25 @@ class PdfBatchServiceImplTest {
         batch.addMachineData(data);
 
     }
+
+    @AfterEach
+    void tearDown() {
+        file.delete();
+    }
+
     @Test
     public void PreparePdfReportSucces() {
 
+        when(batchRepo.findById(ID)).thenReturn(Optional.of(batch));
+
+        batchService.prepareBatchReportService(ID);
+        File file = new File("batch_report.pdf");
+
+        assertTrue(file.exists());
     }
 
     @Test
     public void PreparePdfReportFail() {
-
-        when(batchRepo.findById(ID)).thenReturn(Optional.empty());
-
-        batchService.prepareBatchReportService(ID);
-        File somefile = new File();
-
 
     }
 
