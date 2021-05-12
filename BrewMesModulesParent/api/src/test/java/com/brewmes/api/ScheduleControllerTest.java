@@ -19,13 +19,11 @@ import static org.mockito.Mockito.when;
 @ExtendWith(MockitoExtension.class)
 class ScheduleControllerTest {
 
+    private final ScheduledBatch[] prioQueue = new ScheduledBatch[3];
     @Mock
     IScheduleService service;
-
     @InjectMocks
     ScheduleController controller;
-
-    private final ScheduledBatch[] prioQueue = new ScheduledBatch[3];
 
     @Test
     void addToQueue() {

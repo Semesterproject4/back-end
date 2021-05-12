@@ -72,7 +72,7 @@ class MachineServiceImplTest {
     }
 
     @Test
-    void getProducts(){
+    void getProducts() {
         List<Products> expected = new ArrayList<>();
 
         expected.add(Products.PILSNER);
@@ -83,7 +83,5 @@ class MachineServiceImplTest {
         expected.add(Products.ALCOHOL_FREE);
 
         assertEquals(expected, machineService.getProducts());
-
-
     }
 }

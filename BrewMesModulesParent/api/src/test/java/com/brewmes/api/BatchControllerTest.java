@@ -20,19 +20,15 @@ import static org.junit.jupiter.api.Assertions.*;
 
 @ExtendWith(MockitoExtension.class)
 class BatchControllerTest {
+    static File file;
     @Mock
     IBatchGetterService getter;
-
     @Mock
     IBatchReportService dashboardService;
-
     @Mock
     IBatchReportService pdfService;
-
     @InjectMocks
     BatchController controller;
-
-    static File file;
 
     @BeforeAll
     static void setUp() {

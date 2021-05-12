@@ -50,7 +50,7 @@ public class ScheduleController {
             return new ResponseEntity<>("Error: something went wrong", HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
-  
+
     @PatchMapping("/prioritizeQueue")
     public ResponseEntity<Object> prioritizeQueue(@RequestBody @Valid ScheduledBatch[] prioritizedList) {
         boolean success = scheduleService.prioritizeQueue(Arrays.asList(prioritizedList));

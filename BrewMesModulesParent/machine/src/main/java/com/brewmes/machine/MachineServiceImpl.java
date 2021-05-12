@@ -17,6 +17,7 @@ import org.eclipse.milo.opcua.stack.core.types.structured.EndpointDescription;
 import org.eclipse.milo.opcua.stack.core.util.EndpointUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
 import javax.annotation.PostConstruct;
 import java.util.*;
 import java.util.concurrent.ExecutionException;
@@ -25,14 +26,12 @@ import java.util.logging.Logger;
 
 @Service("machine")
 public class MachineServiceImpl implements IMachineService {
+    static Logger logger = Logger.getLogger(MachineServiceImpl.class.getName());
     @Autowired
     ConnectionRepository connectionRepository;
-
     Map<String, Thread> autobrewers = new HashMap<>();
-
     private Connection currentConnection;
     private OpcUaClient client;
-    static Logger logger = Logger.getLogger(MachineServiceImpl.class.getName());
 
     //If the program is restarted manually or due to a crash this method will assure that machines which were autobrewing before start doing it again
     @PostConstruct
