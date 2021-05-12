@@ -12,10 +12,9 @@ import org.mockito.junit.jupiter.MockitoExtension;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.*;
-import static org.mockito.Mockito.when;
+import static org.mockito.Mockito.*;
 
 @ExtendWith(MockitoExtension.class)
 class ScheduleServiceImplTest {
@@ -116,11 +115,20 @@ class ScheduleServiceImplTest {
     @Test
     void getFirstInQueue_failure() {
         when(scheduleRepository.findAll()).thenReturn(scheduledBatches);
+        when(scheduleRepository.existsById(scheduledBatches.get(0).getId())).thenReturn(true);
 
-        ScheduledBatch expected = scheduleRepository.findAll().get(1);
         ScheduledBatch actual = scheduleService.getFirstInQueue();
 
-        assertNotEquals(expected, actual);
+        assertNull(actual);
+    }
+
+    @Test
+    void getFirstInQueue_another_failure() {
+        when(scheduleRepository.findAll()).thenReturn(emptyScheduledBatches);
+
+        ScheduledBatch actual = scheduleService.getFirstInQueue();
+
+        assertNull(actual);
     }
 
     @Test
