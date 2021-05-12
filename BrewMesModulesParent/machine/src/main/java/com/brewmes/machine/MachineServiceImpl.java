@@ -2,9 +2,9 @@ package com.brewmes.machine;
 
 import com.brewmes.common.entities.Connection;
 import com.brewmes.common.services.IMachineService;
-import com.brewmes.common.services.ISubscribeService;
 import com.brewmes.common.util.Command;
 import com.brewmes.common.util.Products;
+import com.brewmes.common.util.machinenodes.CommandNodes;
 import com.brewmes.common_repository.ConnectionRepository;
 import org.eclipse.milo.opcua.sdk.client.OpcUaClient;
 import org.eclipse.milo.opcua.sdk.client.api.config.OpcUaClientConfigBuilder;
@@ -18,45 +18,48 @@ import org.eclipse.milo.opcua.stack.core.util.EndpointUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import javax.annotation.PostConstruct;
 import java.util.*;
 import java.util.concurrent.ExecutionException;
 
-@Service
+@Service("machine")
 public class MachineServiceImpl implements IMachineService {
     @Autowired
     ConnectionRepository connectionRepository;
 
-    @Autowired(required = false)
-    ISubscribeService subscribeService;
-
     Map<String, Thread> autobrewers = new HashMap<>();
+
     private Connection currentConnection;
     private OpcUaClient client;
-    private boolean autobrew = false;
 
-    private OpcUaClient connectToMachine(String id) {
+    //If the program is restarted manually or due to a crash this method will assure that machines which were autobrewing before start doing it again
+    @PostConstruct
+    private void initializeAutoBrew() {
+        List<Connection> list = getConnections();
+
+        for (Connection connection : list) {
+            startAutoBrew(connection.getId());
+        }
+    }
+
+    private void connectToMachine(String id) {
 
         if (currentConnection == null) {
             this.currentConnection = getConnection(id);
         }
 
-        if (currentConnection.getId().equals(id)) {
-            return client;
-        } else {
+        if (!currentConnection.getId().equals(id) || client == null) {
             //Get connection object from database based on id
             this.currentConnection = getConnection(id);
 
             //create opcua connection to that machine
             try {
                 client = getOpcUaClient(currentConnection.getIp());
-                return client;
             } catch (InterruptedException e) {
                 e.printStackTrace();
                 Thread.currentThread().interrupt();
-                return null;
             } catch (ExecutionException | UaException e) {
                 e.printStackTrace();
-                return null;
             }
         }
     }
@@ -82,7 +85,7 @@ public class MachineServiceImpl implements IMachineService {
 
     private void sendChanges() {
         try {
-            NodeId cmdChangeRequest = new NodeId(6, "::Program:Cube.Command.CmdChangeRequest");
+            NodeId cmdChangeRequest = CommandNodes.EXECUTE_MACHINE_COMMAND.nodeId;
             client.writeValue(cmdChangeRequest, DataValue.valueOnly(new Variant(true))).get();
         } catch (InterruptedException | ExecutionException e) {
             e.printStackTrace();
@@ -102,7 +105,7 @@ public class MachineServiceImpl implements IMachineService {
         connectToMachine(connectionID);
 
         try {
-            NodeId cntrlCmd = new NodeId(6, "::Program:Cube.Command.CntrlCmd");
+            NodeId cntrlCmd = CommandNodes.SET_MACHINE_COMMAND.nodeId;
             client.writeValue(cntrlCmd, DataValue.valueOnly(new Variant(command.label))).get();
             sendChanges();
             return true;
@@ -129,13 +132,11 @@ public class MachineServiceImpl implements IMachineService {
     public boolean setVariables(double speed, Products beerType, int batchSize, String connectionID) {
         connectToMachine(connectionID);
         try {
-            NodeId setBeerType = new NodeId(6, "::Program:Cube.Command.Parameter[1].Value");
+            NodeId setBeerType = CommandNodes.SET_PRODUCT_ID_FOR_NEXT_BATCH.nodeId;
             client.writeValue(setBeerType, DataValue.valueOnly(new Variant((float) beerType.productType))).get();
-
-            NodeId setSpeed = new NodeId(6, "::Program:Cube.Command.MachSpeed");
+            NodeId setSpeed = CommandNodes.SET_MACHINE_SPEED.nodeId;
             client.writeValue(setSpeed, DataValue.valueOnly(new Variant((float) speed))).get();
-
-            NodeId setBatchSize = new NodeId(6, "::Program:Cube.Command.Parameter[2].Value");
+            NodeId setBatchSize = CommandNodes.SET_PRODUCT_AMOUNT_IN_NEXT_BATCH.nodeId;
             client.writeValue(setBatchSize, DataValue.valueOnly(new Variant((float) batchSize))).get();
             return true;
         } catch (InterruptedException e) {
@@ -220,6 +221,7 @@ public class MachineServiceImpl implements IMachineService {
 
         currentConnection.setAutobrew(true);
         currentConnection = connectionRepository.save(currentConnection);
+
 
         return currentConnection.isAutobrewing();
     }
