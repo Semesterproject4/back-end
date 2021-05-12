@@ -1,6 +1,7 @@
 package com.brewmes.machine;
 
 import com.brewmes.common.entities.Connection;
+import com.brewmes.common.util.Products;
 import com.brewmes.common_repository.ConnectionRepository;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -68,5 +69,21 @@ class MachineServiceImplTest {
         Mockito.when(connectionRepository.findById(connectionWithID.getId())).thenReturn(Optional.empty());
 
         assertTrue(machineService.removeConnection(connectionWithID.getId()));
+    }
+
+    @Test
+    void getProducts(){
+        List<Products> expected = new ArrayList<>();
+
+        expected.add(Products.PILSNER);
+        expected.add(Products.WHEAT);
+        expected.add(Products.IPA);
+        expected.add(Products.STOUT);
+        expected.add(Products.ALE);
+        expected.add(Products.ALCOHOL_FREE);
+
+        assertEquals(expected, machineService.getProducts());
+
+
     }
 }

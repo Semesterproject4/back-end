@@ -40,7 +40,9 @@ public class MachineServiceImpl implements IMachineService {
         List<Connection> list = getConnections();
 
         for (Connection connection : list) {
-            startAutoBrew(connection.getId());
+            if (connection.isAutobrewing()) {
+                startAutoBrew(connection.getId());
+            }
         }
     }
 
@@ -131,7 +133,7 @@ public class MachineServiceImpl implements IMachineService {
      * @return Returns {@code true} if the variables were successfully set, returns {@code false} if the setting of the variables failed
      */
     @Override
-    public boolean setVariables(double speed, Products beerType, int batchSize, String connectionID) {
+    public boolean setMachineVariables(double speed, Products beerType, int batchSize, String connectionID) {
         connectToMachine(connectionID);
         try {
             NodeId setBeerType = CommandNodes.SET_PRODUCT_ID_FOR_NEXT_BATCH.nodeId;
@@ -172,6 +174,16 @@ public class MachineServiceImpl implements IMachineService {
         Optional<Connection> connectionOptional = connectionRepository.findById(connectionID);
 
         return connectionOptional.orElse(null);
+    }
+
+    /**
+     * Gets a list of products, so the max speed can be easily read
+     *
+     * @return a {@code List} of {@code Products} if the request was successful; {@code null} if not
+     */
+    @Override
+    public List<Products> getProducts() {
+        return new ArrayList<>(Arrays.asList(Products.values()));
     }
 
     /**
