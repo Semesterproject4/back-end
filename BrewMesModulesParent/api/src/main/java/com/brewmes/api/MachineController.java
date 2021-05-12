@@ -12,9 +12,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
-import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.List;
 import java.util.Optional;
 
 @RestController
@@ -40,9 +38,13 @@ public class MachineController {
         }
     }
 
-    @GetMapping
+    @GetMapping("/products")
     public ResponseEntity<Object> getProducts() {
-        return new ResponseEntity<>(Arrays.asList(Products.values()), HttpStatus.OK);
+        if (machineService.getProducts() != null) {
+            return new ResponseEntity<>(machineService.getProducts(), HttpStatus.OK);
+        } else {
+            return new ResponseEntity<>("Could not get products", HttpStatus.NOT_FOUND);
+        }
     }
 
     @DeleteMapping(value = "/{id}")
@@ -87,7 +89,7 @@ public class MachineController {
         Products beerType = Products.valueOf(jsonObject.get("beerType").getAsString().toUpperCase());
         int batchSize = jsonObject.get("batchSize").getAsInt();
 
-        if (machineService.setVariables(speed, beerType, batchSize, id)) {
+        if (machineService.setMachineVariables(speed, beerType, batchSize, id)) {
             return new ResponseEntity<>("Machine Variables set", HttpStatus.OK);
         } else {
             return new ResponseEntity<>("Could not set Machine Variables", HttpStatus.NOT_FOUND);

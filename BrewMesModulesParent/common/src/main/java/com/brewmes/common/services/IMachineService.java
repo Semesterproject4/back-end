@@ -26,7 +26,7 @@ public interface IMachineService {
      * @param machineID The ID of the desired machine the values should be set on
      * @return Returns {@code true} if the variables were successfully set, returns {@code false} if the setting of the variables failed
      */
-    boolean setVariables(double speed, Products beerType, int batchSize, String machineID);
+    boolean setMachineVariables(double speed, Products beerType, int batchSize, String machineID);
 
     /**
      * Gets all the connections from the database
@@ -36,12 +36,20 @@ public interface IMachineService {
     List<Connection> getConnections();
 
     /**
-     * Gets the specified connection from the database.
+     * Gets the specified connection from the database
      *
-     * @param machineID ID of the desired {@code Connection}.
-     * @return The {@code Connection} object associated with the given ID; {@code null} if no {@code Connection} was found.
+     * @param machineID ID of the desired {@code Connection}
+     * @return The {@code Connection} object associated with the given ID; {@code null} if no {@code Connection} was found
      */
     Connection getConnection(String machineID);
+
+
+    /**
+     * Gets a list of products, so the max speed can be easily read
+     *
+     * @return a {@code List} of {@code Products}
+     */
+    List<Products> getProducts();
 
     /**
      * Adds a connection to a Machine

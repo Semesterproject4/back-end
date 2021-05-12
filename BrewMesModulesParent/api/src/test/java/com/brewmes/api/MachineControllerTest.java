@@ -71,6 +71,11 @@ class MachineControllerTest {
     }
 
     @Test
+    void getProducts() {
+        Mockito.when(machineService.getProducts())
+    }
+
+    @Test
     void deleteConnection_present() {
         Mockito.when(machineService.removeConnection("123")).thenReturn(true);
 
@@ -126,7 +131,7 @@ class MachineControllerTest {
 
     @Test
     void setMachineVariables_success() {
-        Mockito.when(machineService.setVariables(
+        Mockito.when(machineService.setMachineVariables(
                 jsonObject.get("speed").getAsDouble(),
                 Products.valueOf(jsonObject.get("beerType").getAsString().toUpperCase()),
                 jsonObject.get("batchSize").getAsInt(), "123")).thenReturn(true);
@@ -138,7 +143,7 @@ class MachineControllerTest {
 
     @Test
     void setMachineVariables_failure() {
-        Mockito.when(machineService.setVariables(
+        Mockito.when(machineService.setMachineVariables(
                 jsonObject.get("speed").getAsDouble(),
                 Products.valueOf(jsonObject.get("beerType").getAsString().toUpperCase()),
                 jsonObject.get("batchSize").getAsInt(), "789")).thenReturn(false);
