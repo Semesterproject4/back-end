@@ -182,11 +182,7 @@ public class MachineServiceImpl implements IMachineService {
     public boolean addConnection(Connection connection) {
         Connection connectionReturned = connectionRepository.insert(connection);
 
-        if (connectionReturned.getId() != null) {
-            return true;
-        } else {
-            return false;
-        }
+        return connectionReturned.getId() != null;
     }
 
     /**
