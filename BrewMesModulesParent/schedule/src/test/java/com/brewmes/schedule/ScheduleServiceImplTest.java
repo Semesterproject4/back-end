@@ -145,17 +145,27 @@ class ScheduleServiceImplTest {
     void prioritizeQueue_success() {
         when(scheduleRepository.saveAll(prioList)).thenReturn(prioList);
 
-        boolean actual = scheduleService.prioritizeQueue(prioList);
+        boolean expected = scheduleService.prioritizeQueue(prioList);
 
-        assertTrue(actual);
+        assertTrue(expected);
     }
 
     @Test
     void prioritizeQueue_failure() {
         when(scheduleRepository.saveAll(prioList)).thenReturn(prioList);
 
-        boolean actual = scheduleService.prioritizeQueue(scheduledBatches);
+        boolean expected = scheduleService.prioritizeQueue(scheduledBatches);
 
-        assertFalse(actual);
+        assertFalse(expected);
+    }
+
+    @Test
+    void prioritizeQueue_another_failure() {
+        when(scheduleRepository.findAll()).thenReturn(prioList);
+
+        boolean expected = scheduleRepository.findAll().isEmpty();
+        boolean actual = scheduleService.prioritizeQueue(prioList);
+
+        assertEquals(expected, actual);
     }
 }
