@@ -47,7 +47,7 @@ public interface IMachineService {
     /**
      * Gets a list of products, so the max speed can be easily read
      *
-     * @return a {@code List} of {@code Products}
+     * @return a {@code List} of {@code Products} if the request was successful; {@code null} if not
      */
     List<Products> getProducts();
 
@@ -55,7 +55,7 @@ public interface IMachineService {
      * Adds a connection to a Machine
      *
      * @param connection The {@code Connection Object} representation of the machine
-     * @return Returns {@code true} if the connection was successfully made, returns {@code false} if the connection failed
+     * @return Returns {@code true} if the connection was successfully made; {@code false} if the connection failed
      */
     boolean addConnection(Connection connection);
 

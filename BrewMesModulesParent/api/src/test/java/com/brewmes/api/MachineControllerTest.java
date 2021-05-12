@@ -15,6 +15,7 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.http.ResponseEntity;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -25,6 +26,7 @@ class MachineControllerTest {
     private static final List<Connection> connectionList = new ArrayList<>();
     private static final JsonObject jsonObject = new JsonObject();
     private static final Connection connection = new Connection("T-800", "1.1.1.1", "Arnold");
+    private static List<Products> productsList;
     @Mock
     IMachineService machineService;
     @InjectMocks
@@ -40,6 +42,8 @@ class MachineControllerTest {
         jsonObject.addProperty("speed", speed);
         jsonObject.addProperty("beerType", beerType);
         jsonObject.addProperty("batchSize", BatchSize);
+
+        productsList = Arrays.asList(Products.values());
     }
 
     @Test
@@ -71,8 +75,21 @@ class MachineControllerTest {
     }
 
     @Test
-    void getProducts() {
-        Mockito.when(machineService.getProducts())
+    void getProducts_success() {
+        Mockito.when(machineService.getProducts()).thenReturn(productsList);
+
+        ResponseEntity<Object> response = machineController.getProducts();
+
+        assertEquals(200, response.getStatusCodeValue());
+    }
+
+    @Test
+    void getProducts_failure() {
+        Mockito.when(machineService.getProducts()).thenReturn(null);
+
+        ResponseEntity<Object> response = machineController.getProducts();
+
+        assertEquals(404, response.getStatusCodeValue());
     }
 
     @Test
