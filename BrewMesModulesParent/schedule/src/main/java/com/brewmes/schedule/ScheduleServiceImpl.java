@@ -15,7 +15,7 @@ public class ScheduleServiceImpl implements IScheduleService {
     @Override
     public int addToQueue(ScheduledBatch scheduledBatch) {
         ScheduledBatch insertedBatch = scheduleRepository.insert(scheduledBatch);
-        int placement = scheduleRepository.findAll().indexOf(insertedBatch) + 1;
+        int placement = scheduleRepository.findAll().indexOf(insertedBatch); //NOSONAR
 
         return placement;
     }
