@@ -35,7 +35,11 @@ public class MachineServiceImpl implements IMachineService {
     private boolean autobrew = false;
 
     private OpcUaClient connectToMachine(String id) {
-        //check id against currentConnection
+
+        if (currentConnection == null) {
+            this.currentConnection = getConnection(id);
+        }
+
         if (currentConnection.getId().equals(id)) {
             return client;
         } else {

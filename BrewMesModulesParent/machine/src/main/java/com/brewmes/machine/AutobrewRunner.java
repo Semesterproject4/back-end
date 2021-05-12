@@ -17,7 +17,6 @@ public class AutobrewRunner implements Runnable {
     @Autowired
     IMachineService machineService;
 
-
     String connectionID;
 
     public AutobrewRunner(String connectionID) {
