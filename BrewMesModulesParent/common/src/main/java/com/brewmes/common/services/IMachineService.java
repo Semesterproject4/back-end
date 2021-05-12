@@ -55,7 +55,7 @@ public interface IMachineService {
      * Adds a connection to a Machine
      *
      * @param connection The {@code Connection Object} representation of the machine
-     * @return Returns {@code true} if the connection was successfully made; {@code false} if the connection failed
+     * @return {@code true} if the connection was successfully made; {@code false} if the connection failed
      */
     boolean addConnection(Connection connection);
 
