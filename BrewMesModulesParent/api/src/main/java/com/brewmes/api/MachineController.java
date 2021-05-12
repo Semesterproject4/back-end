@@ -37,6 +37,15 @@ public class MachineController {
         }
     }
 
+    @GetMapping("/products")
+    public ResponseEntity<Object> getProducts() {
+        if (machineService.getProducts() != null) {
+            return new ResponseEntity<>(machineService.getProducts(), HttpStatus.OK);
+        } else {
+            return new ResponseEntity<>("Could not get products", HttpStatus.NOT_FOUND);
+        }
+    }
+
     @DeleteMapping(value = "/{id}")
     public ResponseEntity<String> removeConnection(@PathVariable("id") String id) {
         if (machineService.removeConnection(id)) {
@@ -79,7 +88,7 @@ public class MachineController {
         Products beerType = Products.valueOf(jsonObject.get("beerType").getAsString().toUpperCase());
         int batchSize = jsonObject.get("batchSize").getAsInt();
 
-        if (machineService.setVariables(speed, beerType, batchSize, id)) {
+        if (machineService.setMachineVariables(speed, beerType, batchSize, id)) {
             return new ResponseEntity<>("Machine Variables set", HttpStatus.OK);
         } else {
             return new ResponseEntity<>("Could not set Machine Variables", HttpStatus.NOT_FOUND);
