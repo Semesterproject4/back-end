@@ -17,10 +17,11 @@ import org.eclipse.milo.opcua.stack.core.types.structured.EndpointDescription;
 import org.eclipse.milo.opcua.stack.core.util.EndpointUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
 import javax.annotation.PostConstruct;
 import java.util.*;
 import java.util.concurrent.ExecutionException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 @Service("machine")
 public class MachineServiceImpl implements IMachineService {
@@ -31,6 +32,7 @@ public class MachineServiceImpl implements IMachineService {
 
     private Connection currentConnection;
     private OpcUaClient client;
+    static Logger logger = Logger.getLogger(MachineServiceImpl.class.getName());
 
     //If the program is restarted manually or due to a crash this method will assure that machines which were autobrewing before start doing it again
     @PostConstruct
@@ -56,10 +58,10 @@ public class MachineServiceImpl implements IMachineService {
             try {
                 client = getOpcUaClient(currentConnection.getIp());
             } catch (InterruptedException e) {
-                e.printStackTrace();
+                logger.log(Level.SEVERE, e.getMessage(), e);
                 Thread.currentThread().interrupt();
             } catch (ExecutionException | UaException e) {
-                e.printStackTrace();
+                logger.log(Level.SEVERE, e.getMessage(), e);
             }
         }
     }
@@ -88,7 +90,7 @@ public class MachineServiceImpl implements IMachineService {
             NodeId cmdChangeRequest = CommandNodes.EXECUTE_MACHINE_COMMAND.nodeId;
             client.writeValue(cmdChangeRequest, DataValue.valueOnly(new Variant(true))).get();
         } catch (InterruptedException | ExecutionException e) {
-            e.printStackTrace();
+            logger.log(Level.SEVERE, e.getMessage(), e);
             Thread.currentThread().interrupt();
         }
     }
@@ -110,11 +112,11 @@ public class MachineServiceImpl implements IMachineService {
             sendChanges();
             return true;
         } catch (InterruptedException e) {
-            e.printStackTrace();
+            logger.log(Level.SEVERE, e.getMessage(), e);
             Thread.currentThread().interrupt();
             return false;
         } catch (ExecutionException e) {
-            e.printStackTrace();
+            logger.log(Level.SEVERE, e.getMessage(), e);
             return false;
         }
     }
@@ -140,11 +142,11 @@ public class MachineServiceImpl implements IMachineService {
             client.writeValue(setBatchSize, DataValue.valueOnly(new Variant((float) batchSize))).get();
             return true;
         } catch (InterruptedException e) {
-            e.printStackTrace();
+            logger.log(Level.SEVERE, e.getMessage(), e);
             Thread.currentThread().interrupt();
             return false;
         } catch (ExecutionException e) {
-            e.printStackTrace();
+            logger.log(Level.SEVERE, e.getMessage(), e);
             return false;
         }
     }
