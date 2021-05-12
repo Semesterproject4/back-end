@@ -1,4 +1,4 @@
-package com.brewmes.subscriber.util;
+package com.brewmes.common.util.machinenodes;
 
 import org.junit.jupiter.api.Test;
 
