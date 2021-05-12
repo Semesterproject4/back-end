@@ -32,7 +32,8 @@ public interface IScheduleService {
     /**
      * Gets the first entity in the queue.
      *
-     * @return the next batch to produce; {@code null} if no {@code ScheduledBatch} is found in the queue.
+     * @return the next batch to produce; {@code null} if the batch could not be deleted in the database;
+     * {@code null} if no {@code ScheduledBatch} is found in the queue.
      */
     ScheduledBatch getFirstInQueue();
 
