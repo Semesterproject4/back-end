@@ -39,7 +39,10 @@ public class ScheduleServiceImpl implements IScheduleService {
             List<ScheduledBatch> newList = getQueue();
             ScheduledBatch firstBatch = newList.get(0);
 
-            if (newList.remove(firstBatch) && prioritizeQueue(newList)) {
+            boolean removal = newList.remove(firstBatch);
+            boolean prio = prioritizeQueue(newList);
+
+            if (removal && prio) {
                 return firstBatch;
             } else {
                 return null;
@@ -61,7 +64,7 @@ public class ScheduleServiceImpl implements IScheduleService {
 
         if (queueIsEmpty()) {
             List<ScheduledBatch> newPrioList = scheduleRepository.saveAll(prioritizedList);
-            return prioritizedList == newPrioList;
+            return prioritizedList.equals(newPrioList);
         } else {
             return false;
         }
