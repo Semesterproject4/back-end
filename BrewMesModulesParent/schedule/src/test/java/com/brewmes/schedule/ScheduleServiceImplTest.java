@@ -48,7 +48,7 @@ class ScheduleServiceImplTest {
 
     @Test
     void addToQueue_success() {
-
+        when(scheduleRepository.insert(scheduledBatch)).thenReturn(scheduledBatch);
         when(scheduleRepository.findAll()).thenReturn(scheduledBatches);
 
         int expected = scheduleRepository.findAll().indexOf(scheduledBatch);
