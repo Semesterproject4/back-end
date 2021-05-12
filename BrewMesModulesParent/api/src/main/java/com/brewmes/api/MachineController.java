@@ -12,6 +12,9 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 import java.util.Optional;
 
 @RestController
@@ -35,6 +38,11 @@ public class MachineController {
         } else {
             return new ResponseEntity<>("Could not find that machine ", HttpStatus.NOT_FOUND);
         }
+    }
+
+    @GetMapping
+    public ResponseEntity<Object> getProducts() {
+        return new ResponseEntity<>(Arrays.asList(Products.values()), HttpStatus.OK);
     }
 
     @DeleteMapping(value = "/{id}")
