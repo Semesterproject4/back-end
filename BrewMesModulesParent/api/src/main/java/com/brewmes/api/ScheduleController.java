@@ -15,7 +15,7 @@ import java.util.List;
 @RequestMapping("/api/scheduled-batches")
 public class ScheduleController {
 
-    @Autowired(required = false)
+    @Autowired
     IScheduleService scheduleService;
 
     @PostMapping
