@@ -6,7 +6,6 @@ import com.brewmes.common.services.IScheduleService;
 import com.brewmes.common.services.ISubscribeService;
 import com.brewmes.common.util.Command;
 import com.brewmes.common.util.MachineState;
-import org.springframework.beans.factory.annotation.Autowired;
 
 public class AutobrewRunner implements Runnable {
     private ISubscribeService subscribeService;
