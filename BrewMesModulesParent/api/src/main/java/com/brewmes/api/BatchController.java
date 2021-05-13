@@ -21,11 +21,11 @@ import java.util.List;
 @RequestMapping("/api/batches")
 public class BatchController {
 
-    @Autowired(required = false)
+    @Autowired
     @Qualifier("dashboard")
     IBatchReportService dashboardService;
 
-    @Autowired(required = false)
+    @Autowired
     @Qualifier("pdf")
     IBatchReportService pdfService;
 
