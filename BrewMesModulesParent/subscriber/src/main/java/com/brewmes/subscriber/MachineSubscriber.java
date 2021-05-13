@@ -11,13 +11,12 @@ import org.springframework.stereotype.Service;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Optional;
-import java.util.concurrent.ExecutionException;
 
 
 @Service
 public class MachineSubscriber implements ISubscribeService {
-    private final Map<String, Thread> activeSubscriptions = new HashMap<>();
-    private final Map<String, Subscription> activeThreads = new HashMap<>();
+    private final Map<String, Thread> activeThreads = new HashMap<>();
+    private final Map<String, Subscription> activeSubscriptions = new HashMap<>();
 
     @Autowired
     private ConnectionRepository connectionRepo;
@@ -27,51 +26,37 @@ public class MachineSubscriber implements ISubscribeService {
 
     @Override
     public boolean subscribeToMachineValues(String connectionID) {
-//        Optional<Connection> connection = connectionRepo.findById(connectionID);
+        Optional<Connection> connection = connectionRepo.findById(connectionID);
 
-        Connection connection = new Connection();
-        connection.setIp(connectionID);
+        Connection connection1 = new Connection();
+        connection1.setIp(connectionID);
+        connection = Optional.of(connection1);
 
-        try {
-//            if (connection.isPresent()) {
-                if (!activeSubscriptions.containsKey(connectionID)) {
-                    Subscription subscription = null;
-                    subscription = new Subscription(connection, batchRepository);
+
+        if (connection.isPresent()) {
+            if (!activeThreads.containsKey(connectionID)) {
+                Subscription subscription = new Subscription(connection.get(), batchRepository);
+                Thread thread = new Thread(subscription);
+                thread.start();
+                activeThreads.put(connectionID, thread);
+                activeSubscriptions.put(connectionID, subscription);
+            } else {
+                if (activeThreads.get(connectionID).isInterrupted()) {
+                    Subscription subscription = new Subscription(connection.get(), batchRepository);
                     Thread thread = new Thread(subscription);
                     thread.start();
-                    activeSubscriptions.put(connectionID, thread);
-                    activeThreads.put(connectionID, subscription);
-//                } else {
-//                    Thread thread = activeSubscriptions.get(connectionID);
-//                    if (thread.isInterrupted()) {
-//                        Subscription subscription = new Subscription(connection.get(), batchRepository);
-//                        thread = new Thread(subscription);
-//                        thread.start();
-//                        activeSubscriptions.put(connectionID, thread);
-//                        activeThreads.put(connectionID, subscription);
-//                    }
+                    activeThreads.put(connectionID, thread);
+                    activeSubscriptions.put(connectionID, subscription);
                 }
-                return true;
-//            }
-        } catch (ExecutionException e) {
-            e.printStackTrace();
-        } catch (InterruptedException e) {
-            e.printStackTrace();
+            }
+            return true;
         }
         return false;
     }
 
     @Override
     public MachineData getLatestMachineData(String connectionID) {
-        Subscription subscription = activeThreads.get(connectionID);
+        Subscription subscription = activeSubscriptions.get(connectionID);
         return subscription.getLatestMachineData();
-
-//        MachineData data;
-//        if (dataList != null && !dataList.isEmpty()) {
-//            data = dataList.get(dataList.size() - 1);
-//        } else {
-//            data = null;
-//        }
-//        return data;
     }
 }

@@ -10,7 +10,6 @@ import com.brewmes.subscriber.util.AdminNodes;
 import com.brewmes.subscriber.util.CommandNodes;
 import com.brewmes.subscriber.util.MachineNodes;
 import com.brewmes.subscriber.util.StatusNodes;
-
 import org.eclipse.milo.opcua.sdk.client.OpcUaClient;
 import org.eclipse.milo.opcua.sdk.client.api.config.OpcUaClientConfigBuilder;
 import org.eclipse.milo.opcua.sdk.client.api.subscriptions.UaSubscription;
@@ -27,40 +26,36 @@ import org.eclipse.milo.opcua.stack.core.util.EndpointUtil;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.concurrent.ExecutionException;
 import java.util.logging.Logger;
 
 public class Subscription implements Runnable {
-    private static final Logger LOGGER = Logger.getLogger("com.brewmes");
+    private static final Logger LOGGER = Logger.getLogger("com.brewmes.subscription");
     private final List<ManagedDataItem> dataItems = new ArrayList<>();
     private final Connection connection;
     private final BatchRepository batchRepository;
-    private boolean alive;
     private OpcUaClient client;
     private ManagedSubscription managedSubscription;
     private MachineData latestMachineData;
     private Batch currentBatch;
     private Ingredients currentIngredients;
-    private int productType;
-    private int amountToProduce;
     private float desiredSpeed;
-    public Subscription(Connection connection, BatchRepository batchRepository) throws ExecutionException, InterruptedException {
-//        try {
-        //ip of client
-//            this.client = OpcUaClient.create(co nnection.getIp());
+
+    public Subscription(Connection connection, BatchRepository batchRepository)  {
         this.connection = connection;
         this.batchRepository = batchRepository;
-        alive = true;
         this.desiredSpeed = -1;
-        this.productType = -1;
-        this.amountToProduce = -1;
-//        } catch (UaException e) {
-//            e.printStackTrace();
-//        }
     }
 
-    public void subscribe() {
+    @Override
+    public void run() {
+        subscribe();
+    }
+
+
+    private void subscribe() {
         try {
             this.managedSubscription = getManagedSubscription();
 
@@ -77,13 +72,7 @@ public class Subscription implements Runnable {
                 }
             }
 
-            while (alive) {
-                Thread.sleep(1000);
-            }
-
-
         } catch (UaException | InterruptedException e) {
-            alive = false;
             Thread.currentThread().interrupt();
             e.printStackTrace();
         } catch (ExecutionException e) {
@@ -108,14 +97,6 @@ public class Subscription implements Runnable {
         return ManagedSubscription.create(client, 500);
     }
 
-    public Connection getConnection() {
-        return this.connection;
-    }
-
-    @Override
-    public void run() {
-        subscribe();
-    }
 
     public MachineData getLatestMachineData() {
         return latestMachineData;
@@ -169,6 +150,7 @@ public class Subscription implements Runnable {
         if (this.latestMachineData == null) {
             this.latestMachineData = new MachineData();
             this.currentIngredients = new Ingredients();
+            this.latestMachineData.setIngredients(this.currentIngredients);
         }
 
 
@@ -210,29 +192,22 @@ public class Subscription implements Runnable {
                 // status nodes written to batch, if it exists.
             } else if (StatusNodes.PRODUCTS_IN_CURRENT_BATCH.nodeId.toParseableString().equals(id) && currentBatch != null) {
                 this.currentBatch.setAmountToProduce(Math.round((float) dataValues.get(i).getValue().getValue()));
-            }
-            else if (StatusNodes.MACHINE_SPEED.nodeId.toParseableString().equals(id)) {
+            } else if (StatusNodes.MACHINE_SPEED.nodeId.toParseableString().equals(id)) {
                 float speed = (float) dataValues.get(i).getValue().getValue();
                 if (speed > 0) {
                     this.desiredSpeed = speed;
                 }
-            }
-            else if (MachineNodes.MALT.nodeId.toParseableString().equals(id)) {
+            } else if (MachineNodes.MALT.nodeId.toParseableString().equals(id)) {
                 this.currentIngredients.setMalt((float) dataValues.get(i).getValue().getValue());
-            }
-            else if (MachineNodes.WHEAT.nodeId.toParseableString().equals(id)) {
+            } else if (MachineNodes.WHEAT.nodeId.toParseableString().equals(id)) {
                 this.currentIngredients.setWheat((float) dataValues.get(i).getValue().getValue());
-            }
-            else if (MachineNodes.HOPS.nodeId.toParseableString().equals(id)) {
+            } else if (MachineNodes.HOPS.nodeId.toParseableString().equals(id)) {
                 this.currentIngredients.setHops((float) dataValues.get(i).getValue().getValue());
-            }
-            else if (MachineNodes.BARLEY.nodeId.toParseableString().equals(id)) {
+            } else if (MachineNodes.BARLEY.nodeId.toParseableString().equals(id)) {
                 this.currentIngredients.setBarley((float) dataValues.get(i).getValue().getValue());
-            }
-            else if (MachineNodes.YEAST.nodeId.toParseableString().equals(id)) {
+            } else if (MachineNodes.YEAST.nodeId.toParseableString().equals(id)) {
                 this.currentIngredients.setYeast((float) dataValues.get(i).getValue().getValue());
-            }
-            else if (MachineNodes.MAINTENANCE.nodeId.toParseableString().equals(id)) {
+            } else if (MachineNodes.MAINTENANCE.nodeId.toParseableString().equals(id)) {
                 UShort maintenance = (UShort) dataValues.get(i).getValue().getValue();
                 this.latestMachineData.setMaintenance(maintenance.doubleValue());
             }
@@ -240,16 +215,10 @@ public class Subscription implements Runnable {
             else if (AdminNodes.BATCH_PRODUCT_ID.nodeId.toParseableString().equals(id) && currentBatch != null) {
                 this.currentBatch.setProductType(Math.round((float) dataValues.get(i).getValue().getValue()));
             }
-
         }
 
         if (this.currentBatch != null) {
             this.saveBatch();
-        }
-
-
-        for (int i = 0; i < managedDataItems.size(); i++) {
-            LOGGER.info("new value = " + dataValues.get(i).getValue() + " " + managedDataItems.get(i).getNodeId());
         }
     }
 
@@ -265,7 +234,6 @@ public class Subscription implements Runnable {
             @Override
             public void onSubscriptionTransferFailed(UaSubscription subscription, StatusCode statusCode) {
                 UaSubscriptionManager.SubscriptionListener.super.onSubscriptionTransferFailed(subscription, statusCode);
-                LOGGER.info(subscription.toString() + " " + statusCode.getValue());
                 setUpSubscription();
             }
         };
@@ -274,10 +242,11 @@ public class Subscription implements Runnable {
     private void setUpSubscription() {
         try {
             this.managedSubscription = getManagedSubscription();
-            createMonitoredItems(this.managedSubscription);
+            this.createMonitoredItems(this.managedSubscription);
             this.managedSubscription.addDataChangeListener(this::onDataChanged);
         } catch (UaException | ExecutionException | InterruptedException e) {
-            e.printStackTrace();
+            Thread.currentThread().interrupt();
+            LOGGER.warning(Arrays.toString(e.getStackTrace()));
         }
     }
 }
