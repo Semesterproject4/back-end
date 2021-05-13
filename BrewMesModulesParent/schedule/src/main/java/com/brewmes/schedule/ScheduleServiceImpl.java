@@ -4,9 +4,11 @@ import com.brewmes.common.entities.ScheduledBatch;
 import com.brewmes.common.services.IScheduleService;
 import com.brewmes.common_repository.ScheduleRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 import java.util.List;
 
+@Service
 public class ScheduleServiceImpl implements IScheduleService {
 
     @Autowired
