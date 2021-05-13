@@ -61,7 +61,6 @@ public class MachineServiceImpl implements IMachineService {
             } catch (ExecutionException | UaException e) {
                 logger.log(Level.SEVERE, e.getMessage(), e);
             }
-
         }
     }
 
@@ -252,5 +251,9 @@ public class MachineServiceImpl implements IMachineService {
         connection = connectionRepository.save(connection);
 
         return !connection.isAutobrewing();
+    }
+
+    public void setOpcUaClients(Map<String, OpcUaClient> opcUaClients) {
+        this.opcUaClients = opcUaClients;
     }
 }
