@@ -9,14 +9,18 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
+import org.mockito.junit.jupiter.MockitoSettings;
+import org.mockito.quality.Strictness;
 
 import java.util.ArrayList;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
-import static org.mockito.Mockito.*;
+import static org.mockito.Mockito.doNothing;
+import static org.mockito.Mockito.when;
 
 @ExtendWith(MockitoExtension.class)
+@MockitoSettings(strictness = Strictness.LENIENT)
 class ScheduleServiceImplTest {
 
     private static ScheduledBatch scheduledBatch;
@@ -108,33 +112,24 @@ class ScheduleServiceImplTest {
 
     @Test
     void getFirstInQueue_success() {
-        when(scheduleRepository.findAll()).thenReturn(scheduledBatches);
-        when(scheduleRepository.findAll()).thenReturn(emptyScheduledBatches);
+        when(scheduleRepository.findAll()).thenReturn(scheduledBatches, scheduledBatches, scheduledBatches, emptyScheduledBatches);
         when(scheduleRepository.saveAll(scheduledBatchesRemoved)).thenReturn(scheduledBatchesRemoved);
         doNothing().when(scheduleRepository).deleteAll();
 
         ScheduledBatch expected = scheduleRepository.findAll().get(0);
+
         ScheduledBatch actual = scheduleService.getFirstInQueue();
 
         assertEquals(expected, actual);
     }
 
     @Test
-    void getFirstInQueue_failure() {
-        when(scheduleRepository.findAll()).thenReturn(scheduledBatches);
-
-        ScheduledBatch actual = scheduleService.getFirstInQueue();
-
-        assertNull(actual);
-    }
-
-    @Test
     void getFirstInQueue_another_failure() {
         when(scheduleRepository.findAll()).thenReturn(emptyScheduledBatches);
 
-        ScheduledBatch actual = scheduleService.getFirstInQueue();
+        ScheduledBatch expectNull = scheduleService.getFirstInQueue();
 
-        assertNull(actual);
+        assertNull(expectNull);
     }
 
     @Test
@@ -168,8 +163,8 @@ class ScheduleServiceImplTest {
 
     @Test
     void prioritizeQueue_failure() {
-        when(scheduleRepository.saveAll(scheduledBatches)).thenReturn(prioList);
         when(scheduleRepository.findAll()).thenReturn(emptyScheduledBatches);
+        when(scheduleRepository.saveAll(scheduledBatches)).thenReturn(prioList);
         doNothing().when(scheduleRepository).deleteAll();
 
         boolean expected = scheduleService.prioritizeQueue(scheduledBatches);
