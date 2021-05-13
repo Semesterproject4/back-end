@@ -24,7 +24,7 @@ import java.util.concurrent.ExecutionException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-@Service("machine")
+@Service
 public class MachineServiceImpl implements IMachineService {
     static Logger logger = Logger.getLogger(MachineServiceImpl.class.getName());
 
@@ -182,7 +182,7 @@ public class MachineServiceImpl implements IMachineService {
 
         return connection.isAutobrewing();
     }
-    
+
     @Override
     public boolean stopAutoBrew(String connectionID) {
         connectToMachine(connectionID);
