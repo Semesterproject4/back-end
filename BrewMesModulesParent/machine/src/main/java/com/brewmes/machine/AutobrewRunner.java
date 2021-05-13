@@ -9,19 +9,16 @@ import com.brewmes.common.util.MachineState;
 import org.springframework.beans.factory.annotation.Autowired;
 
 public class AutobrewRunner implements Runnable {
-    @Autowired(required = false)
     private ISubscribeService subscribeService;
-
-    @Autowired(required = false)
     private IScheduleService scheduleService;
-
-    @Autowired
     private IMachineService machineService;
-
     private String connectionID;
 
-    public AutobrewRunner(String connectionID) {
+    public AutobrewRunner(String connectionID, ISubscribeService subscribeService, IScheduleService scheduleService, IMachineService machineService) {
         this.connectionID = connectionID;
+        this.subscribeService = subscribeService;
+        this.scheduleService = scheduleService;
+        this.machineService = machineService;
     }
 
     @Override

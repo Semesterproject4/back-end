@@ -26,29 +26,20 @@ import static org.junit.jupiter.api.Assertions.*;
 
 @ExtendWith(MockitoExtension.class)
 class MachineServiceImplTest {
-    @Mock
-    private ConnectionRepository connectionRepository;
-
-    @InjectMocks
-    private MachineServiceImpl machineService;
-
     private static Connection connectionWithoutID;
     private static Connection connectionWithID;
-
     private static Map<String, OpcUaClient> opcUaClients = new HashMap<>();
     private static OpcUaClient client;
-
     private static DataValue valueReset;
     private static DataValue valueTrue;
     private static DataValue valueBeerType;
     private static DataValue valueSpeed;
     private static DataValue valueAmount;
     private static CompletableFuture<StatusCode> cf;
-
-    @BeforeEach
-    void setUpEach() {
-        machineService.setOpcUaClients(opcUaClients);
-    }
+    @Mock
+    private ConnectionRepository connectionRepository;
+    @InjectMocks
+    private MachineServiceImpl machineService;
 
     @BeforeAll
     static void setUpAll() {
@@ -67,6 +58,11 @@ class MachineServiceImplTest {
         valueAmount = DataValue.valueOnly(new Variant((float) 50));
 
         cf = Mockito.mock(CompletableFuture.class);
+    }
+
+    @BeforeEach
+    void setUpEach() {
+        machineService.setOpcUaClients(opcUaClients);
     }
 
     @Test
@@ -181,8 +177,6 @@ class MachineServiceImplTest {
 
         assertFalse(machineService.setMachineVariables(20.0, Products.PILSNER, 50, "1234"));
     }
-
-
 
 
     @Test

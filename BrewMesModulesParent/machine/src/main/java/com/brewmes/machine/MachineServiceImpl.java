@@ -2,6 +2,8 @@ package com.brewmes.machine;
 
 import com.brewmes.common.entities.Connection;
 import com.brewmes.common.services.IMachineService;
+import com.brewmes.common.services.IScheduleService;
+import com.brewmes.common.services.ISubscribeService;
 import com.brewmes.common.util.Command;
 import com.brewmes.common.util.Products;
 import com.brewmes.common.util.machinenodes.CommandNodes;
@@ -30,6 +32,12 @@ public class MachineServiceImpl implements IMachineService {
 
     @Autowired
     private ConnectionRepository connectionRepository;
+
+    @Autowired(required = false)
+    private ISubscribeService subscribeService;
+
+    @Autowired(required = false)
+    private IScheduleService scheduleService;
 
     private Map<String, Thread> autobrewers = new HashMap<>();
     private Map<String, OpcUaClient> opcUaClients = new HashMap<>();
@@ -168,7 +176,7 @@ public class MachineServiceImpl implements IMachineService {
     public boolean startAutoBrew(String connectionID) {
         connectToMachine(connectionID);
 
-        Runnable task = new AutobrewRunner(connectionID);
+        Runnable task = new AutobrewRunner(connectionID, subscribeService, scheduleService, this);
         Thread thread = new Thread(task);
 
         thread.setDaemon(true);
