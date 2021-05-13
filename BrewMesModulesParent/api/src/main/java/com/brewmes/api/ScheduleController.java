@@ -13,6 +13,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/api/scheduled-batches")
+@CrossOrigin(origins = "*")
 public class ScheduleController {
 
     @Autowired

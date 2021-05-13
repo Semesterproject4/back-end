@@ -19,6 +19,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/api/batches")
+@CrossOrigin(origins = "*")
 public class BatchController {
 
     @Autowired

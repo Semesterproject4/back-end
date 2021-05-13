@@ -18,6 +18,7 @@ import java.util.Optional;
 
 @RestController
 @RequestMapping(value = "/api/machines")
+@CrossOrigin(origins = "*")
 public class MachineController {
 
     @Autowired(required = false)
