@@ -26,7 +26,7 @@ import java.util.logging.Logger;
 
 @Service
 public class MachineServiceImpl implements IMachineService {
-    static Logger logger = Logger.getLogger(MachineServiceImpl.class.getName());
+    private static Logger logger = Logger.getLogger(MachineServiceImpl.class.getName());
 
     @Autowired
     private ConnectionRepository connectionRepository;
