@@ -8,7 +8,7 @@ public enum MachineNodes {
     HOPS(new NodeId(Constants.NAMESPACE_INDEX_VALUE, "::Program:Inventory.Hops")),
     WHEAT(new NodeId(Constants.NAMESPACE_INDEX_VALUE, "::Program:Inventory.Wheat")),
     YEAST(new NodeId(Constants.NAMESPACE_INDEX_VALUE, "::Program:Inventory.Yeast")),
-    MAINTENANCE(new NodeId(Constants.NAMESPACE_INDEX_VALUE, "::Program:Maintenance"));
+    MAINTENANCE(new NodeId(Constants.NAMESPACE_INDEX_VALUE, "::Program:Maintenance.Counter"));
 
     public final NodeId nodeId;
 

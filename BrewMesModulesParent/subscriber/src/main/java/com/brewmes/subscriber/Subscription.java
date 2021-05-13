@@ -2,6 +2,7 @@ package com.brewmes.subscriber;
 
 import com.brewmes.common.entities.Batch;
 import com.brewmes.common.entities.Connection;
+import com.brewmes.common.entities.Ingredients;
 import com.brewmes.common.entities.MachineData;
 import com.brewmes.common.util.MachineState;
 import com.brewmes.common_repository.BatchRepository;
@@ -9,6 +10,7 @@ import com.brewmes.subscriber.util.AdminNodes;
 import com.brewmes.subscriber.util.CommandNodes;
 import com.brewmes.subscriber.util.MachineNodes;
 import com.brewmes.subscriber.util.StatusNodes;
+
 import org.eclipse.milo.opcua.sdk.client.OpcUaClient;
 import org.eclipse.milo.opcua.sdk.client.api.config.OpcUaClientConfigBuilder;
 import org.eclipse.milo.opcua.sdk.client.api.subscriptions.UaSubscription;
@@ -18,14 +20,14 @@ import org.eclipse.milo.opcua.sdk.client.subscriptions.ManagedSubscription;
 import org.eclipse.milo.opcua.stack.client.DiscoveryClient;
 import org.eclipse.milo.opcua.stack.core.UaException;
 import org.eclipse.milo.opcua.stack.core.types.builtin.DataValue;
-import org.eclipse.milo.opcua.stack.core.types.builtin.NodeId;
 import org.eclipse.milo.opcua.stack.core.types.builtin.StatusCode;
+import org.eclipse.milo.opcua.stack.core.types.builtin.unsigned.UShort;
 import org.eclipse.milo.opcua.stack.core.types.structured.EndpointDescription;
 import org.eclipse.milo.opcua.stack.core.util.EndpointUtil;
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.concurrent.CopyOnWriteArrayList;
 import java.util.concurrent.ExecutionException;
 import java.util.logging.Logger;
 
@@ -39,8 +41,10 @@ public class Subscription implements Runnable {
     private ManagedSubscription managedSubscription;
     private MachineData latestMachineData;
     private Batch currentBatch;
-    private UaSubscriptionManager.SubscriptionListener subListener;
-
+    private Ingredients currentIngredients;
+    private int productType;
+    private int amountToProduce;
+    private float desiredSpeed;
     public Subscription(Connection connection, BatchRepository batchRepository) throws ExecutionException, InterruptedException {
 //        try {
         //ip of client
@@ -48,27 +52,12 @@ public class Subscription implements Runnable {
         this.connection = connection;
         this.batchRepository = batchRepository;
         alive = true;
+        this.desiredSpeed = -1;
+        this.productType = -1;
+        this.amountToProduce = -1;
 //        } catch (UaException e) {
 //            e.printStackTrace();
 //        }
-    }
-
-    public static void main(String[] args) {
-        Connection connectionTest = new Connection("opc.tcp://127.0.0.1:4840", "Tester");
-        Subscription subscription = null;
-
-//        try {
-//            subscription = new Subscription(connectionTest);
-//        } catch (ExecutionException e) {
-//            e.printStackTrace();
-//        } catch (InterruptedException e) {
-//            e.printStackTrace();
-//        }
-
-        Thread thread = new Thread(subscription);
-        thread.start();
-
-
     }
 
     public void subscribe() {
@@ -93,7 +82,6 @@ public class Subscription implements Runnable {
             }
 
 
-
         } catch (UaException | InterruptedException e) {
             alive = false;
             Thread.currentThread().interrupt();
@@ -115,12 +103,7 @@ public class Subscription implements Runnable {
         cfg.setEndpoint(configPoint);
 
         //setting up machine client with config
-        OpcUaClient client = OpcUaClient.create(cfg.build());
-
-        // what to read
-        client.connect().get();
-
-        this.client = client;
+        this.client = (OpcUaClient) OpcUaClient.create(cfg.build()).connect().get();
 
         return ManagedSubscription.create(client, 500);
     }
@@ -140,14 +123,13 @@ public class Subscription implements Runnable {
 
     /**
      * Adds all relevant endpoints as {@code ManagedDataItem} to a local list of all endpoints the {@code ManagedSubscription} should subscribe to.
+     *
      * @param subscription The {@code ManagedSubscription} to add the
      * @throws UaException
      */
     private void createMonitoredItems(ManagedSubscription subscription) throws UaException {
         //command nodes
         dataItems.add(subscription.createDataItem(CommandNodes.SET_MACHINE_SPEED.nodeId));
-        dataItems.add(subscription.createDataItem(CommandNodes.SET_NEXT_BATCH_ID.nodeId));
-        dataItems.add(subscription.createDataItem(CommandNodes.SET_MACHINE_COMMAND.nodeId));
         dataItems.add(subscription.createDataItem(CommandNodes.SET_PRODUCT_ID_FOR_NEXT_BATCH.nodeId));
         dataItems.add(subscription.createDataItem(CommandNodes.SET_PRODUCT_AMOUNT_IN_NEXT_BATCH.nodeId));
 
@@ -163,6 +145,7 @@ public class Subscription implements Runnable {
         //admin nodes
         dataItems.add(subscription.createDataItem(AdminNodes.DEFECTIVE_PRODUCTS.nodeId));
         dataItems.add(subscription.createDataItem(AdminNodes.PRODUCED_PRODUCTS.nodeId));
+        dataItems.add(subscription.createDataItem(AdminNodes.BATCH_PRODUCT_ID.nodeId));
 
         //machine nodes(ingredients & maintenance)
         dataItems.add(subscription.createDataItem(MachineNodes.MAINTENANCE.nodeId));
@@ -177,14 +160,17 @@ public class Subscription implements Runnable {
     /**
      * the callback method to be registered as listener.
      * It sets the changed values on the respective fields on the associated {@code MachineData} object.
+     *
      * @param managedDataItems A {@code List} of the changed items.
-     * @param dataValues A {@code List} of the changed values.
+     * @param dataValues       A {@code List} of the changed values.
      */
     private void onDataChanged(List<ManagedDataItem> managedDataItems, List<DataValue> dataValues) {
         // Check if latestMachineData exists
-        if (latestMachineData == null) {
-            latestMachineData = new MachineData();
+        if (this.latestMachineData == null) {
+            this.latestMachineData = new MachineData();
+            this.currentIngredients = new Ingredients();
         }
+
 
         // Runs through the all machineData being subscribed to and adds them to latestMachineData
         for (int i = 0; i < managedDataItems.size(); i++) {
@@ -193,48 +179,85 @@ public class Subscription implements Runnable {
             // admin nodes
             if (AdminNodes.DEFECTIVE_PRODUCTS.nodeId.toParseableString().equals(id)) {
                 latestMachineData.setDefectProducts((int) dataValues.get(i).getValue().getValue());
-            }
-            else if (AdminNodes.PRODUCED_PRODUCTS.nodeId.toParseableString().equals(id)){
-                latestMachineData.setProcessed((int) dataValues.get(i).getValue().getValue());
+            } else if (AdminNodes.PRODUCED_PRODUCTS.nodeId.toParseableString().equals(id)) {
+                int processed = (int) dataValues.get(i).getValue().getValue();
+                latestMachineData.setProcessed(processed);
+                latestMachineData.setAcceptableProducts(processed - latestMachineData.getDefectProducts());
             }
             // Status nodes
             else if (StatusNodes.VIBRATION.nodeId.toParseableString().equals(id)) {
                 latestMachineData.setVibration((float) dataValues.get(i).getValue().getValue());
-            }else if (StatusNodes.TEMPERATURE.nodeId.toParseableString().equals(id)) {
+            } else if (StatusNodes.TEMPERATURE.nodeId.toParseableString().equals(id)) {
                 latestMachineData.setTemperature((float) dataValues.get(i).getValue().getValue());
-            }else if (StatusNodes.HUMIDITY.nodeId.toParseableString().equals(id)) {
+            } else if (StatusNodes.HUMIDITY.nodeId.toParseableString().equals(id)) {
                 latestMachineData.setHumidity((float) dataValues.get(i).getValue().getValue());
-            }else if (StatusNodes.NORMALIZED_MACHINE_SPEED.nodeId.toParseableString().equals(id)) {
+            } else if (StatusNodes.NORMALIZED_MACHINE_SPEED.nodeId.toParseableString().equals(id)) {
                 latestMachineData.setNormSpeed((float) dataValues.get(i).getValue().getValue());
-            }else if (StatusNodes.MACHINE_STATE.nodeId.toParseableString().equals(id)) {
-                latestMachineData.setState((int) dataValues.get(i).getValue().getValue());
+            } else if (StatusNodes.MACHINE_STATE.nodeId.toParseableString().equals(id)) {
+                int state = (int) dataValues.get(i).getValue().getValue();
+                latestMachineData.setState(state);
                 // if state is == 6. Make a new batch and save.
-                if (latestMachineData.getState() == MachineState.EXECUTE.value) {
-                    Batch batch = new Batch();
-                    batch.setData(new ArrayList<>());
-                    this.currentBatch = this.batchRepository.save(batch);
-                } else if (latestMachineData.getState() == MachineState.COMPLETE.value) {
-                    batchRepository.save(this.currentBatch);
+                if (state == MachineState.EXECUTE.value) {
+                    this.currentBatch = new Batch();
+                    this.currentBatch.setData(new ArrayList<>());
+                    this.currentBatch.setDesiredSpeed(this.desiredSpeed);
+
+                    // if state is == 17. Save batch and remove the object reference.
+                } else if ((state == MachineState.COMPLETE.value || state == MachineState.ABORTED.value || state == MachineState.STOPPED.getValue()) && currentBatch != null) {
+                    this.saveBatch();
                     this.currentBatch = null;
                 }
-
+                // status nodes written to batch, if it exists.
+            } else if (StatusNodes.PRODUCTS_IN_CURRENT_BATCH.nodeId.toParseableString().equals(id) && currentBatch != null) {
+                this.currentBatch.setAmountToProduce(Math.round((float) dataValues.get(i).getValue().getValue()));
             }
+            else if (StatusNodes.MACHINE_SPEED.nodeId.toParseableString().equals(id)) {
+                float speed = (float) dataValues.get(i).getValue().getValue();
+                if (speed > 0) {
+                    this.desiredSpeed = speed;
+                }
+            }
+            else if (MachineNodes.MALT.nodeId.toParseableString().equals(id)) {
+                this.currentIngredients.setMalt((float) dataValues.get(i).getValue().getValue());
+            }
+            else if (MachineNodes.WHEAT.nodeId.toParseableString().equals(id)) {
+                this.currentIngredients.setWheat((float) dataValues.get(i).getValue().getValue());
+            }
+            else if (MachineNodes.HOPS.nodeId.toParseableString().equals(id)) {
+                this.currentIngredients.setHops((float) dataValues.get(i).getValue().getValue());
+            }
+            else if (MachineNodes.BARLEY.nodeId.toParseableString().equals(id)) {
+                this.currentIngredients.setBarley((float) dataValues.get(i).getValue().getValue());
+            }
+            else if (MachineNodes.YEAST.nodeId.toParseableString().equals(id)) {
+                this.currentIngredients.setYeast((float) dataValues.get(i).getValue().getValue());
+            }
+            else if (MachineNodes.MAINTENANCE.nodeId.toParseableString().equals(id)) {
+                UShort maintenance = (UShort) dataValues.get(i).getValue().getValue();
+                this.latestMachineData.setMaintenance(maintenance.doubleValue());
+            }
+            // Command nodes to batch
+            else if (AdminNodes.BATCH_PRODUCT_ID.nodeId.toParseableString().equals(id) && currentBatch != null) {
+                this.currentBatch.setProductType(Math.round((float) dataValues.get(i).getValue().getValue()));
+            }
+
         }
-        if (currentBatch != null) {
-            //todo fix not sending the same object all the time.
-//            CopyOnWriteArrayList copy = new CopyOnWriteArrayList(this.currentBatch.getData());
-            this.currentBatch.addMachineData(latestMachineData);
-            this.currentBatch = this.batchRepository.save(currentBatch);
+
+        if (this.currentBatch != null) {
+            this.saveBatch();
         }
-
-
-
-
 
 
         for (int i = 0; i < managedDataItems.size(); i++) {
             LOGGER.info("new value = " + dataValues.get(i).getValue() + " " + managedDataItems.get(i).getNodeId());
         }
+    }
+
+    private void saveBatch() {
+        this.latestMachineData.setTimestamp(LocalDateTime.now().plusHours(2));
+        this.latestMachineData.setIngredients(new Ingredients((currentIngredients)));
+        this.currentBatch.addMachineData(new MachineData(latestMachineData));
+        this.currentBatch = this.batchRepository.save(this.currentBatch);
     }
 
     private UaSubscriptionManager.SubscriptionListener setupSubListener() {
