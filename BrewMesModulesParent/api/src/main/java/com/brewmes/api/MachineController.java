@@ -4,6 +4,7 @@ import com.brewmes.common.entities.Connection;
 import com.brewmes.common.services.IMachineService;
 import com.brewmes.common.util.Command;
 import com.brewmes.common.util.Products;
+import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,6 +13,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
+import java.util.List;
 import java.util.Optional;
 
 @RestController
@@ -39,8 +41,23 @@ public class MachineController {
 
     @GetMapping("/products")
     public ResponseEntity<Object> getProducts() {
+        List<Products> products = machineService.getProducts();
         if (machineService.getProducts() != null) {
-            return new ResponseEntity<>(machineService.getProducts(), HttpStatus.OK);
+            JsonObject productsObject = new JsonObject();
+            JsonArray array = new JsonArray();
+
+            for (Products product : products) {
+                JsonObject item = new JsonObject();
+                item.addProperty("name", product.productName);
+                item.addProperty("type", product.productType);
+                item.addProperty("speed", product.speedLimit);
+
+                array.add(item);
+            }
+
+            productsObject.add("products", array);
+
+            return new ResponseEntity<>(productsObject.toString(), HttpStatus.OK);
         } else {
             return new ResponseEntity<>("Could not get products", HttpStatus.NOT_FOUND);
         }
