@@ -111,23 +111,23 @@ class ScheduleServiceImplTest {
     }
 
     @Test
-    void getFirstInQueue_success() {
+    void takeFirstInQueue_success() {
         when(scheduleRepository.findAll()).thenReturn(scheduledBatches, scheduledBatches, scheduledBatches, emptyScheduledBatches);
         when(scheduleRepository.saveAll(scheduledBatchesRemoved)).thenReturn(scheduledBatchesRemoved);
         doNothing().when(scheduleRepository).deleteAll();
 
         ScheduledBatch expected = scheduleRepository.findAll().get(0);
 
-        ScheduledBatch actual = scheduleService.getFirstInQueue();
+        ScheduledBatch actual = scheduleService.takeFirstInQueue();
 
         assertEquals(expected, actual);
     }
 
     @Test
-    void getFirstInQueue_another_failure() {
+    void takeFirstInQueue_another_failure() {
         when(scheduleRepository.findAll()).thenReturn(emptyScheduledBatches);
 
-        ScheduledBatch expectNull = scheduleService.getFirstInQueue();
+        ScheduledBatch expectNull = scheduleService.takeFirstInQueue();
 
         assertNull(expectNull);
     }

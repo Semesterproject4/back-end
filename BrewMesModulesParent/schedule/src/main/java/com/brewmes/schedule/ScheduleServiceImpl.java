@@ -34,7 +34,7 @@ public class ScheduleServiceImpl implements IScheduleService {
     }
 
     @Override
-    public ScheduledBatch getFirstInQueue() {
+    public ScheduledBatch takeFirstInQueue() {
         if (!queueIsEmpty()) {
             List<ScheduledBatch> newList = getQueue();
             ScheduledBatch firstBatch = newList.get(0);
