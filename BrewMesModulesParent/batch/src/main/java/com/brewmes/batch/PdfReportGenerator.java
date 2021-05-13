@@ -301,7 +301,7 @@ public class PdfReportGenerator {
                 if (totalTime < timeElapsed) {
                     totalTime = timeElapsed;
                 }
-                series.add((Number) Math.abs(startTime.toEpochSecond(ZoneOffset.MAX) - data.getTimestamp().toEpochSecond(ZoneOffset.MAX)), data.getState());
+                series.add((Number) Math.abs(startTime.toEpochSecond(ZoneOffset.MAX) - data.getTimestamp().toEpochSecond(ZoneOffset.MAX)), data.getState().value);
             }
         }
 
