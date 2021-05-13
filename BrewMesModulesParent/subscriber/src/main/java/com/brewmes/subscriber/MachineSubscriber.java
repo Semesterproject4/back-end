@@ -28,11 +28,6 @@ public class MachineSubscriber implements ISubscribeService {
     public boolean subscribeToMachineValues(String connectionID) {
         Optional<Connection> connection = connectionRepo.findById(connectionID);
 
-        Connection connection1 = new Connection();
-        connection1.setIp(connectionID);
-        connection = Optional.of(connection1);
-
-
         if (connection.isPresent()) {
             if (!activeThreads.containsKey(connectionID)) {
                 Subscription subscription = new Subscription(connection.get(), batchRepository);
