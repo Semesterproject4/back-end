@@ -93,13 +93,6 @@ public class MachineServiceImpl implements IMachineService {
         }
     }
 
-    /**
-     * Takes a command and sends it to the desired machine
-     *
-     * @param command      The {@code command} that should be sent to the machine
-     * @param connectionID The ID of the machine that should receive the {@code command}
-     * @return Returns {@code true} if the control {@code command} was successfully sent, returns {@code false} if the control {@code command} failed
-     */
     @Override
     public boolean controlMachine(Command command, String connectionID) {
         connectToMachine(connectionID);
@@ -119,15 +112,6 @@ public class MachineServiceImpl implements IMachineService {
         }
     }
 
-    /**
-     * Sets the desired values for a production
-     *
-     * @param speed        The desired speed that the production should run at
-     * @param beerType     The desired beer type of the production
-     * @param batchSize    The desired amount of beer to be produced
-     * @param connectionID The ID of the desired machine the values should be set on
-     * @return Returns {@code true} if the variables were successfully set, returns {@code false} if the setting of the variables failed
-     */
     @Override
     public boolean setMachineVariables(double speed, Products beerType, int batchSize, String connectionID) {
         connectToMachine(connectionID);
@@ -149,22 +133,11 @@ public class MachineServiceImpl implements IMachineService {
         }
     }
 
-    /**
-     * Gets all the connections from the database
-     *
-     * @return The list of {@code Connection} objects gotten from the database
-     */
     @Override
     public List<Connection> getConnections() {
         return connectionRepository.findAll();
     }
 
-    /**
-     * Gets the specified connection from the database.
-     *
-     * @param connectionID ID of the desired {@code Connection}.
-     * @return The {@code Connection} object associated with the given ID; {@code null} if no {@code Connection} was found.
-     */
     @Override
     public Connection getConnection(String connectionID) {
         Optional<Connection> connectionOptional = connectionRepository.findById(connectionID);
@@ -172,22 +145,11 @@ public class MachineServiceImpl implements IMachineService {
         return connectionOptional.orElse(null);
     }
 
-    /**
-     * Gets a list of products, so the max speed can be easily read
-     *
-     * @return a {@code List} of {@code Products} if the request was successful; {@code null} if not
-     */
     @Override
     public List<Products> getProducts() {
         return new ArrayList<>(Arrays.asList(Products.values()));
     }
 
-    /**
-     * Adds a connection to a Machine
-     *
-     * @param connection The {@code Connection Object} representation of the machine
-     * @return Returns {@code true} if the connection was successfully made, returns {@code false} if the connection failed
-     */
     @Override
     public boolean addConnection(Connection connection) {
         Connection connectionReturned = connectionRepository.insert(connection);
@@ -195,12 +157,6 @@ public class MachineServiceImpl implements IMachineService {
         return connectionReturned.getId() != null;
     }
 
-    /**
-     * Removes a connection from the database and from the system in general
-     *
-     * @param connectionID The ID of the desired machine
-     * @return {@code true} if the connection was successfully removed, returns {@code false} if the removal failed
-     */
     @Override
     public boolean removeConnection(String connectionID) {
         connectionRepository.deleteById(connectionID);
@@ -208,12 +164,6 @@ public class MachineServiceImpl implements IMachineService {
         return connectionRepository.findById(connectionID).isEmpty();
     }
 
-    /**
-     * Sets the machine in the autobrewing mode so it brews from the queue
-     *
-     * @param connectionID The ID of the machine
-     * @return Returns {@code true} if the autobrewing was successfully started, returns {@code false} if the autobrew starting failed
-     */
     @Override
     public boolean startAutoBrew(String connectionID) {
         connectToMachine(connectionID);
@@ -232,13 +182,7 @@ public class MachineServiceImpl implements IMachineService {
 
         return connection.isAutobrewing();
     }
-
-    /**
-     * Stops the machine from autobrewing
-     *
-     * @param connectionID The ID of the machine
-     * @return Returns {@code true} if the autobrewing was successfully stopped, returns {@code false} if the autobrew stop failed
-     */
+    
     @Override
     public boolean stopAutoBrew(String connectionID) {
         connectToMachine(connectionID);
