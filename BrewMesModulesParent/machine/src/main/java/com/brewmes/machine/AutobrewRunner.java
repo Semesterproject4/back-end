@@ -30,7 +30,7 @@ public class AutobrewRunner implements Runnable {
             int state = subscribeService.getLatestMachineData(connectionID).getState();
             if (state == MachineState.IDLE.value) {
                 if (!scheduleService.queueIsEmpty()) {
-                    ScheduledBatch scheduledBatch = scheduleService.getFirstInQueue();
+                    ScheduledBatch scheduledBatch = scheduleService.takeFirstInQueue();
                     machineService.setMachineVariables(scheduledBatch.getSpeed(), scheduledBatch.getType(), scheduledBatch.getAmount(), connectionID);
                     machineService.controlMachine(Command.START, connectionID);
                 }
