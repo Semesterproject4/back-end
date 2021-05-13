@@ -12,10 +12,10 @@ public interface IMachineService {
      * Takes a command and sends it to the desired machine
      *
      * @param command   The {@code command} that should be sent to the machine
-     * @param machineID The ID of the machine that should receive the {@code command}
+     * @param connectionID The ID of the machine that should receive the {@code command}
      * @return Returns {@code true} if the control {@code command} was successfully sent, returns {@code false} if the control {@code command} failed
      */
-    boolean controlMachine(Command command, String machineID);
+    boolean controlMachine(Command command, String connectionID);
 
     /**
      * Sets the desired values for a production
@@ -23,10 +23,10 @@ public interface IMachineService {
      * @param speed     The desired speed that the production should run at
      * @param beerType  The desired beer type of the production
      * @param batchSize The desired amount of beer to be produced
-     * @param machineID The ID of the desired machine the values should be set on
+     * @param connectionID The ID of the desired machine the values should be set on
      * @return Returns {@code true} if the variables were successfully set, returns {@code false} if the setting of the variables failed
      */
-    boolean setMachineVariables(double speed, Products beerType, int batchSize, String machineID);
+    boolean setMachineVariables(double speed, Products beerType, int batchSize, String connectionID);
 
     /**
      * Gets all the connections from the database
@@ -38,10 +38,10 @@ public interface IMachineService {
     /**
      * Gets the specified connection from the database
      *
-     * @param machineID ID of the desired {@code Connection}
+     * @param connectionID ID of the desired {@code Connection}
      * @return The {@code Connection} object associated with the given ID; {@code null} if no {@code Connection} was found
      */
-    Connection getConnection(String machineID);
+    Connection getConnection(String connectionID);
 
 
     /**
@@ -62,24 +62,24 @@ public interface IMachineService {
     /**
      * Removes a connection from the database and from the system in general
      *
-     * @param machineID The ID of the desired machine
+     * @param connectionID The ID of the desired machine
      * @return {@code true} if the connection was successfully removed, returns {@code false} if the removal failed
      */
-    boolean removeConnection(String machineID);
+    boolean removeConnection(String connectionID);
 
     /**
      * Sets the machine in the autobrewing mode so it brews from the queue
      *
-     * @param machineID The ID of the machine
+     * @param connectionID The ID of the machine
      * @return Returns {@code true} if the autobrewing was successfully started, returns {@code false} if the autobrew starting failed
      */
-    boolean startAutoBrew(String machineID);
+    boolean startAutoBrew(String connectionID);
 
     /**
      * Stops the machine from autobrewing
      *
-     * @param machineID The ID of the machine
+     * @param connectionID The ID of the machine
      * @return Returns {@code true} if the autobrewing was successfully stopped, returns {@code false} if the autobrew stop failed
      */
-    boolean stopAutoBrew(String machineID);
+    boolean stopAutoBrew(String connectionID);
 }
