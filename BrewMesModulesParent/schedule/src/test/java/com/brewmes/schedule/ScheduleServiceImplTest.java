@@ -58,7 +58,7 @@ class ScheduleServiceImplTest {
         when(scheduleRepository.insert(scheduledBatch)).thenReturn(scheduledBatch);
         when(scheduleRepository.findAll()).thenReturn(scheduledBatches);
 
-        int expected = scheduleRepository.findAll().indexOf(scheduledBatch);
+        int expected = scheduledBatches.indexOf(scheduledBatch);
         int actual = scheduleService.addToQueue(scheduledBatch);
 
         assertEquals(expected, actual);
@@ -66,9 +66,10 @@ class ScheduleServiceImplTest {
 
     @Test
     void addToQueue_failure() {
+        when(scheduleRepository.insert(scheduledBatch)).thenReturn(scheduledBatch);
         when(scheduleRepository.findAll()).thenReturn(scheduledBatches);
 
-        int expected = scheduleRepository.findAll().indexOf(scheduledBatch2);
+        int expected = scheduledBatches.indexOf(scheduledBatch2);
         int actual = scheduleService.addToQueue(scheduledBatch);
 
         assertNotEquals(expected, actual);
@@ -77,19 +78,21 @@ class ScheduleServiceImplTest {
     @Test
     void removeFromQueue_success() {
         when(scheduleRepository.existsById("id")).thenReturn(false);
+        doNothing().when(scheduleRepository).deleteById("id");
 
-        boolean actual = scheduleService.removeFromQueue("id");
+        boolean expectTrue = scheduleService.removeFromQueue("id");
 
-        assertTrue(actual);
+        assertTrue(expectTrue);
     }
 
     @Test
     void removeFromQueue_failure() {
         when(scheduleRepository.existsById("id")).thenReturn(true);
+        doNothing().when(scheduleRepository).deleteById("id");
 
-        boolean actual = scheduleService.removeFromQueue("id");
+        boolean expectFalse = scheduleService.removeFromQueue("id");
 
-        assertFalse(actual);
+        assertFalse(expectFalse);
     }
 
     @Test
@@ -103,7 +106,7 @@ class ScheduleServiceImplTest {
 
     @Test
     void getQueue_failure() {
-        when(scheduleRepository.findAll()).thenReturn(new ArrayList<>());
+        when(scheduleRepository.findAll()).thenReturn(prioList);
 
         List<ScheduledBatch> actual = scheduleService.getQueue();
 
@@ -124,7 +127,7 @@ class ScheduleServiceImplTest {
     }
 
     @Test
-    void takeFirstInQueue_another_failure() {
+    void takeFirstInQueue_failure() {
         when(scheduleRepository.findAll()).thenReturn(emptyScheduledBatches);
 
         ScheduledBatch expectNull = scheduleService.takeFirstInQueue();
@@ -136,18 +139,18 @@ class ScheduleServiceImplTest {
     void queueIsEmpty_success() {
         when(scheduleRepository.findAll()).thenReturn(emptyScheduledBatches);
 
-        boolean expected = scheduleService.queueIsEmpty();
+        boolean expectTrue = scheduleService.queueIsEmpty();
 
-        assertTrue(expected);
+        assertTrue(expectTrue);
     }
 
     @Test
     void queueIsEmpty_failure() {
         when(scheduleRepository.findAll()).thenReturn(scheduledBatches);
 
-        boolean expected = scheduleService.queueIsEmpty();
+        boolean expectFalse = scheduleService.queueIsEmpty();
 
-        assertFalse(expected);
+        assertFalse(expectFalse);
     }
 
     @Test
@@ -156,9 +159,9 @@ class ScheduleServiceImplTest {
         when(scheduleRepository.findAll()).thenReturn(emptyScheduledBatches);
         doNothing().when(scheduleRepository).deleteAll();
 
-        boolean expected = scheduleService.prioritizeQueue(prioList);
+        boolean expectTrue = scheduleService.prioritizeQueue(prioList);
 
-        assertTrue(expected);
+        assertTrue(expectTrue);
     }
 
     @Test
@@ -167,18 +170,19 @@ class ScheduleServiceImplTest {
         when(scheduleRepository.saveAll(scheduledBatches)).thenReturn(prioList);
         doNothing().when(scheduleRepository).deleteAll();
 
-        boolean expected = scheduleService.prioritizeQueue(scheduledBatches);
+        boolean expectFalse = scheduleService.prioritizeQueue(scheduledBatches);
 
-        assertFalse(expected);
+        assertFalse(expectFalse);
     }
 
     @Test
     void prioritizeQueue_another_failure() {
         when(scheduleRepository.findAll()).thenReturn(prioList);
+        when(scheduleRepository.saveAll(scheduledBatches)).thenReturn(prioList);
         doNothing().when(scheduleRepository).deleteAll();
 
-        boolean expected = scheduleService.prioritizeQueue(prioList);
+        boolean expectFalse = scheduleService.prioritizeQueue(scheduledBatches);
 
-        assertFalse(expected);
+        assertFalse(expectFalse);
     }
 }
