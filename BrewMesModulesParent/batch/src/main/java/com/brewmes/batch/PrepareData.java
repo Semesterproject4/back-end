@@ -5,16 +5,13 @@ import com.brewmes.common.entities.MachineData;
 import com.brewmes.common.services.IBatchReportService;
 import com.brewmes.common.util.Products;
 
-import java.time.LocalDateTime;
 import java.util.ArrayList;
-import java.util.LinkedHashMap;
 import java.util.List;
-import java.util.Map;
 
 public abstract class PrepareData implements IBatchReportService {
-    private double calculateOee(int amountToProduce, double machineSpeed,  int maxMachineSpeed, int acceptedProducts) {
+    private double calculateOee(int amountToProduce, double machineSpeed, int maxMachineSpeed, int acceptedProducts) {
         double plannedProductionTime = (amountToProduce / machineSpeed) * 60;
-        double idealCycleTime = (1.0/maxMachineSpeed) * 60;
+        double idealCycleTime = (1.0 / maxMachineSpeed) * 60;
         return ((acceptedProducts * idealCycleTime) / plannedProductionTime) * 100;
     }
 
@@ -33,6 +30,7 @@ public abstract class PrepareData implements IBatchReportService {
 
     /**
      * Prepares the data for the IBatchReportService
+     *
      * @param batchData The Batch object to be calculated on.
      * @return {@code DataOverTime} object with the calculated values.
      */
@@ -62,7 +60,7 @@ public abstract class PrepareData implements IBatchReportService {
         dot.setMaxHumidity(findMaxValueInMap(humList));
         dot.setMinHumidity(findMinValueInMap(humList));
 
-        double oee = calculateOee(batchData.getAmountToProduce(), batchData.getDesiredSpeed(), Products.values()[batchData.getProductType()].speedLimit, machineData.get(machineData.size()-1).getAcceptableProducts());
+        double oee = calculateOee(batchData.getAmountToProduce(), batchData.getDesiredSpeed(), Products.values()[batchData.getProductType()].speedLimit, machineData.get(machineData.size() - 1).getAcceptableProducts());
         dot.setOee(oee);
 
         return dot;
