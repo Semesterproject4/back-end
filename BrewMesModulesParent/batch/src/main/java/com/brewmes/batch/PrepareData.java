@@ -15,16 +15,16 @@ public abstract class PrepareData implements IBatchReportService {
         return ((acceptedProducts * idealCycleTime) / plannedProductionTime) * 100;
     }
 
-    private double findAvgValueInMap(List<Double> valueMap) {
-        return valueMap.stream().mapToDouble(Double::doubleValue).average().orElse(0);
+    private double findAvgValueInList(List<Double> valueList) {
+        return valueList.stream().mapToDouble(Double::doubleValue).average().orElse(0);
     }
 
-    private double findMinValueInMap(List<Double> valueMap) {
-        return valueMap.stream().mapToDouble(Double::doubleValue).min().orElse(0);
+    private double findMinValueInList(List<Double> valueList) {
+        return valueList.stream().mapToDouble(Double::doubleValue).min().orElse(0);
     }
 
-    private double findMaxValueInMap(List<Double> valueMap) {
-        return valueMap.stream().mapToDouble(Double::doubleValue).max().orElse(0);
+    private double findMaxValueInList(List<Double> valueList) {
+        return valueList.stream().mapToDouble(Double::doubleValue).max().orElse(0);
     }
 
 
@@ -48,17 +48,17 @@ public abstract class PrepareData implements IBatchReportService {
             humList.add(data.getHumidity());
         }
 
-        dot.setAvgTemp(findAvgValueInMap(tempList));
-        dot.setMaxTemp(findMaxValueInMap(tempList));
-        dot.setMinTemp(findMinValueInMap(tempList));
+        dot.setAvgTemp(findAvgValueInList(tempList));
+        dot.setMaxTemp(findMaxValueInList(tempList));
+        dot.setMinTemp(findMinValueInList(tempList));
 
-        dot.setAvgVibration(findAvgValueInMap(vibList));
-        dot.setMaxVibration(findMaxValueInMap(vibList));
-        dot.setMinVibration(findMinValueInMap(vibList));
+        dot.setAvgVibration(findAvgValueInList(vibList));
+        dot.setMaxVibration(findMaxValueInList(vibList));
+        dot.setMinVibration(findMinValueInList(vibList));
 
-        dot.setAvgHumidity(findAvgValueInMap(humList));
-        dot.setMaxHumidity(findMaxValueInMap(humList));
-        dot.setMinHumidity(findMinValueInMap(humList));
+        dot.setAvgHumidity(findAvgValueInList(humList));
+        dot.setMaxHumidity(findMaxValueInList(humList));
+        dot.setMinHumidity(findMinValueInList(humList));
 
         double oee = calculateOee(batchData.getAmountToProduce(), batchData.getDesiredSpeed(), Products.values()[batchData.getProductType()].speedLimit, machineData.get(machineData.size() - 1).getAcceptableProducts());
         dot.setOee(oee);
