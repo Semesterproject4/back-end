@@ -176,11 +176,12 @@ public class Subscription implements Runnable {
             } else if (StatusNodes.NORMALIZED_MACHINE_SPEED.nodeId.toParseableString().equals(id)) {
                 latestMachineData.setNormSpeed((float) dataValues.get(i).getValue().getValue());
             } else if (StatusNodes.MACHINE_STATE.nodeId.toParseableString().equals(id)) {
-                MachineState state = MachineState.valueOf(dataValues.get(i).getValue().getValue().toString());
+                MachineState state = MachineState.getStateFromValue((int) dataValues.get(i).getValue().getValue());
                 latestMachineData.setState(state);
                 // if state is == 6. Make a new batch and save.
                 if (state == MachineState.EXECUTE) {
                     this.currentBatch = new Batch();
+                    this.currentBatch.setConnectionID(connection.getId());
                     this.currentBatch.setData(new ArrayList<>());
                     this.currentBatch.setDesiredSpeed(this.desiredSpeed);
 

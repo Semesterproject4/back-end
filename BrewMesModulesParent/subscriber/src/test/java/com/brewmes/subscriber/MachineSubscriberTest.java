@@ -1,11 +1,10 @@
 package com.brewmes.subscriber;
 
-import com.brewmes.common.entities.Batch;
 import com.brewmes.common.entities.Connection;
 import com.brewmes.common.entities.MachineData;
-import com.brewmes.common_repository.BatchRepository;
 import com.brewmes.common_repository.ConnectionRepository;
 import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
@@ -23,10 +22,8 @@ class MachineSubscriberTest {
 
     private static final String FAKE_ID = "Fake";
     private static final String GOOD_ID = "Good";
-    private static Batch batch;
     private static Connection connection;
-    @Mock
-    BatchRepository batchRepo;
+    private static MachineSubscriber subSpy;
 
     @Mock
     ConnectionRepository conRepo;
@@ -38,49 +35,48 @@ class MachineSubscriberTest {
     Subscription subscription;
 
     @BeforeAll
-    public static void setup() {
+    static void setup() {
         connection = new Connection();
-        batch = new Batch();
+    }
+
+    @BeforeEach
+    void beforeEach() {
+        subSpy = Mockito.spy(subscribeService);
     }
 
     @Test
     void subscribeToMachineValuesSuccess() {
-        MachineSubscriber subSpy = Mockito.spy(subscribeService);
         when(conRepo.findById(GOOD_ID)).thenReturn(Optional.of(connection));
 
-        Mockito.doAnswer(invocation -> {
-            Thread thread = new Thread(new SubscriptionStub());
-            subscribeService.activeThreads.put(GOOD_ID, thread);
-            return null;
-        }).when(subSpy).createSubscription(GOOD_ID, connection);
+        mockSubscription();
 
         assertTrue(subSpy.subscribeToMachineValues(GOOD_ID));
         assertTrue(subSpy.activeThreads.containsKey(GOOD_ID));
     }
 
-
     @Test
     void subscribeToMachineValuesInterrupted() {
-        MachineSubscriber subSpy = Mockito.spy(subscribeService);
         when(conRepo.findById(GOOD_ID)).thenReturn(Optional.of(connection));
-
         Thread thread = new Thread(new SubscriptionStub());
         subSpy.activeThreads.put(GOOD_ID, thread);
         thread.interrupt();
 
+        mockSubscription();
+
+        assertTrue(subSpy.subscribeToMachineValues(GOOD_ID));
+        assertTrue(subSpy.activeThreads.containsKey(GOOD_ID));
+    }
+
+    private void mockSubscription() {
         Mockito.doAnswer(invocation -> {
             Thread thread1 = new Thread(new SubscriptionStub());
             subscribeService.activeThreads.put(GOOD_ID, thread1);
             return null;
         }).when(subSpy).createSubscription(GOOD_ID, connection);
-
-        assertTrue(subSpy.subscribeToMachineValues(GOOD_ID));
-        assertTrue(subSpy.activeThreads.containsKey(GOOD_ID));
     }
 
     @Test
     void subscribeToMachineValuesNotInterrupted() {
-        MachineSubscriber subSpy = Mockito.spy(subscribeService);
         when(conRepo.findById(GOOD_ID)).thenReturn(Optional.of(connection));
 
         Thread thread = new Thread(new SubscriptionStub());
@@ -92,7 +88,6 @@ class MachineSubscriberTest {
 
     @Test
     void subscribeToMachineValuesFail() {
-        MachineSubscriber subSpy = Mockito.spy(subscribeService);
         when(conRepo.findById(FAKE_ID)).thenReturn(Optional.empty());
 
         assertFalse(subSpy.subscribeToMachineValues(FAKE_ID));
@@ -107,8 +102,6 @@ class MachineSubscriberTest {
 
     @Test
     void getLatestMachineDataSuccess() {
-        MachineSubscriber subSpy = Mockito.spy(subscribeService);
-
         MachineData fakeData = new MachineData();
         fakeData.setNormSpeed(123.0);
         SubscriptionStub subscriptionStub = new SubscriptionStub();
@@ -123,15 +116,11 @@ class MachineSubscriberTest {
         assertEquals(fakeData.getNormSpeed(), data.getNormSpeed());
     }
 
-    private class SubscriptionStub implements Runnable {
+    private static class SubscriptionStub implements Runnable {
 
-        MachineData latestMachineData;
+        private MachineData latestMachineData;
 
         public SubscriptionStub() {
-        }
-
-        public MachineData getLatestMachineData() {
-            return latestMachineData;
         }
 
         @Override
