@@ -5,11 +5,11 @@ import com.brewmes.common.entities.Connection;
 import com.brewmes.common.entities.Ingredients;
 import com.brewmes.common.entities.MachineData;
 import com.brewmes.common.util.MachineState;
+import com.brewmes.common.util.machinenodes.AdminNodes;
+import com.brewmes.common.util.machinenodes.CommandNodes;
+import com.brewmes.common.util.machinenodes.MachineNodes;
+import com.brewmes.common.util.machinenodes.StatusNodes;
 import com.brewmes.common_repository.BatchRepository;
-import com.brewmes.subscriber.util.AdminNodes;
-import com.brewmes.subscriber.util.CommandNodes;
-import com.brewmes.subscriber.util.MachineNodes;
-import com.brewmes.subscriber.util.StatusNodes;
 import org.eclipse.milo.opcua.sdk.client.OpcUaClient;
 import org.eclipse.milo.opcua.sdk.client.api.config.OpcUaClientConfigBuilder;
 import org.eclipse.milo.opcua.sdk.client.api.subscriptions.UaSubscription;
@@ -43,7 +43,7 @@ public class Subscription implements Runnable {
     private Ingredients currentIngredients;
     private float desiredSpeed;
 
-    public Subscription(Connection connection, BatchRepository batchRepository)  {
+    public Subscription(Connection connection, BatchRepository batchRepository) {
         this.connection = connection;
         this.batchRepository = batchRepository;
         this.desiredSpeed = -1;
@@ -176,16 +176,16 @@ public class Subscription implements Runnable {
             } else if (StatusNodes.NORMALIZED_MACHINE_SPEED.nodeId.toParseableString().equals(id)) {
                 latestMachineData.setNormSpeed((float) dataValues.get(i).getValue().getValue());
             } else if (StatusNodes.MACHINE_STATE.nodeId.toParseableString().equals(id)) {
-                int state = (int) dataValues.get(i).getValue().getValue();
+                MachineState state = MachineState.valueOf(dataValues.get(i).getValue().getValue().toString());
                 latestMachineData.setState(state);
                 // if state is == 6. Make a new batch and save.
-                if (state == MachineState.EXECUTE.value) {
+                if (state == MachineState.EXECUTE) {
                     this.currentBatch = new Batch();
                     this.currentBatch.setData(new ArrayList<>());
                     this.currentBatch.setDesiredSpeed(this.desiredSpeed);
 
                     // if state is == 17. Save batch and remove the object reference.
-                } else if ((state == MachineState.COMPLETE.value || state == MachineState.ABORTED.value || state == MachineState.STOPPED.getValue()) && currentBatch != null) {
+                } else if ((state == MachineState.COMPLETE || state == MachineState.ABORTED || state == MachineState.STOPPED) && currentBatch != null) {
                     this.saveBatch();
                     this.currentBatch = null;
                 }
