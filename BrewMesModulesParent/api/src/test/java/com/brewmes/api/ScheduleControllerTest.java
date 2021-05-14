@@ -32,8 +32,8 @@ class ScheduleControllerTest {
         ScheduledBatch scheduledBatch = new ScheduledBatch(100, Products.ALE, 100);
         ScheduledBatch scheduledBatch1 = new ScheduledBatch(100, Products.ALCOHOL_FREE, 1);
 
-        when(service.addToQueue(scheduledBatch)).thenReturn(1);
-        when(service.addToQueue(scheduledBatch1)).thenReturn(-1);
+        when(service.addToQueue(scheduledBatch)).thenReturn(true);
+        when(service.addToQueue(scheduledBatch1)).thenReturn(false);
 
         ResponseEntity<String> response = controller.addToQueue(scheduledBatch);
         ResponseEntity<String> response1 = controller.addToQueue(scheduledBatch1);

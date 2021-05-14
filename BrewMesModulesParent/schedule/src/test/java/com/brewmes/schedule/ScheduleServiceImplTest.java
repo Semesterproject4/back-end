@@ -25,6 +25,7 @@ class ScheduleServiceImplTest {
 
     private static ScheduledBatch scheduledBatch;
     private static ScheduledBatch scheduledBatch2;
+    private static ScheduledBatch scheduledBatchID;
     private static List<ScheduledBatch> scheduledBatches;
     private static List<ScheduledBatch> scheduledBatchesRemoved;
     private static List<ScheduledBatch> emptyScheduledBatches;
@@ -38,6 +39,8 @@ class ScheduleServiceImplTest {
     static void setUp() {
         scheduledBatch = new ScheduledBatch(100, Products.PILSNER, 200);
         scheduledBatch2 = new ScheduledBatch(80, Products.PILSNER, 100);
+        scheduledBatchID = new ScheduledBatch(100, Products.PILSNER, 200);
+        scheduledBatchID.setId("id");
 
         scheduledBatches = new ArrayList<>();
         scheduledBatches.add(scheduledBatch);
@@ -55,24 +58,16 @@ class ScheduleServiceImplTest {
 
     @Test
     void addToQueue_success() {
-        when(scheduleRepository.insert(scheduledBatch)).thenReturn(scheduledBatch);
-        when(scheduleRepository.findAll()).thenReturn(scheduledBatches);
+        when(scheduleRepository.insert(scheduledBatch)).thenReturn(scheduledBatchID);
 
-        int expected = scheduledBatches.indexOf(scheduledBatch);
-        int actual = scheduleService.addToQueue(scheduledBatch);
-
-        assertEquals(expected, actual);
+        assertTrue(scheduleService.addToQueue(scheduledBatch));
     }
 
     @Test
     void addToQueue_failure() {
         when(scheduleRepository.insert(scheduledBatch)).thenReturn(scheduledBatch);
-        when(scheduleRepository.findAll()).thenReturn(scheduledBatches);
 
-        int expected = scheduledBatches.indexOf(scheduledBatch2);
-        int actual = scheduleService.addToQueue(scheduledBatch);
-
-        assertNotEquals(expected, actual);
+        assertFalse(scheduleService.addToQueue(scheduledBatch));
     }
 
     @Test
