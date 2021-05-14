@@ -103,9 +103,9 @@ public class Subscription implements Runnable {
     }
 
     /**
-     * Adds all relevant endpoints as {@code ManagedDataItem} to a local list of all endpoints the {@code ManagedSubscription} should subscribe to.
+     * Adds all relevant endpoints as {@code ManagedDataItem} to a local {@code List} of all endpoints the {@code ManagedSubscription} should subscribe to.
      *
-     * @param subscription The {@code ManagedSubscription} to add the
+     * @param subscription The {@code ManagedSubscription} to add the {@code DataItem} to.
      * @throws UaException
      */
     private void createMonitoredItems(ManagedSubscription subscription) throws UaException {
@@ -184,14 +184,15 @@ public class Subscription implements Runnable {
                     this.currentBatch.setConnectionID(connection.getId());
                     this.currentBatch.setData(new ArrayList<>());
                     this.currentBatch.setDesiredSpeed(this.desiredSpeed);
-
-                    // if state is == 17. Save batch and remove the object reference.
-                } else if ((state == MachineState.COMPLETE || state == MachineState.ABORTED || state == MachineState.STOPPED) && currentBatch != null) {
+                }
+                // if state is == 17. Save batch and remove the object reference.
+                else if ((state == MachineState.COMPLETE || state == MachineState.ABORTED || state == MachineState.STOPPED) && currentBatch != null) {
                     this.saveBatch();
                     this.currentBatch = null;
                 }
-                // status nodes written to batch, if it exists.
-            } else if (StatusNodes.PRODUCTS_IN_CURRENT_BATCH.nodeId.toParseableString().equals(id) && currentBatch != null) {
+            }
+            // status nodes written to batch, if it exists.
+            else if (StatusNodes.PRODUCTS_IN_CURRENT_BATCH.nodeId.toParseableString().equals(id) && currentBatch != null) {
                 this.currentBatch.setAmountToProduce(Math.round((float) dataValues.get(i).getValue().getValue()));
             } else if (StatusNodes.MACHINE_SPEED.nodeId.toParseableString().equals(id)) {
                 float speed = (float) dataValues.get(i).getValue().getValue();
