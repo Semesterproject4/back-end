@@ -15,11 +15,10 @@ public class ScheduleServiceImpl implements IScheduleService {
     public ScheduleRepository scheduleRepository;
 
     @Override
-    public int addToQueue(ScheduledBatch scheduledBatch) {
+    public boolean addToQueue(ScheduledBatch scheduledBatch) {
         ScheduledBatch insertedBatch = scheduleRepository.insert(scheduledBatch);
-        int placement = scheduleRepository.findAll().indexOf(insertedBatch); //NOSONAR
 
-        return placement;
+        return insertedBatch.getId() != null;
     }
 
     @Override

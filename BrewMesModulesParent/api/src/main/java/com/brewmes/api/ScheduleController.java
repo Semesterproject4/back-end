@@ -21,9 +21,7 @@ public class ScheduleController {
 
     @PostMapping
     public ResponseEntity<String> addToQueue(@Valid @RequestBody ScheduledBatch scheduledBatch) {
-        int index = scheduleService.addToQueue(scheduledBatch);
-
-        if (index != -1) {
+        if (scheduleService.addToQueue(scheduledBatch)) {
             return new ResponseEntity<>("Scheduled Batch added to queue", HttpStatus.OK);
         } else {
             return new ResponseEntity<>("Scheduled Batch not added to queue", HttpStatus.INTERNAL_SERVER_ERROR);

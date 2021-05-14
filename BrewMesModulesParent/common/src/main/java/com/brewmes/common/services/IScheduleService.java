@@ -10,9 +10,9 @@ public interface IScheduleService {
      * Adds a batch to the global queue.
      *
      * @param scheduledBatch The batch to add to the queue.
-     * @return the placement of the added {@code ScheduledBatch} in the queue; Returns -1 if the batch could not be placed in the queue.
+     * @return {@code true} if it was succesfully added; otherwise {@code false}.
      */
-    int addToQueue(ScheduledBatch scheduledBatch);
+    boolean addToQueue(ScheduledBatch scheduledBatch);
 
     /**
      * Removes a batch from the queue.
