@@ -16,7 +16,7 @@ import java.util.Optional;
 @Service
 public class MachineSubscriber implements ISubscribeService {
     protected final Map<String, Thread> activeThreads = new HashMap<>();
-    protected final Map<String, Runnable> activeSubscriptions = new HashMap<String, Runnable>();
+    protected final Map<String, Subscription> activeSubscriptions = new HashMap<>();
 
     @Autowired
     private ConnectionRepository connectionRepo;
@@ -51,7 +51,7 @@ public class MachineSubscriber implements ISubscribeService {
 
     @Override
     public MachineData getLatestMachineData(String connectionID) {
-        Subscription subscription = (Subscription) activeSubscriptions.get(connectionID);
+        Subscription subscription = activeSubscriptions.get(connectionID);
         if (subscription != null) {
             return subscription.getLatestMachineData();
         } else {

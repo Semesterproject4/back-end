@@ -13,11 +13,10 @@ import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
 
-import java.util.HashMap;
 import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.*;
-import static org.mockito.Mockito.*;
+import static org.mockito.Mockito.when;
 
 @ExtendWith(MockitoExtension.class)
 class MachineSubscriberTest {
@@ -28,11 +27,9 @@ class MachineSubscriberTest {
     private static Connection connection;
     @Mock
     BatchRepository batchRepo;
-    @Mock
-    ConnectionRepository conRepo;
 
     @Mock
-    HashMap<String, Subscription> subMap;
+    ConnectionRepository conRepo;
 
     @InjectMocks
     MachineSubscriber subscribeService;
@@ -43,7 +40,7 @@ class MachineSubscriberTest {
     @BeforeAll
     public static void setup() {
         connection = new Connection();
-         batch = new Batch();
+        batch = new Batch();
     }
 
     @Test
@@ -81,6 +78,17 @@ class MachineSubscriberTest {
         assertTrue(subSpy.activeThreads.containsKey(GOOD_ID));
     }
 
+    @Test
+    void subscribeToMachineValuesNotInterrupted() {
+        MachineSubscriber subSpy = Mockito.spy(subscribeService);
+        when(conRepo.findById(GOOD_ID)).thenReturn(Optional.of(connection));
+
+        Thread thread = new Thread(new SubscriptionStub());
+        subSpy.activeThreads.put(GOOD_ID, thread);
+
+        assertTrue(subSpy.subscribeToMachineValues(GOOD_ID));
+        assertTrue(subSpy.activeThreads.containsKey(GOOD_ID));
+    }
 
     @Test
     void subscribeToMachineValuesFail() {
@@ -107,7 +115,7 @@ class MachineSubscriberTest {
         subscriptionStub.latestMachineData = fakeData;
 
         when(subscription.getLatestMachineData()).thenReturn(fakeData);
-        subSpy.activeSubscriptions.put(GOOD_ID,subscription);
+        subSpy.activeSubscriptions.put(GOOD_ID, subscription);
 
         MachineData data = subSpy.getLatestMachineData(GOOD_ID);
 
@@ -122,7 +130,7 @@ class MachineSubscriberTest {
         public SubscriptionStub() {
         }
 
-        public MachineData getLatestMachineData(){
+        public MachineData getLatestMachineData() {
             return latestMachineData;
         }
 

@@ -74,9 +74,9 @@ public class Subscription implements Runnable {
 
         } catch (UaException | InterruptedException e) {
             Thread.currentThread().interrupt();
-            e.printStackTrace();
+            LOGGER.warning(Arrays.toString(e.getStackTrace()));
         } catch (ExecutionException e) {
-            e.printStackTrace();
+            LOGGER.warning(Arrays.toString(e.getStackTrace()));
         }
     }
 

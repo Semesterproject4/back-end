@@ -3,14 +3,22 @@ package com.brewmes.common.entities;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotEquals;
 
 class IngredientsTest {
     Ingredients ingredients;
 
     @BeforeEach
     void setUp() {
-        this.ingredients = new Ingredients(1000,999,100,1002,132);
+        this.ingredients = new Ingredients(1000, 999, 100, 1002, 132);
+    }
+
+    @Test
+    void copyConstructor() {
+        Ingredients ingredientsCopy = new Ingredients();
+        Ingredients ingredientsCopy2 = new Ingredients(ingredientsCopy);
+        assertNotEquals(ingredientsCopy, ingredientsCopy2);
     }
 
     @Test
