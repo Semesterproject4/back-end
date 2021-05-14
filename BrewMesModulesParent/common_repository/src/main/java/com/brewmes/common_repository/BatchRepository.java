@@ -8,5 +8,5 @@ import java.util.List;
 
 @Repository
 public interface BatchRepository extends MongoRepository<Batch, String> {
-    public List<Batch> findByConnectionID(String connectionID);
+    List<Batch> findByConnectionID(String connectionID);
 }

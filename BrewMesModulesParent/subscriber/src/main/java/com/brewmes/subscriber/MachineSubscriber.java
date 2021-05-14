@@ -15,8 +15,8 @@ import java.util.Optional;
 
 @Service
 public class MachineSubscriber implements ISubscribeService {
-    private final Map<String, Thread> activeThreads = new HashMap<>();
-    private final Map<String, Subscription> activeSubscriptions = new HashMap<>();
+    protected final Map<String, Thread> activeThreads = new HashMap<>();
+    protected final Map<String, Runnable> activeSubscriptions = new HashMap<String, Runnable>();
 
     @Autowired
     private ConnectionRepository connectionRepo;
@@ -30,18 +30,10 @@ public class MachineSubscriber implements ISubscribeService {
 
         if (connection.isPresent()) {
             if (!activeThreads.containsKey(connectionID)) {
-                Subscription subscription = new Subscription(connection.get(), batchRepository);
-                Thread thread = new Thread(subscription);
-                thread.start();
-                activeThreads.put(connectionID, thread);
-                activeSubscriptions.put(connectionID, subscription);
+                createSubscription(connectionID, connection.get());
             } else {
                 if (activeThreads.get(connectionID).isInterrupted()) {
-                    Subscription subscription = new Subscription(connection.get(), batchRepository);
-                    Thread thread = new Thread(subscription);
-                    thread.start();
-                    activeThreads.put(connectionID, thread);
-                    activeSubscriptions.put(connectionID, subscription);
+                    createSubscription(connectionID, connection.get());
                 }
             }
             return true;
@@ -49,9 +41,21 @@ public class MachineSubscriber implements ISubscribeService {
         return false;
     }
 
+    protected void createSubscription(String connectionID, Connection connection) {
+        Subscription subscription = new Subscription(connection, batchRepository);
+        Thread thread = new Thread(subscription);
+        thread.start();
+        activeThreads.put(connectionID, thread);
+        activeSubscriptions.put(connectionID, subscription);
+    }
+
     @Override
     public MachineData getLatestMachineData(String connectionID) {
-        Subscription subscription = activeSubscriptions.get(connectionID);
-        return subscription.getLatestMachineData();
+        Subscription subscription = (Subscription) activeSubscriptions.get(connectionID);
+        if (subscription != null) {
+            return subscription.getLatestMachineData();
+        } else {
+            return null;
+        }
     }
 }
