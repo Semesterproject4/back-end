@@ -29,12 +29,8 @@ public class MachineSubscriber implements ISubscribeService {
         Optional<Connection> connection = connectionRepo.findById(connectionID);
 
         if (connection.isPresent()) {
-            if (!activeThreads.containsKey(connectionID)) {
+            if (!activeThreads.containsKey(connectionID) || activeThreads.get(connectionID).isInterrupted()) {
                 createSubscription(connectionID, connection.get());
-            } else {
-                if (activeThreads.get(connectionID).isInterrupted()) {
-                    createSubscription(connectionID, connection.get());
-                }
             }
             return true;
         }
