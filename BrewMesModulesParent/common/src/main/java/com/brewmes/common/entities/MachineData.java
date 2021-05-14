@@ -1,10 +1,12 @@
 package com.brewmes.common.entities;
 
+import com.brewmes.common.util.MachineState;
+
 import java.time.LocalDateTime;
 
 public class MachineData {
     private double normSpeed;
-    private int state;
+    private MachineState state;
     private double temperature;
     private double vibration;
     private double humidity;
@@ -18,7 +20,7 @@ public class MachineData {
     public MachineData() {
     }
 
-    public MachineData(double normSpeed, int state, double temperature, double vibration, double humidity, Ingredients ingredients, int acceptableProducts, int defectProducts, int processed, double maintenance, LocalDateTime timestamp) { //NOSONAR
+    public MachineData(double normSpeed, MachineState state, double temperature, double vibration, double humidity, Ingredients ingredients, int acceptableProducts, int defectProducts, int processed, double maintenance, LocalDateTime timestamp) { //NOSONAR
         this.normSpeed = normSpeed;
         this.state = state;
         this.temperature = temperature;
@@ -54,11 +56,11 @@ public class MachineData {
         this.normSpeed = normSpeed;
     }
 
-    public int getState() {
+    public MachineState getState() {
         return state;
     }
 
-    public void setState(int state) {
+    public void setState(MachineState state) {
         this.state = state;
     }
 

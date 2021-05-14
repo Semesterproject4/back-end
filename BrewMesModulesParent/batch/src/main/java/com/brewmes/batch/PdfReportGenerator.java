@@ -44,13 +44,13 @@ public class PdfReportGenerator {
      * Method makes a pdf report of a batch named "batch_report.pdf"
      * @param data is an object of {@code DataOverTime} which represents a batch and its data which is reliant on time
      */
-    public static void generatePdf(DataOverTime data) {
+    public static void generatePdf(DataOverTime data, String destinationPath) {
         try {
             dataOverTime = data;
             batch = dataOverTime.getBatch();
             MachineData lastMachineData = batch.getData().get(batch.getData().size() - 1);
 
-            String destination = "batch_report.pdf";
+            String destination = destinationPath;
             File file = new File(destination);
             Document document = new Document();
             pdfWriter = PdfWriter.getInstance(document, new FileOutputStream(file));
@@ -301,7 +301,7 @@ public class PdfReportGenerator {
                 if (totalTime < timeElapsed) {
                     totalTime = timeElapsed;
                 }
-                series.add((Number) Math.abs(startTime.toEpochSecond(ZoneOffset.MAX) - data.getTimestamp().toEpochSecond(ZoneOffset.MAX)), data.getState());
+                series.add((Number) Math.abs(startTime.toEpochSecond(ZoneOffset.MAX) - data.getTimestamp().toEpochSecond(ZoneOffset.MAX)), data.getState().value);
             }
         }
 

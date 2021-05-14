@@ -11,11 +11,17 @@ import static org.junit.jupiter.api.Assertions.*;
 class BatchTest {
 
     private Batch batch;
+    private Batch batchNoArg;
 
 
     @BeforeEach
     void setUp() {
         this.batch = new Batch("1", 1, 100, 100.0);
+        this.batchNoArg = new Batch();
+    }
+
+    void testNoArg() {
+        assertNotNull(batchNoArg);
     }
 
     @Test

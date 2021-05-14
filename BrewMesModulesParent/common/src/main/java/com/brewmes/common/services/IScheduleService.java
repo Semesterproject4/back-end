@@ -32,9 +32,10 @@ public interface IScheduleService {
     /**
      * Gets the first entity in the queue.
      *
-     * @return the next batch to produce; {@code null} if no {@code ScheduledBatch} is found in the queue.
+     * @return the next batch to produce; {@code null} if the batch could not be deleted in the database;
+     * {@code null} if no {@code ScheduledBatch} is found in the queue.
      */
-    ScheduledBatch getFirstInQueue();
+    ScheduledBatch takeFirstInQueue();
 
     /**
      * Checks if there are any batches in the queue.
@@ -44,19 +45,10 @@ public interface IScheduleService {
     boolean queueIsEmpty();
 
     /**
-     * Moves the {@code ScheduledBatch} up in the queue by one spot. If the batch was number 4 in the queue, it will now be number 3.
+     * Prioritizes {@code ScheduledBatch} in the queue based on the list.
      *
-     * @param scheduleID a {@code ScheduledBatch}'s ID.
-     * @return {@code True} if the {@code ScheduledBatch} was moved; {@code False} if an error occurred.
+     * @param prioritizedIDList a {@code list} of {@code ScheduledBatch} IDs.
+     * @return {@code True} if the prioritization was successful; {@code False} if an error occurred.
      */
-    boolean moveUpInQueue(String scheduleID);
-
-    /**
-     * Moves the {@code ScheduledBatch} down in the queue by one spot. If the batch was number 2 in the queue, it will now be number 3.
-     *
-     * @param scheduleID a {@code ScheduledBatch}'s ID.
-     * @return {@code True} if the {@code ScheduledBatch} was moved; {@code False} if an error occurred.
-     */
-    boolean moveDownInQueue(String scheduleID);
-
+    boolean prioritizeQueue(List<ScheduledBatch> prioritizedIDList);
 }

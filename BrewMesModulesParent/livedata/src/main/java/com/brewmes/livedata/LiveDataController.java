@@ -17,7 +17,7 @@ public class LiveDataController {
 
     @MessageMapping("/connect/{id}")
     @SendTo("/topic/{id}/livedata")
-    @CrossOrigin(origins = "*")
+    @CrossOrigin(origins = "http://localhost:3000")
     public MachineData livedata(@DestinationVariable("id") String id) throws InterruptedException {
 
         MachineData machineData = subscribeService.getLatestMachineData(id);

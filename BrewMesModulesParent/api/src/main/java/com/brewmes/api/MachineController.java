@@ -4,6 +4,7 @@ import com.brewmes.common.entities.Connection;
 import com.brewmes.common.services.IMachineService;
 import com.brewmes.common.util.Command;
 import com.brewmes.common.util.Products;
+import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,10 +13,12 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
+import java.util.List;
 import java.util.Optional;
 
 @RestController
-@RequestMapping(value = "/api/machine")
+@RequestMapping(value = "/api/machines")
+@CrossOrigin(origins = "http://localhost:3000")
 public class MachineController {
 
     @Autowired(required = false)
@@ -37,6 +40,30 @@ public class MachineController {
         }
     }
 
+    @GetMapping("/products")
+    public ResponseEntity<Object> getProducts() {
+        List<Products> products = machineService.getProducts();
+        if (machineService.getProducts() != null) {
+            JsonObject productsObject = new JsonObject();
+            JsonArray array = new JsonArray();
+
+            for (Products product : products) {
+                JsonObject item = new JsonObject();
+                item.addProperty("name", product.productName);
+                item.addProperty("type", product.productType);
+                item.addProperty("speed", product.speedLimit);
+
+                array.add(item);
+            }
+
+            productsObject.add("products", array);
+
+            return new ResponseEntity<>(productsObject.toString(), HttpStatus.OK);
+        } else {
+            return new ResponseEntity<>("Could not get products", HttpStatus.NOT_FOUND);
+        }
+    }
+
     @DeleteMapping(value = "/{id}")
     public ResponseEntity<String> removeConnection(@PathVariable("id") String id) {
         if (machineService.removeConnection(id)) {
@@ -46,7 +73,7 @@ public class MachineController {
         }
     }
 
-    @PostMapping()
+    @PostMapping
     public ResponseEntity<String> addConnection(@Valid @RequestBody Connection connection) {
         if (machineService.addConnection(connection)) {
             return new ResponseEntity<>("Machine is added", HttpStatus.OK);
@@ -55,7 +82,7 @@ public class MachineController {
         }
     }
 
-    @PutMapping(value = "/{id}")
+    @PatchMapping(value = "/{id}")
     public ResponseEntity<String> controlMachine(@PathVariable("id") String id, @RequestParam String command) {
         if (machineService.controlMachine(Command.valueOf(command.toUpperCase()), id)) {
             return new ResponseEntity<>("Command successful", HttpStatus.OK);
@@ -79,14 +106,14 @@ public class MachineController {
         Products beerType = Products.valueOf(jsonObject.get("beerType").getAsString().toUpperCase());
         int batchSize = jsonObject.get("batchSize").getAsInt();
 
-        if (machineService.setVariables(speed, beerType, batchSize, id)) {
+        if (machineService.setMachineVariables(speed, beerType, batchSize, id)) {
             return new ResponseEntity<>("Machine Variables set", HttpStatus.OK);
         } else {
             return new ResponseEntity<>("Could not set Machine Variables", HttpStatus.NOT_FOUND);
         }
     }
 
-    @PutMapping(value = "/{id}/autobrew/start")
+    @PatchMapping(value = "/{id}/autobrew/start")
     public ResponseEntity<String> startAutoBrew(@PathVariable("id") String id) {
         if (machineService.startAutoBrew(id)) {
             return new ResponseEntity<>("Auto Brew started", HttpStatus.OK);
@@ -95,7 +122,7 @@ public class MachineController {
         }
     }
 
-    @PutMapping(value = "/{id}/autobrew/stop")
+    @PatchMapping(value = "/{id}/autobrew/stop")
     public ResponseEntity<String> stopAutoBrew(@PathVariable("id") String id) {
         if (machineService.stopAutoBrew(id)) {
             return new ResponseEntity<>("Auto Brew stopped", HttpStatus.OK);

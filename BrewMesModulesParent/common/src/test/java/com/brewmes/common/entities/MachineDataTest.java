@@ -1,5 +1,6 @@
 package com.brewmes.common.entities;
 
+import com.brewmes.common.util.MachineState;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -14,7 +15,7 @@ class MachineDataTest {
 
     @BeforeEach
     void setUp() {
-        machineData = new MachineData(50.0, 2, 2.0, 3.0, 4.0,
+        machineData = new MachineData(50.0, MachineState.STOPPED, 2.0, 3.0, 4.0,
                 new Ingredients(100.0, 200.0, 300.0, 400.0, 500.0),
                 25, 10, 35, 20.0, LocalDateTime.of(1995, 5, 2, 3, 25));
         machineDataNoArg = new MachineData();
@@ -33,13 +34,13 @@ class MachineDataTest {
 
     @Test
     void getState() {
-        assertEquals(2, machineData.getState());
+        assertEquals(MachineState.STOPPED, machineData.getState());
     }
 
     @Test
     void setState() {
-        machineData.setState(17);
-        assertEquals(17, machineData.getState());
+        machineData.setState(MachineState.COMPLETE);
+        assertEquals(MachineState.COMPLETE, machineData.getState());
     }
 
     @Test
@@ -151,7 +152,7 @@ class MachineDataTest {
 
     @Test
     void getNullValue() {
-        assertEquals(0, machineDataNoArg.getState());
+        assertEquals(null, machineDataNoArg.getState());
         assertEquals(0.0, machineDataNoArg.getMaintenance());
     }
 }
