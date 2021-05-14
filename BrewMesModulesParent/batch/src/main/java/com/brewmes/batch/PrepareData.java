@@ -6,6 +6,7 @@ import com.brewmes.common.services.IBatchReportService;
 import com.brewmes.common.util.Products;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
@@ -17,16 +18,16 @@ public abstract class PrepareData implements IBatchReportService {
         return ((acceptedProducts * idealCycleTime) / plannedProductionTime) * 100;
     }
 
-    private double findAvgValueInMap(Map<LocalDateTime, Double> valueMap) {
-        return valueMap.values().stream().mapToDouble(Double::doubleValue).average().orElse(0);
+    private double findAvgValueInMap(List<Double> valueMap) {
+        return valueMap.stream().mapToDouble(Double::doubleValue).average().orElse(0);
     }
 
-    private double findMinValueInMap(Map<LocalDateTime, Double> valueMap) {
-        return valueMap.values().stream().mapToDouble(Double::doubleValue).min().orElse(0);
+    private double findMinValueInMap(List<Double> valueMap) {
+        return valueMap.stream().mapToDouble(Double::doubleValue).min().orElse(0);
     }
 
-    private double findMaxValueInMap(Map<LocalDateTime, Double> valueMap) {
-        return valueMap.values().stream().mapToDouble(Double::doubleValue).max().orElse(0);
+    private double findMaxValueInMap(List<Double> valueMap) {
+        return valueMap.stream().mapToDouble(Double::doubleValue).max().orElse(0);
     }
 
 
@@ -39,14 +40,14 @@ public abstract class PrepareData implements IBatchReportService {
         DataOverTime dot = new DataOverTime();
         dot.setBatch(batchData);
         List<MachineData> machineData = dot.getBatch().getData();
-        Map<LocalDateTime, Double> tempList = new LinkedHashMap<>();
-        Map<LocalDateTime, Double> vibList = new LinkedHashMap<>();
-        Map<LocalDateTime, Double> humList = new LinkedHashMap<>();
+        List<Double> tempList = new ArrayList<>();
+        List<Double> vibList = new ArrayList<>();
+        List<Double> humList = new ArrayList<>();
 
         for (MachineData data : machineData) {
-            tempList.put(data.getTimestamp(), data.getTemperature());
-            vibList.put(data.getTimestamp(), data.getVibration());
-            humList.put(data.getTimestamp(), data.getHumidity());
+            tempList.add(data.getTemperature());
+            vibList.add(data.getVibration());
+            humList.add(data.getHumidity());
         }
 
         dot.setAvgTemp(findAvgValueInMap(tempList));
