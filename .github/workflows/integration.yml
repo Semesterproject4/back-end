@@ -26,7 +26,7 @@ jobs:
           node-version: 14.x
       - name: run and install test-directory
         working-directory: ./integrationTest/testFiles/
-        run: npm install newman && curl http://localhost:8080/api/batches
+        run: npm install newman && curl http://127.0.0.1:8080/api/batches
       - name: test
         working-directory: ./integrationTest/testFiles/
         run: npm test
