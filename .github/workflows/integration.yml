@@ -16,7 +16,7 @@ jobs:
         with:
            ref: IntegrationTestCI
       - name: Test
-        working-directory: ./integrationTesting/
+        working-directory: ./integrationTest/
         run: docker-compose up -d && echo sleeping 30 && sleep 30
       - name:  Testing
         run: docker ps -a
