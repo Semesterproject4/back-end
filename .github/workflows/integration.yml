@@ -25,7 +25,7 @@ jobs:
         with:
           node-version: 14.x
       - name: run and install test-directory
-        working-directory: ./integrationTesting/testFiles/
+        working-directory: ./integrationTest/testFiles/
         run: npm install newman
       - name: test
         working-directory: ./test
