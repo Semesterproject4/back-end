@@ -28,5 +28,5 @@ jobs:
         working-directory: ./integrationTest/testFiles/
         run: npm install newman
       - name: test
-        working-directory: ./test
+        working-directory: ./integrationTest/testFiles/
         run: npm test
