@@ -17,7 +17,7 @@ jobs:
            ref: IntegrationTestCI
       - name: Test
         working-directory: ./integrationTest/
-        run: docker-compose up && sleep 60
+        run: docker-compose up && sleep 61
       - name:  Testing
         run: docker ps -a
       - name: Use Node.js v14
