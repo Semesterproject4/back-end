@@ -20,6 +20,6 @@ ENV WINEARCH win32
 ENV DISPLAY :0
 RUN winetricks wine-mono Gecko || echo "workaround about the exit '1' code"
 
-RUN chmod -X start_server.sh
+RUN chmod +x start_server.sh
 
 CMD ["./start_server.sh"]
