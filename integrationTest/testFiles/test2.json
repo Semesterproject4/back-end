@@ -41,7 +41,7 @@
 				"method": "GET",
 				"header": [],
 				"url": {
-					"raw": "localhost:8080/api/batches",
+					"raw": "http://localhost:8080/api/batches",
 					"host": [
 						"localhost"
 					],
