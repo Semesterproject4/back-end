@@ -11,13 +11,15 @@ jobs:
     runs-on: ubuntu-latest
     timeout-minutes: 15
     steps:
+      - name: ip check
+        run: curl ifconfig.me
       - name: Checkout
         uses: actions/checkout@v2
         with:
            ref: IntegrationTestCI
       - name: Test
         working-directory: ./integrationTest/
-        run: docker-compose up && echo sleeping 90 seconds && sleep 90
+        run: docker-compose up -d && echo sleeping 90 seconds && sleep 90
       - name:  Testing
         run: docker ps -a
       - name: Use Node.js v14
