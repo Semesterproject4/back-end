@@ -12,7 +12,9 @@ jobs:
     timeout-minutes: 5
     steps:
       - name: Checkout
-        uses: actions/checkout@master
+        uses: actions/checkout@v2
+        with:
+           ref: IntegrationTestCI
       - name: Test
         working-directory: ./integrationTesting/
         run: docker-compose up -d && echo sleeping 30 && sleep 30
