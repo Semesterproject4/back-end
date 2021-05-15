@@ -1,0 +1,195 @@
+{
+	"info": {
+		"_postman_id": "bb98ddc5-d932-4769-9f88-f79332f9448c",
+		"name": "BrewMES_IntegrationTest",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "get all batches",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"status Test\", function() {\r",
+							"    pm.response.to.have.status(200);\r",
+							"});\r",
+							"\r",
+							"pm.test(\"reponse body test\", function(){\r",
+							"    pm.response.to.be.ok;\r",
+							"    pm.response.to.be.withBody;\r",
+							"    pm.response.to.be.json;\r",
+							"});\r",
+							"\r",
+							"const jsonData = pm.response.json();\r",
+							"pm.test(\"test fields of get response\", () => {\r",
+							"    pm.expect(jsonData).to.be.an(\"array\");\r",
+							"    pm.response.to.have.jsonBody(\"[0].id\");\r",
+							"    pm.response.to.have.jsonBody(\"[0].productType\")\r",
+							"    pm.response.to.have.jsonBody(\"[0].amountToProduce\");\r",
+							"    pm.response.to.have.jsonBody(\"[0].desiredSpeed\")\r",
+							"    pm.response.to.have.jsonBody(\"[0].oee\")\r",
+							"    pm.response.to.have.jsonBody(\"[0].data\")\r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "localhost:8080/api/batches",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"batches"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "pdf report",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Get pdf report succes test\", function() {\r",
+							"    pm.response.to.have.status(200);\r",
+							"});\r",
+							"\r",
+							"pm.test(\"reponse body test\", function(){\r",
+							"    pm.response.to.be.ok;\r",
+							"    pm.response.to.be.withBody;\r",
+							"});\r",
+							"\r",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "localhost:8080/api/batches/609e8ed6db0e686c58ef35d7/pdf",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"batches",
+						"609e8ed6db0e686c58ef35d7",
+						"pdf"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "dashboard report",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"status Test\", function() {\r",
+							"    pm.response.to.have.status(200);\r",
+							"});\r",
+							"\r",
+							"pm.test(\"reponse body test\", function(){\r",
+							"    pm.response.to.be.ok;\r",
+							"    pm.response.to.be.withBody;\r",
+							"    pm.response.to.be.json;\r",
+							"});\r",
+							"\r",
+							"const jsonData = pm.response.json();\r",
+							"pm.test(\"test fields of get response\", () => {\r",
+							"    pm.expect(jsonData).to.be.an(\"object\");\r",
+							"    pm.response.to.have.jsonBody(\"batch\")\r",
+							"    pm.response.to.have.jsonBody(\"oee\")\r",
+							"    pm.response.to.have.jsonBody(\"avgVibration\")\r",
+							"    pm.response.to.have.jsonBody(\"minVibration\")\r",
+							"    pm.response.to.have.jsonBody(\"maxVibration\")\r",
+							"    pm.response.to.have.jsonBody(\"avgTemp\")\r",
+							"    pm.response.to.have.jsonBody(\"minTemp\")\r",
+							"    pm.response.to.have.jsonBody(\"maxTemp\")\r",
+							"    pm.response.to.have.jsonBody(\"avgHumidity\")\r",
+							"    pm.response.to.have.jsonBody(\"minHumidity\")\r",
+							"    pm.response.to.have.jsonBody(\"maxHumidity\")\r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "localhost:8080/api/batches/609e8ed6db0e686c58ef35d7/dashboard",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"batches",
+						"609e8ed6db0e686c58ef35d7",
+						"dashboard"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "dashboard report fail",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"status Test\", function() {\r",
+							"    pm.response.to.have.status(404);\r",
+							"});\r",
+							"\r",
+							"var jsonData = pm.response;\r",
+							"pm.test(\"reponse body test\", function(){\r",
+							"    pm.response.to.be.notFound;\r",
+							"    pm.response.to.be.withBody;\r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "localhost:8080/api/batches/609e8ed6db/dashboard",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"batches",
+						"609e8ed6db",
+						"dashboard"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}

@@ -1,0 +1,12 @@
+version: "3.7"
+
+services:
+  sim:
+    container_name: simulation_sim
+    build:
+      context: .
+      dockerfile: Dockerfile
+    ports:
+        - 4840:4841
+        - 81:81
+        - 5900:5900
