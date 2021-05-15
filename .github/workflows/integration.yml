@@ -17,7 +17,7 @@ jobs:
            ref: IntegrationTestCI
       - name: Test
         working-directory: ./integrationTest/
-        run: docker-compose up -d && echo sleeping 30 && sleep 120
+        run: docker-compose up && sleep 60
       - name:  Testing
         run: docker ps -a
       - name: Use Node.js v14
@@ -26,7 +26,7 @@ jobs:
           node-version: 14.x
       - name: run and install test-directory
         working-directory: ./integrationTest/testFiles/
-        run: npm install newman && curl http://localhost:8080/api/batches
+        run: npm install newman 
       - name: test
         working-directory: ./integrationTest/testFiles/
         run: npm test
