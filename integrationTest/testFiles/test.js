@@ -4,6 +4,7 @@ let errorFlag = false;
 newman.run({
     collection: require('./test2.json'),
     reporters: 'cli',
+    iterationCount: 2,
     bail: true
 }, function (err) {
     if (err) { 
