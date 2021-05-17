@@ -1,0 +1,618 @@
+{
+	"info": {
+		"_postman_id": "bb98ddc5-d932-4769-9f88-f79332f9448c",
+		"name": "BrewMES_IntegrationTest",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "api_machies",
+			"item": [
+				{
+					"name": "get products ",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Response time is less than 400ms\", function () {\r",
+									"    pm.expect(pm.response.responseTime).to.be.below(400);\r",
+									"});\r",
+									"\r",
+									"pm.test(\"status Test\", function() {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});\r",
+									"\r",
+									"\r",
+									"const jsonData = pm.response.json();\r",
+									"pm.test(\"Body test\", () => {\r",
+									"    pm.expect(jsonData.products).to.be.an(\"array\");\r",
+									"    pm.response.to.have.jsonBody(\"products.[0].name\")\r",
+									"    pm.response.to.have.jsonBody(\"products.[0].type\")\r",
+									"    pm.response.to.have.jsonBody(\"products.[0].speed\")\r",
+									"});\r",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "localhost:8080/api/machines/products",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"machines",
+								"products"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "add_machine",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"status Test\", function() {\r",
+									"    pm.response.to.have.status(200);\r",
+									"    pm.globals.set(\"machineName\", \"dockerInternal\");\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"ip\": \"opc.tcp://host.docker.internal:4840\",\r\n    \"name\": \"dockerInternal\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "localhost:8080/api/machines",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"machines"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "get machines",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Response time is less than 400ms\", function () {\r",
+									"    pm.expect(pm.response.responseTime).to.be.below(400);\r",
+									"});\r",
+									"\r",
+									"pm.test(\"status Test\", function() {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});\r",
+									"\r",
+									"\r",
+									"const jsonData = pm.response.json();\r",
+									"pm.test(\"Body test\", () => {\r",
+									"    pm.expect(jsonData).to.be.an(\"array\");\r",
+									"    pm.response.to.have.jsonBody(\"[0].id\")\r",
+									"    pm.response.to.have.jsonBody(\"[0].ip\")\r",
+									"    pm.response.to.have.jsonBody(\"[0].name\")\r",
+									"});\r",
+									"\r",
+									"pm.test(\"test get expected machine id\", () => {\r",
+									"    let flag = false; \r",
+									"    jsonData.forEach(machine => {\r",
+									"        if(machine.name == pm.globals.get(\"machineName\")){\r",
+									"            pm.globals.set(\"machineID\", machine.id);\r",
+									"            flag = true; \r",
+									"        }  \r",
+									"    });\r",
+									"    pm.expect(flag).to.be.true;\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "localhost:8080/api/machines",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"machines"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "get machine",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Response time is less than 400ms\", function () {\r",
+									"    pm.expect(pm.response.responseTime).to.be.below(400);\r",
+									"});\r",
+									"\r",
+									"pm.test(\"status Test\", function() {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});\r",
+									"\r",
+									"\r",
+									"const jsonData = pm.response.json();\r",
+									"pm.test(\"Body test\", () => {\r",
+									"    pm.expect(jsonData).to.be.an(\"object\");\r",
+									"    pm.response.to.have.jsonBody(\"id\")\r",
+									"    pm.response.to.have.jsonBody(\"ip\")\r",
+									"    pm.response.to.have.jsonBody(\"name\")\r",
+									"});\r",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "localhost:8080/api/machines/{{machineID}}",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"machines",
+								"{{machineID}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Machine autobrew start test",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Response time is less than 400ms\", function () {\r",
+									"    pm.expect(pm.response.responseTime).to.be.below(400);\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "PATCH",
+						"header": [],
+						"url": {
+							"raw": "localhost:8080/api/machines/{{machineID}}/autobrew/start",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"machines",
+								"{{machineID}}",
+								"autobrew",
+								"start"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Machine autobrew stop test",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Response time is less than 400ms\", function () {\r",
+									"    pm.expect(pm.response.responseTime).to.be.below(400);\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "PATCH",
+						"header": [],
+						"url": {
+							"raw": "localhost:8080/api/machines/{{machineID}}/autobrew/stop",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"machines",
+								"{{machineID}}",
+								"autobrew",
+								"stop"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "set machine variables",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});\r",
+									"\r",
+									"\r",
+									"pm.test(\"Response time is less than 400ms\", function () {\r",
+									"    pm.expect(pm.response.responseTime).to.be.below(400);\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"speed\": 200.0,\r\n    \"beerType\": \"pilsner\",\r\n    \"batchSize\": 100\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "localhost:8080/api/machines/{{machineID}}/variables",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"machines",
+								"{{machineID}}",
+								"variables"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "reset machine",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Response time is less than 400ms\", function () {\r",
+									"    pm.expect(pm.response.responseTime).to.be.below(400);\r",
+									"});\r",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "PATCH",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"speed\": 200,\r\n    \"beerType\": \"pilsner\",\r\n    \"batchSize\": 20\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "localhost:8080/api/machines/{{machineID}}?command=reset",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"machines",
+								"{{machineID}}"
+							],
+							"query": [
+								{
+									"key": "command",
+									"value": "reset"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Delete connection",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Response time is less than 400ms\", function () {\r",
+									"    pm.expect(pm.response.responseTime).to.be.below(400);\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "localhost:8080/api/machines/{{machineID}}",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"machines",
+								"{{machineID}}"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "api_batch",
+			"item": [
+				{
+					"name": "get all batches",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"status Test\", function() {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});\r",
+									"\r",
+									"pm.test(\"response body test\", function(){\r",
+									"    pm.response.to.be.withBody;\r",
+									"    pm.response.to.be.json;\r",
+									"});\r",
+									"\r",
+									"const jsonData = pm.response.json();\r",
+									"pm.test(\"test fields of get response\", () => {\r",
+									"    pm.expect(jsonData).to.be.an(\"array\");\r",
+									"    pm.response.to.have.jsonBody(\"[0].id\");\r",
+									"    pm.response.to.have.jsonBody(\"[0].productType\")\r",
+									"    pm.response.to.have.jsonBody(\"[0].amountToProduce\");\r",
+									"    pm.response.to.have.jsonBody(\"[0].desiredSpeed\")\r",
+									"    pm.response.to.have.jsonBody(\"[0].oee\")\r",
+									"    pm.response.to.have.jsonBody(\"[0].data\")\r",
+									"    pm.globals.set(\"batchID\", jsonData[0].id);\r",
+									"});\r",
+									"\r",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "localhost:8080/api/batches",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"batches"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "pdf report",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Get pdf report succes test\", function() {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});\r",
+									"\r",
+									"pm.test(\"reponse body test\", function(){\r",
+									"    pm.response.to.be.ok;\r",
+									"    pm.response.to.be.withBody;\r",
+									"});\r",
+									"\r",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "localhost:8080/api/batches/{{batchID}}/pdf",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"batches",
+								"{{batchID}}",
+								"pdf"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "dashboard report",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"status Test\", function() {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});\r",
+									"\r",
+									"pm.test(\"reponse body test\", function(){\r",
+									"    pm.response.to.be.ok;\r",
+									"    pm.response.to.be.withBody;\r",
+									"    pm.response.to.be.json;\r",
+									"});\r",
+									"\r",
+									"const jsonData = pm.response.json();\r",
+									"pm.test(\"test fields of get response\", () => {\r",
+									"    pm.expect(jsonData).to.be.an(\"object\");\r",
+									"    pm.response.to.have.jsonBody(\"batch\")\r",
+									"    pm.response.to.have.jsonBody(\"oee\")\r",
+									"    pm.response.to.have.jsonBody(\"avgVibration\")\r",
+									"    pm.response.to.have.jsonBody(\"minVibration\")\r",
+									"    pm.response.to.have.jsonBody(\"maxVibration\")\r",
+									"    pm.response.to.have.jsonBody(\"avgTemp\")\r",
+									"    pm.response.to.have.jsonBody(\"minTemp\")\r",
+									"    pm.response.to.have.jsonBody(\"maxTemp\")\r",
+									"    pm.response.to.have.jsonBody(\"avgHumidity\")\r",
+									"    pm.response.to.have.jsonBody(\"minHumidity\")\r",
+									"    pm.response.to.have.jsonBody(\"maxHumidity\")\r",
+									"});\r",
+									"pm.test(\"Response time is less than 400ms\", function () {\r",
+									"    pm.expect(pm.response.responseTime).to.be.below(400);\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "localhost:8080/api/batches/{{batchID}}/dashboard",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"batches",
+								"{{batchID}}",
+								"dashboard"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "dashboard report fail",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"status Test\", function() {\r",
+									"    pm.response.to.have.status(404);\r",
+									"});\r",
+									"\r",
+									"var jsonData = pm.response;\r",
+									"pm.test(\"reponse body test\", function(){\r",
+									"    pm.response.to.be.notFound;\r",
+									"    pm.response.to.be.withBody;\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "localhost:8080/api/batches/609e8ed6db/dashboard",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"batches",
+								"609e8ed6db",
+								"dashboard"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		}
+	]
+}
