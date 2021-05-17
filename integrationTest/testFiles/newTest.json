@@ -600,10 +600,7 @@
 									"pm.test(\"Status code is 200\", function () {\r",
 									"    pm.response.to.have.status(200);\r",
 									"});\r",
-									"\r",
-									"pm.test(\"Response time is less than 400ms\", function () {\r",
-									"    pm.expect(pm.response.responseTime).to.be.below(400);\r",
-									"});"
+									""
 								],
 								"type": "text/javascript"
 							}
