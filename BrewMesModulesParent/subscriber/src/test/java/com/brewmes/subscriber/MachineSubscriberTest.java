@@ -104,8 +104,6 @@ class MachineSubscriberTest {
     void getLatestMachineDataSuccess() {
         MachineData fakeData = new MachineData();
         fakeData.setNormSpeed(123.0);
-        SubscriptionStub subscriptionStub = new SubscriptionStub();
-        subscriptionStub.latestMachineData = fakeData;
 
         when(subscription.getLatestMachineData()).thenReturn(fakeData);
         subSpy.activeSubscriptions.put(GOOD_ID, subscription);
@@ -117,15 +115,7 @@ class MachineSubscriberTest {
     }
 
     private static class SubscriptionStub implements Runnable {
-
-        private MachineData latestMachineData;
-
-        public SubscriptionStub() {
-        }
-
         @Override
-        public void run() {
-
-        }
+        public void run() {}
     }
 }
