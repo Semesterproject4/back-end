@@ -3,7 +3,6 @@ package com.brewmes.batch;
 import com.brewmes.common.entities.Batch;
 import com.brewmes.common.entities.MachineData;
 import com.brewmes.common.services.IBatchReportService;
-import com.brewmes.common.util.Products;
 
 import java.util.ArrayList;
 import java.util.List;
