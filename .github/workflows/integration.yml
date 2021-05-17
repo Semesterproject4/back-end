@@ -12,7 +12,7 @@ jobs:
     timeout-minutes: 25
     steps:
       - name: ip install and check 
-      - run: ifconfig
+        run: ifconfig
       - name: Checkout
         uses: actions/checkout@v2
         with:
