@@ -72,7 +72,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n    \"ip\": \"opc.tcp://host.docker.internal:4840\",\r\n    \"name\": \"dockerInternal\"\r\n}",
+							"raw": "{\r\n    \"ip\": \"opc.tcp://dockerhost:4840\",\r\n    \"name\": \"dockerInternal\"\r\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -611,7 +611,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n    \"speed\" : 1,\r\n    \"type\" : \"PILSNER\",\r\n    \"amount\": 99999999\r\n}",
+							"raw": "{\"speed\" : 1.0,  \r\n  \"type\" : \"PILSNER\",    \r\n  \"amount\": 99999999\r\n  }",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -627,6 +627,86 @@
 							"path": [
 								"api",
 								"scheduled-batches"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "get queue",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});\r",
+									"\r",
+									"var jsonData = pm.response.json();\r",
+									"pm.test(\"test get expected scheduled-batch id\", () => {\r",
+									"    let flag = false; \r",
+									"    let globalScheduledSpeed = 1.0;\r",
+									"    let globalScheduledAmount = 99999999;\r",
+									"    let globalScheduledType = \"PILSNER\";\r",
+									"    jsonData.forEach(scheduledBatch => {\r",
+									"        if(scheduledBatch.speed == globalScheduledSpeed && scheduledBatch.type == globalScheduledType && scheduledBatch.amount == globalScheduledAmount){\r",
+									"            pm.globals.set(\"scheduledID\", scheduledBatch.id);\r",
+									"            flag = true; \r",
+									"        }\r",
+									"    });\r",
+									"    pm.expect(flag).to.be.true;\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "localhost:8080/api/scheduled-batches",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"scheduled-batches"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "delete scheduled batch",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "localhost:8080/api/scheduled-batches/{{scheduledID}}",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"scheduled-batches",
+								"{{scheduledID}}"
 							]
 						}
 					},
