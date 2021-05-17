@@ -5,6 +5,7 @@ import com.brewmes.common.entities.Connection;
 import com.brewmes.common.entities.Ingredients;
 import com.brewmes.common.entities.MachineData;
 import com.brewmes.common.util.MachineState;
+import com.brewmes.common.util.Products;
 import com.brewmes.common.util.machinenodes.AdminNodes;
 import com.brewmes.common.util.machinenodes.CommandNodes;
 import com.brewmes.common.util.machinenodes.MachineNodes;
@@ -215,7 +216,7 @@ public class Subscription implements Runnable {
             }
             // Command nodes to batch
             else if (AdminNodes.BATCH_PRODUCT_ID.nodeId.toParseableString().equals(id) && currentBatch != null) {
-                this.currentBatch.setProductType(Math.round((float) dataValues.get(i).getValue().getValue()));
+                this.currentBatch.setProductType(Products.getProductFromID(Math.round((float) dataValues.get(i).getValue().getValue())));
             }
         }
 

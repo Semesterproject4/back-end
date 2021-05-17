@@ -32,4 +32,13 @@ public enum Products {
     public static String getNameByID(int id) {
         return BY_LABEL.get(id).productName;
     }
+
+    public static Products getProductFromID(int value) {
+        for (Products product : Products.values()) {
+            if (product.productType == value){
+                return product;
+            }
+        }
+        return null;
+    }
 }
