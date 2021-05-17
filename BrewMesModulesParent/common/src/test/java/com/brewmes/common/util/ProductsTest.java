@@ -23,6 +23,11 @@ class ProductsTest {
 
     @Test
     void getProductFromID(){
-        assertEquals(Products.WHEAT, Products.getProductFromID(1));
+        assertEquals(Products.ALCOHOL_FREE, Products.getProductFromID(5));
+    }
+
+    @Test
+    void getProductFromID_fail(){
+        assertNull(Products.getProductFromID(7));
     }
 }
