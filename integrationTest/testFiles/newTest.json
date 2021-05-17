@@ -15,10 +15,6 @@
 							"listen": "test",
 							"script": {
 								"exec": [
-									"pm.test(\"Response time is less than 400ms\", function () {\r",
-									"    pm.expect(pm.response.responseTime).to.be.below(400);\r",
-									"});\r",
-									"\r",
 									"pm.test(\"status Test\", function() {\r",
 									"    pm.response.to.have.status(200);\r",
 									"});\r",
@@ -104,10 +100,6 @@
 							"listen": "test",
 							"script": {
 								"exec": [
-									"pm.test(\"Response time is less than 400ms\", function () {\r",
-									"    pm.expect(pm.response.responseTime).to.be.below(400);\r",
-									"});\r",
-									"\r",
 									"pm.test(\"status Test\", function() {\r",
 									"    pm.response.to.have.status(200);\r",
 									"});\r",
@@ -160,9 +152,6 @@
 							"listen": "test",
 							"script": {
 								"exec": [
-									"pm.test(\"Response time is less than 400ms\", function () {\r",
-									"    pm.expect(pm.response.responseTime).to.be.below(400);\r",
-									"});\r",
 									"\r",
 									"pm.test(\"status Test\", function() {\r",
 									"    pm.response.to.have.status(200);\r",
@@ -211,9 +200,7 @@
 									"    pm.response.to.have.status(200);\r",
 									"});\r",
 									"\r",
-									"pm.test(\"Response time is less than 400ms\", function () {\r",
-									"    pm.expect(pm.response.responseTime).to.be.below(400);\r",
-									"});"
+									""
 								],
 								"type": "text/javascript"
 							}
@@ -249,10 +236,7 @@
 									"pm.test(\"Status code is 200\", function () {\r",
 									"    pm.response.to.have.status(200);\r",
 									"});\r",
-									"\r",
-									"pm.test(\"Response time is less than 400ms\", function () {\r",
-									"    pm.expect(pm.response.responseTime).to.be.below(400);\r",
-									"});"
+									""
 								],
 								"type": "text/javascript"
 							}
@@ -288,11 +272,7 @@
 									"pm.test(\"Status code is 200\", function () {\r",
 									"    pm.response.to.have.status(200);\r",
 									"});\r",
-									"\r",
-									"\r",
-									"pm.test(\"Response time is less than 400ms\", function () {\r",
-									"    pm.expect(pm.response.responseTime).to.be.below(400);\r",
-									"});"
+									""
 								],
 								"type": "text/javascript"
 							}
@@ -335,12 +315,7 @@
 								"exec": [
 									"pm.test(\"Status code is 200\", function () {\r",
 									"    pm.response.to.have.status(200);\r",
-									"});\r",
-									"\r",
-									"pm.test(\"Response time is less than 400ms\", function () {\r",
-									"    pm.expect(pm.response.responseTime).to.be.below(400);\r",
-									"});\r",
-									""
+									"});"
 								],
 								"type": "text/javascript"
 							}
@@ -390,9 +365,7 @@
 									"    pm.response.to.have.status(200);\r",
 									"});\r",
 									"\r",
-									"pm.test(\"Response time is less than 400ms\", function () {\r",
-									"    pm.expect(pm.response.responseTime).to.be.below(400);\r",
-									"});"
+									""
 								],
 								"type": "text/javascript"
 							}
@@ -607,6 +580,56 @@
 								"batches",
 								"609e8ed6db",
 								"dashboard"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "api_schedule",
+			"item": [
+				{
+					"name": "add to queue test",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Response time is less than 400ms\", function () {\r",
+									"    pm.expect(pm.response.responseTime).to.be.below(400);\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"speed\" : 1,\r\n    \"type\" : \"PILSNER\",\r\n    \"amount\": 99999999\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "localhost:8080/api/scheduled-batches",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"scheduled-batches"
 							]
 						}
 					},
