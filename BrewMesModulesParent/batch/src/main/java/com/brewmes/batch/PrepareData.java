@@ -60,7 +60,7 @@ public abstract class PrepareData implements IBatchReportService {
         dot.setMaxHumidity(findMaxValueInList(humList));
         dot.setMinHumidity(findMinValueInList(humList));
 
-        double oee = calculateOee(batchData.getAmountToProduce(), batchData.getDesiredSpeed(), Products.values()[batchData.getProductType()].speedLimit, machineData.get(machineData.size() - 1).getAcceptableProducts());
+        double oee = calculateOee(batchData.getAmountToProduce(), batchData.getDesiredSpeed(), batchData.getProductType().speedLimit, machineData.get(machineData.size() - 1).getAcceptableProducts());
         dot.setOee(oee);
 
         return dot;

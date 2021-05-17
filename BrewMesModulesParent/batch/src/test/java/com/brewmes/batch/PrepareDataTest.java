@@ -13,7 +13,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 class PrepareDataTest {
     private static final double DESIRED_SPEED = 200.0;
     private static final int AMOUNT_TO_PRODUCE = 100;
-    private static final int PRODUCT_CODE = Products.PILSNER.productType;
+    private static final Products PRODUCT_TYPE = Products.PILSNER;
     private static final int MAX_MACHINE_SPEED = Products.PILSNER.speedLimit;
     private static final int ACCEPTED_PRODUCTS = 80;
     private static DataOverTime overTime;
@@ -23,7 +23,7 @@ class PrepareDataTest {
         Batch batch = new Batch();
         batch.setDesiredSpeed(DESIRED_SPEED);
         batch.setAmountToProduce(AMOUNT_TO_PRODUCE);
-        batch.setProductType(PRODUCT_CODE);
+        batch.setProductType(PRODUCT_TYPE);
         batch.setData(new ArrayList<>());
 
         for (int i = 0; i < 3; i++) {

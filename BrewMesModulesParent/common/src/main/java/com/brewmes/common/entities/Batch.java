@@ -1,5 +1,6 @@
 package com.brewmes.common.entities;
 
+import com.brewmes.common.util.Products;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
@@ -16,7 +17,7 @@ public class Batch {
     private String connectionID;
 
     @NotNull
-    private int productType;
+    private Products productType;
 
     @NotNull
     private int amountToProduce;
@@ -28,7 +29,7 @@ public class Batch {
     private List<MachineData> data;
 
 
-    public Batch(String connectionID, int productType, int amountToProduce, double desiredSpeed) {
+    public Batch(String connectionID, Products productType, int amountToProduce, double desiredSpeed) {
         this.data = new ArrayList<>();
 
         this.connectionID = connectionID;
@@ -57,11 +58,11 @@ public class Batch {
         this.connectionID = connectionID;
     }
 
-    public int getProductType() {
+    public Products getProductType() {
         return productType;
     }
 
-    public void setProductType(int productType) {
+    public void setProductType(Products productType) {
         this.productType = productType;
     }
 

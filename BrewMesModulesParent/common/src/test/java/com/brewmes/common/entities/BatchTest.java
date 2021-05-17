@@ -1,5 +1,6 @@
 package com.brewmes.common.entities;
 
+import com.brewmes.common.util.Products;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -16,7 +17,7 @@ class BatchTest {
 
     @BeforeEach
     void setUp() {
-        this.batch = new Batch("1", 1, 100, 100.0);
+        this.batch = new Batch("1", Products.WHEAT, 100, 100.0);
         this.batchNoArg = new Batch();
     }
 
@@ -53,13 +54,13 @@ class BatchTest {
 
     @Test
     void getProductType() {
-        int productType = this.batch.getProductType();
-        assertEquals(1, productType);
+        Products productType = this.batch.getProductType();
+        assertEquals(Products.WHEAT, productType);
     }
 
     @Test
     void setProductType() {
-        int productType = 2;
+        Products productType = Products.ALE;
         this.batch.setProductType(productType);
         assertEquals(productType, this.batch.getProductType());
     }
