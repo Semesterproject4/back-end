@@ -3,6 +3,7 @@ package com.brewmes.api;
 import com.brewmes.common.entities.Connection;
 import com.brewmes.common.services.IMachineService;
 import com.brewmes.common.util.Command;
+import com.brewmes.common.util.MachineState;
 import com.brewmes.common.util.Products;
 import com.google.gson.JsonObject;
 import org.junit.jupiter.api.BeforeAll;
@@ -27,6 +28,7 @@ class MachineControllerTest {
     private static final JsonObject jsonObject = new JsonObject();
     private static final Connection connection = new Connection("T-800", "1.1.1.1", "Arnold");
     private static List<Products> productsList;
+    private static List<MachineState> stateList;
     @Mock
     IMachineService machineService;
     @InjectMocks
@@ -44,6 +46,7 @@ class MachineControllerTest {
         jsonObject.addProperty("batchSize", BatchSize);
 
         productsList = Arrays.asList(Products.values());
+        stateList = Arrays.asList(MachineState.values());
     }
 
     @Test
@@ -88,6 +91,24 @@ class MachineControllerTest {
         Mockito.when(machineService.getProducts()).thenReturn(null);
 
         ResponseEntity<Object> response = machineController.getProducts();
+
+        assertEquals(404, response.getStatusCodeValue());
+    }
+
+    @Test
+    void getStates_success(){
+        Mockito.when(machineService.getStates()).thenReturn(stateList);
+
+        ResponseEntity<Object> response = machineController.getStates();
+
+        assertEquals(200, response.getStatusCodeValue());
+    }
+
+    @Test
+    void getStates_failure(){
+        Mockito.when(machineService.getStates()).thenReturn(null);
+
+        ResponseEntity<Object> response = machineController.getStates();
 
         assertEquals(404, response.getStatusCodeValue());
     }
