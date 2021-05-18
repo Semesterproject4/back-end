@@ -33,10 +33,10 @@ public class MachineServiceImpl implements IMachineService {
     @Autowired
     private ConnectionRepository connectionRepository;
 
-    @Autowired(required = false)
+    @Autowired
     private ISubscribeService subscribeService;
 
-    @Autowired(required = false)
+    @Autowired
     private IScheduleService scheduleService;
 
     private Map<String, Thread> autobrewers = new HashMap<>();
