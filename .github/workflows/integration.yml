@@ -18,7 +18,7 @@ jobs:
         with:
            ref: IntegrationTestCI
       - name: Build and run containers
-        working-directory: ./integrationTest/
+        working-directory: ./
         run: docker-compose up -d && echo sleeping 300 seconds && sleep 300 
       - name:  container inspection
         run: docker ps -a
