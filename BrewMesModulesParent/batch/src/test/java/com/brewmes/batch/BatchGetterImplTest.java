@@ -1,6 +1,7 @@
 package com.brewmes.batch;
 
 import com.brewmes.common.entities.Batch;
+import com.brewmes.common.util.Products;
 import com.brewmes.common_repository.BatchRepository;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
@@ -27,8 +28,8 @@ class BatchGetterImplTest {
 
     @BeforeAll
     static void setUp() {
-        Batch batch = new Batch("connectionID", 0, 20, 100);
-        Batch batch2 = new Batch("connectionID2", 1, 200, 20);
+        Batch batch = new Batch("connectionID", Products.PILSNER, 20, 100);
+        Batch batch2 = new Batch("connectionID2", Products.WHEAT, 200, 20);
 
         expected.add(batch);
         expected.add(batch2);
