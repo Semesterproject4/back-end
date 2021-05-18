@@ -9,6 +9,7 @@ import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -83,7 +84,9 @@ public class MachineController {
 
             statesObject.add("states", array);
 
-            return new ResponseEntity<>(statesObject.toString(), HttpStatus.OK);
+            HttpHeaders headers = new HttpHeaders(); //NOSONAR
+            headers.add("Content-Type","application/json");
+            return new ResponseEntity<>(statesObject.toString(), headers, HttpStatus.OK);
         } else {
             return new ResponseEntity<>("Could not get states", HttpStatus.NOT_FOUND);
         }
