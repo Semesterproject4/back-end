@@ -3,6 +3,7 @@ package com.brewmes.api;
 import com.brewmes.common.entities.Connection;
 import com.brewmes.common.services.IMachineService;
 import com.brewmes.common.util.Command;
+import com.brewmes.common.util.MachineState;
 import com.brewmes.common.util.Products;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
@@ -62,6 +63,29 @@ public class MachineController {
             return new ResponseEntity<>(productsObject.toString(), HttpStatus.OK);
         } else {
             return new ResponseEntity<>("Could not get products", HttpStatus.NOT_FOUND);
+        }
+    }
+
+    @GetMapping("/states")
+    public ResponseEntity<Object> getStates() {
+        List<MachineState> states = machineService.getStates();
+        if (states != null) {
+            JsonObject statesObject = new JsonObject();
+            JsonArray array = new JsonArray();
+
+            for (MachineState state : states) {
+                JsonObject item = new JsonObject();
+                item.addProperty("name", state.state);
+                item.addProperty("value", state.value);
+
+                array.add(item);
+            }
+
+            statesObject.add("states", array);
+
+            return new ResponseEntity<>(statesObject.toString(), HttpStatus.OK);
+        } else {
+            return new ResponseEntity<>("Could not get states", HttpStatus.NOT_FOUND);
         }
     }
 

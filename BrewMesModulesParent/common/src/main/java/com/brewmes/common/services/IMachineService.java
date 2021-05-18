@@ -2,6 +2,7 @@ package com.brewmes.common.services;
 
 import com.brewmes.common.entities.Connection;
 import com.brewmes.common.util.Command;
+import com.brewmes.common.util.MachineState;
 import com.brewmes.common.util.Products;
 
 import java.util.List;
@@ -50,6 +51,13 @@ public interface IMachineService {
      * @return a {@code List} of {@code Products} if the request was successful; {@code null} if not
      */
     List<Products> getProducts();
+
+    /**
+     * Gets a list of machine states, so the string can be mapped to an integer
+     *
+     * @return a {@code List} of {@code MachineStates} if the request was successful; {@code null} if not
+     */
+    List<MachineState> getStates();
 
     /**
      * Adds a connection to a Machine
