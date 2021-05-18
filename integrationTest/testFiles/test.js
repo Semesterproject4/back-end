@@ -2,7 +2,7 @@ const newman = require('newman');
 
 let errorFlag = false;
 newman.run({
-    collection: require('./newTest.json'),
+    collection: require('./collection.json'),
     reporters: 'cli',
     iterationCount: 2,
     bail: true
