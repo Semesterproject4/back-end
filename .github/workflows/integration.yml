@@ -2,10 +2,10 @@ name: Integration test
 on:
   push:
     branches:
-      - IntegrationTestCI
+      - main
   pull_request:
     branches:
-      - IntegrationTestCI
+      - main
 jobs:
   build:
     runs-on: ubuntu-latest
