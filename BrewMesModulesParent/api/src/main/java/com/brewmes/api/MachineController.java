@@ -52,6 +52,7 @@ public class MachineController {
                 item.addProperty("name", product.productName);
                 item.addProperty("type", product.productType);
                 item.addProperty("speed", product.speedLimit);
+                item.addProperty("optimal", product.optimalSpeed);
 
                 array.add(item);
             }
