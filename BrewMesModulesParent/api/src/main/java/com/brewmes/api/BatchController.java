@@ -56,7 +56,9 @@ public class BatchController {
         String response = dashboardService.prepareBatchReportService(id);
 
         if (response != null) {
-            return new ResponseEntity<>(response, HttpStatus.OK);
+            HttpHeaders headers = new HttpHeaders(); //NOSONAR
+            headers.add("Content-Type","application/json");
+            return new ResponseEntity<>(response, headers, HttpStatus.OK);
         } else {
             return new ResponseEntity<>("Error: Batch not found", HttpStatus.NOT_FOUND);
         }
