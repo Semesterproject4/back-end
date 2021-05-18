@@ -22,6 +22,7 @@ public class AutobrewRunner implements Runnable {
 
     @Override
     public void run() {
+        subscribeService.subscribeToMachineValues(connectionID);
         while (true) {
             MachineState state = subscribeService.getLatestMachineData(connectionID).getState();
             if (state == MachineState.IDLE) {
