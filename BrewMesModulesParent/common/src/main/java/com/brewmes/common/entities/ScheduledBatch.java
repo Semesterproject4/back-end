@@ -12,7 +12,7 @@ public class ScheduledBatch {
     private String id;
 
     @NotNull
-    private Integer speed;
+    private Double speed;
 
     @NotNull
     private Products type;
@@ -23,7 +23,7 @@ public class ScheduledBatch {
     public ScheduledBatch() {
     }
 
-    public ScheduledBatch(int speed, Products type, int amount) {
+    public ScheduledBatch(double speed, Products type, int amount) {
         this.speed = speed;
         this.type = type;
         this.amount = amount;
@@ -37,11 +37,11 @@ public class ScheduledBatch {
         this.id = id;
     }
 
-    public int getSpeed() {
+    public double getSpeed() {
         return speed;
     }
 
-    public void setSpeed(int speed) {
+    public void setSpeed(double speed) {
         this.speed = speed;
     }
 
