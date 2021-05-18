@@ -2,6 +2,7 @@ package com.brewmes.machine;
 
 import com.brewmes.common.entities.Connection;
 import com.brewmes.common.util.Command;
+import com.brewmes.common.util.MachineState;
 import com.brewmes.common.util.Products;
 import com.brewmes.common_repository.ConnectionRepository;
 import org.eclipse.milo.opcua.sdk.client.OpcUaClient;
@@ -226,5 +227,30 @@ class MachineServiceImplTest {
         expected.add(Products.ALCOHOL_FREE);
 
         assertEquals(expected, machineService.getProducts());
+    }
+
+    @Test
+    void getStates() {
+        List<MachineState> expected = new ArrayList<>();
+
+        expected.add(MachineState.DEACTIVATED);
+        expected.add(MachineState.CLEARING);
+        expected.add(MachineState.STOPPED);
+        expected.add(MachineState.STARTING);
+        expected.add(MachineState.IDLE);
+        expected.add(MachineState.SUSPENDED);
+        expected.add(MachineState.EXECUTE);
+        expected.add(MachineState.STOPPING);
+        expected.add(MachineState.ABORTING);
+        expected.add(MachineState.ABORTED);
+        expected.add(MachineState.HOLDING);
+        expected.add(MachineState.HELD);
+        expected.add(MachineState.RESETTING);
+        expected.add(MachineState.COMPLETING);
+        expected.add(MachineState.COMPLETE);
+        expected.add(MachineState.DEACTIVATING);
+        expected.add(MachineState.ACTIVATING);
+
+        assertEquals(expected, machineService.getStates());
     }
 }
