@@ -4,6 +4,7 @@ import com.brewmes.common.entities.Batch;
 import com.brewmes.common.entities.Ingredients;
 import com.brewmes.common.entities.MachineData;
 import com.brewmes.common.util.MachineState;
+import com.brewmes.common.util.Products;
 import com.brewmes.common_repository.BatchRepository;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
@@ -37,7 +38,7 @@ class PdfBatchServiceImplTest {
     @BeforeEach
     void setUp() {
 
-        batch = new Batch("connection id :)", 3, 50, 75.0);
+        batch = new Batch("connection id :)", Products.STOUT, 50, 75.0);
         data = new MachineData(10.0, MachineState.STOPPED, 27.0, 1.0, 3.2, new Ingredients(100, 100, 100, 100, 100), 2, 0, 2, 50, LocalDateTime.now());
         batch.addMachineData(data);
 

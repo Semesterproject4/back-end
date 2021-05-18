@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.CrossOrigin;
 @Controller
 public class LiveDataController {
 
-    @Autowired(required = false)
+    @Autowired
     private ISubscribeService subscribeService;
 
     @MessageMapping("/connect/{id}")

@@ -70,7 +70,7 @@ public class PdfReportGenerator {
             table.addCell("Machine speed");
 
 
-            table.addCell(String.valueOf(Products.getNameByID(batch.getProductType())));
+            table.addCell(String.valueOf(batch.getProductType().productName));
             table.addCell(String.valueOf(batch.getAmountToProduce()));
             table.addCell(String.valueOf(lastMachineData.getProcessed()));
             table.addCell(String.valueOf(lastMachineData.getAcceptableProducts()));

@@ -21,6 +21,13 @@ class MachineDataTest {
         machineDataNoArg = new MachineData();
     }
 
+
+    @Test
+    void copyConstructor() {
+        MachineData data1 = new MachineData();
+        MachineData data2 = new MachineData(data1);
+        assertNotEquals(data1, data2);
+    }
     @Test
     void getNormSpeed() {
         assertEquals(50.0, machineData.getNormSpeed());

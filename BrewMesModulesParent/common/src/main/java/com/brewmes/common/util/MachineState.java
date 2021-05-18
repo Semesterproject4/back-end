@@ -30,4 +30,13 @@ public enum MachineState {
     public int getValue() {
         return value;
     }
+
+    public static MachineState getStateFromValue(int value) {
+        for (MachineState machineState : MachineState.values()) {
+            if (machineState.value == value){
+                return machineState;
+            }
+        }
+        return null;
+    }
 }

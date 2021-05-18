@@ -34,6 +34,20 @@ public class MachineData {
         this.timestamp = timestamp;
     }
 
+    public MachineData(MachineData machineData) {
+        this.normSpeed = machineData.normSpeed;
+        this.state = machineData.state;
+        this.temperature = machineData.temperature;
+        this.vibration = machineData.vibration;
+        this.humidity = machineData.humidity;
+        this.ingredients = machineData.ingredients;
+        this.acceptableProducts = machineData.acceptableProducts;
+        this.defectProducts = machineData.defectProducts;
+        this.processed = machineData.processed;
+        this.maintenance = machineData.maintenance;
+        this.timestamp = machineData.timestamp;
+    }
+
     public double getNormSpeed() {
         return normSpeed;
     }

@@ -20,4 +20,14 @@ class MachineStateTest {
     void valueOf() {
        assertEquals(MachineState.RESETTING, MachineState.valueOf("RESETTING"));
     }
+
+    @Test
+    void getStateFromValueIsPresent() {
+        assertEquals(MachineState.DEACTIVATED, MachineState.getStateFromValue(0));
+    }
+
+    @Test
+    void getStateFromValueIsMissing() {
+        assertNull(MachineState.getStateFromValue(20));
+    }
 }

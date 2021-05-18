@@ -20,4 +20,14 @@ class ProductsTest {
     void getNameByID() {
         assertEquals("Pilsner", Products.getNameByID(0));
     }
+
+    @Test
+    void getProductFromID(){
+        assertEquals(Products.ALCOHOL_FREE, Products.getProductFromID(5));
+    }
+
+    @Test
+    void getProductFromID_fail(){
+        assertNull(Products.getProductFromID(7));
+    }
 }

@@ -15,6 +15,18 @@ public class Ingredients {
         this.yeast = yeast;
     }
 
+    public Ingredients() {
+
+    }
+
+    public Ingredients(Ingredients ingredients) {
+        this.barley = ingredients.barley;
+        this.hops = ingredients.hops;
+        this.malt = ingredients.malt;
+        this.wheat = ingredients.wheat;
+        this.yeast = ingredients.yeast;
+    }
+
     public double getBarley() {
         return barley;
     }

@@ -2,6 +2,7 @@ package com.brewmes.batch;
 
 import com.brewmes.common.entities.Batch;
 import com.brewmes.common.entities.MachineData;
+import com.brewmes.common.util.Products;
 import com.brewmes.common_repository.BatchRepository;
 import com.google.gson.Gson;
 import org.junit.jupiter.api.BeforeEach;
@@ -45,6 +46,7 @@ class DashboardBatchServiceImplTest {
             data.setVibration(i);
             data.setAcceptableProducts(ACCEPTED_PRODUCTS);
             batch.addMachineData(data);
+            batch.setProductType(Products.WHEAT);
         }
         this.prepare = new PrepareData() {
             @Override
@@ -55,7 +57,7 @@ class DashboardBatchServiceImplTest {
     }
 
     @Test
-    void prepareBatchReportService_succes() {
+    void prepareBatchReportService_success() {
         when(batchRepo.findById(BATCH_ID))
                 .thenReturn(Optional.of(batch));
 
