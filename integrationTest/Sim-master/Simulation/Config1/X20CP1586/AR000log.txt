@@ -1,0 +1,21 @@
+
+
+Tue Aug 28 12:01:40 2018
+No ARsim registration found!
+  Bernecker & Rainer 
+
+
+
+Tue Aug 28 12:01:40 2018
+COMMAND_COLDSTART
+InstanceName : 01d43eb61d801410
+
+WorkingPath :
+C:\Users\anckere\Desktop\Simulation\Config1\X20CP1586\
+
+
+
+Tue Aug 28 12:01:40 2018
+COMMAND_COLDSTART
+Version : E4.34
+

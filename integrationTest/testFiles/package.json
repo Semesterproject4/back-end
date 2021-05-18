@@ -1,0 +1,9 @@
+{
+    "scripts": {
+        "test": "node test.js"
+    },
+    "dependencies": {
+        "newman": "^5.2.1",
+        "treeify": "^1.1.0"
+    }
+}
