@@ -180,8 +180,6 @@ public class MachineServiceImpl implements IMachineService {
 
     @Override
     public boolean startAutoBrew(String connectionID) {
-        connectToMachine(connectionID);
-
         Runnable task = new AutobrewRunner(connectionID, subscribeService, scheduleService, this);
         Thread thread = new Thread(task);
 
@@ -199,10 +197,12 @@ public class MachineServiceImpl implements IMachineService {
 
     @Override
     public boolean stopAutoBrew(String connectionID) {
-        connectToMachine(connectionID);
+        Thread thread = autobrewers.get(connectionID);
 
-        autobrewers.get(connectionID).interrupt();
-        autobrewers.remove(connectionID);
+        if (thread != null && !thread.isInterrupted()) {
+            autobrewers.get(connectionID).interrupt();
+            autobrewers.remove(connectionID);
+        }
 
         Connection connection = getConnection(connectionID);
         connection.setAutobrew(false);
