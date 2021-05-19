@@ -8,13 +8,11 @@ newman.run({
     bail: true,
     abortOnFailure: true
 }, function (err, summary) {
-    if(summary.run.failures.length > 0){
-        errorFlag = true;
-}
-    if(!errorFlag){
-        console.log('collection run complete! All test passed.');
-    } else{
-        console.log("Collection run failed!");
-        process.exit(-1);
-    }
-});
+        if(summary.run.failures.length > 0){
+            console.log("Collection run failed!");
+            process.exit(-1);
+        }
+        else{
+            console.log('collection run complete! All test passed.');
+        }
+    });
