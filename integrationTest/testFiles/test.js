@@ -14,6 +14,6 @@ newman.run({
     if(!errorFlag){
         console.log('collection run complete!');
     } else{
-        process.exit(1);
+        process.exit(-1);
     }
 });
