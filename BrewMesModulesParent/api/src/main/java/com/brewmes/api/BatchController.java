@@ -97,7 +97,7 @@ public class BatchController {
      * @param id is the ID of the connection
      * @return {@code 200 OK} and a {@code batch} with the information if successful; otherwise {@code 404 NOT FOUND}
      */
-    @GetMapping(value = "/batch-of-machine/{id}")
+    @GetMapping(value = "/newest-batch-of-machine/{id}")
     public ResponseEntity<Object> getStaticBatchVariablesForMachine(@PathVariable("id") String id) {
         Batch batch = getter.getStaticBatchVariables(id);
         if (batch != null) {
