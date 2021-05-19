@@ -5,6 +5,7 @@ import com.brewmes.common.services.IMachineService;
 import com.brewmes.common.services.IScheduleService;
 import com.brewmes.common.services.ISubscribeService;
 import com.brewmes.common.util.Command;
+import com.brewmes.common.util.MachineState;
 import com.brewmes.common.util.Products;
 import com.brewmes.common.util.machinenodes.CommandNodes;
 import com.brewmes.common_repository.ConnectionRepository;
@@ -156,6 +157,11 @@ public class MachineServiceImpl implements IMachineService {
     @Override
     public List<Products> getProducts() {
         return new ArrayList<>(Arrays.asList(Products.values()));
+    }
+
+    @Override
+    public List<MachineState> getStates() {
+        return new ArrayList<>(Arrays.asList(MachineState.values()));
     }
 
     @Override
