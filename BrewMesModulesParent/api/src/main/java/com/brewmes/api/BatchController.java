@@ -16,7 +16,6 @@ import org.springframework.web.bind.annotation.*;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
-import java.util.List;
 
 @RestController
 @RequestMapping("/api/batches")
@@ -58,7 +57,7 @@ public class BatchController {
 
         if (response != null) {
             HttpHeaders headers = new HttpHeaders(); //NOSONAR
-            headers.add("Content-Type","application/json");
+            headers.add("Content-Type", "application/json");
             return new ResponseEntity<>(response, headers, HttpStatus.OK);
         } else {
             return new ResponseEntity<>("Error: Batch not found", HttpStatus.NOT_FOUND);
