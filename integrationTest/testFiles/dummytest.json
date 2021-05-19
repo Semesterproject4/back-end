@@ -12,22 +12,7 @@
 					"listen": "test",
 					"script": {
 						"exec": [
-							"pm.test(\"status Test\", function() {\r",
-							"    pm.response.to.have.status(200);\r",
-							"});\r",
-							"\r",
-							"pm.test(\"reponse body test\", function(){\r",
-							"    pm.response.to.be.ok;\r",
-							"    pm.response.to.be.withBody;\r",
-							"    pm.response.to.be.json;\r",
-							"});\r",
-							"\r",
-							"const jsonData = pm.response.json();\r",
-							"pm.test(\"test fields of the json reponse\", () => {\r",
-							"  pm.expect(jsonData).to.be.an(\"array\");\r",
-							"    pm.response.to.have.jsonBody(\"[0].ip\");\r",
-							"    pm.environment.set(\"machine_id\", jsonData[0].id);\r",
-							"});"
+							""
 						],
 						"type": "text/javascript"
 					}
