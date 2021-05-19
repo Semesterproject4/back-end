@@ -17,7 +17,7 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v2
         with:
-           ref: main
+           ref: integrationtestFix
       - name: Build and run containers
         working-directory: ./
         run: docker-compose up -d && echo sleeping 90 seconds && sleep 90
