@@ -5,7 +5,7 @@ newman.run({
     collection: require('./collection.json'),
     reporters: 'cli',
     iterationCount: 2,
-    bail: true
+    bail: ['failure']
 }, function (err) {
     if (err) { 
         errorFlag = true;
