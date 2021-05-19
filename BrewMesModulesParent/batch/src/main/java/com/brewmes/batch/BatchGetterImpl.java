@@ -3,8 +3,6 @@ package com.brewmes.batch;
 import com.brewmes.common.entities.Batch;
 import com.brewmes.common.services.IBatchGetterService;
 import com.brewmes.common_repository.BatchRepository;
-import com.google.gson.JsonObject;
-import com.google.gson.JsonPrimitive;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;

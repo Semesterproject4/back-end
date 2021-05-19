@@ -3,7 +3,6 @@ package com.brewmes.batch;
 import com.brewmes.common.entities.Batch;
 import com.brewmes.common.util.Products;
 import com.brewmes.common_repository.BatchRepository;
-import com.google.gson.JsonObject;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;

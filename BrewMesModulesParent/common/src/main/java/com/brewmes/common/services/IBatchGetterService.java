@@ -1,7 +1,6 @@
 package com.brewmes.common.services;
 
 import com.brewmes.common.entities.Batch;
-import com.google.gson.JsonObject;
 import org.springframework.data.domain.Page;
 
 public interface IBatchGetterService {
