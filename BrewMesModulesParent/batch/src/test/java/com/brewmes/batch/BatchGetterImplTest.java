@@ -23,25 +23,21 @@ import static org.junit.jupiter.api.Assertions.*;
 @ExtendWith(MockitoExtension.class)
 class BatchGetterImplTest {
     private static List<Batch> expected = new ArrayList<>();
-    private static List<Batch> unexpected = new ArrayList<>();
+    private static List<Batch> goodList = new ArrayList<>();
     @Mock
     BatchRepository batchRepository;
     @InjectMocks
     BatchGetterImpl batchGetterService;
 
-    static String id;
-
     @BeforeAll
     static void setUp() {
         Batch batch = new Batch("connectionID", Products.PILSNER, 20, 100);
         Batch batch2 = new Batch("connectionID2", Products.WHEAT, 200, 20);
-        id = "123";
-        batch.setID(id);
-        batch2.setID("1234");
+        batch.setID("123");
 
         expected.add(batch);
         expected.add(batch2);
-        unexpected.add(batch2);
+        goodList.add(batch);
 
     }
 
@@ -57,10 +53,10 @@ class BatchGetterImplTest {
 
     @Test
     void getStaticBatchVariables_success() {
-        Mockito.when(batchRepository.findAll()).thenReturn(expected);
+        Mockito.when(batchRepository.findByConnectionID("connectionID")).thenReturn(goodList);
         Batch batch = batchGetterService.getStaticBatchVariables("connectionID");
 
-        assertEquals(id, batch.getID());
+        assertEquals("123", batch.getID());
         assertEquals(20, batch.getAmountToProduce());
         assertEquals("Pilsner", batch.getProductType().productName);
         assertEquals(100, batch.getDesiredSpeed());
@@ -68,7 +64,7 @@ class BatchGetterImplTest {
 
     @Test
     void getStaticBatchVariables_failure() {
-        Mockito.when(batchRepository.findAll()).thenReturn(unexpected);
+        Mockito.when(batchRepository.findByConnectionID("connectionID")).thenReturn(null);
 
         assertNull(batchGetterService.getStaticBatchVariables("connectionID"));
     }
