@@ -43,7 +43,6 @@ public class AutobrewRunner implements Runnable {
                 }
             } catch (InterruptedException e) {
                 Thread.currentThread().interrupt();
-                break;
             }
         }
     }
