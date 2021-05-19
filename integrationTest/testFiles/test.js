@@ -7,14 +7,14 @@ newman.run({
     iterationCount: 2,
     bail: true,
     abortOnFailure: true
-}, function (err) {
-    if (err) { 
+}, function (err, summary) {
+    if(summary.run.failures.length > 0){
         errorFlag = true;
-        throw err; 
-    }
+}
     if(!errorFlag){
-        console.log('collection run complete!');
+        console.log('collection run complete! All test passed.');
     } else{
+        console.log("Collection run failed!");
         process.exit(-1);
     }
 });
