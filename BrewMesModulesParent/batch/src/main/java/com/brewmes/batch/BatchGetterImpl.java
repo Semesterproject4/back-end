@@ -22,19 +22,18 @@ public class BatchGetterImpl implements IBatchGetterService {
         return batchRepository.findAll(PageRequest.of(page, size));
     }
 
-    public JsonObject getStaticBatchVariables(String id) {
-        List<Batch> batchList = batchRepository.findAll();
-        Collections.reverse(batchList);
-        for (Batch batch : batchList) {
-            if (batch.getConnectionID().equals(id)) {
-                JsonObject batchObject = new JsonObject();
-                batchObject.add("id", new JsonPrimitive(batch.getID()));
-                batchObject.add("type", new JsonPrimitive(batch.getProductType().productName));
-                batchObject.add("amount", new JsonPrimitive(batch.getAmountToProduce()));
-                batchObject.add("speed", new JsonPrimitive(batch.getDesiredSpeed()));
+    public Batch getStaticBatchVariables(String id) {
+        List<Batch> batchList = batchRepository.findByConnectionID(id);
 
-                return batchObject;
-            }
+        if (batchList != null) {
+            Collections.reverse(batchList);
+            Batch returnBatch = new Batch();
+            returnBatch.setID(batchList.get(0).getID());
+            returnBatch.setAmountToProduce(batchList.get(0).getAmountToProduce());
+            returnBatch.setDesiredSpeed(batchList.get(0).getDesiredSpeed());
+            returnBatch.setProductType(batchList.get(0).getProductType());
+            return returnBatch;
+
         }
         return null;
     }

@@ -107,7 +107,7 @@ class BatchControllerTest {
 
     @Test
     void getStaticBatchVariablesForMachine_success() {
-        Mockito.when(getter.getStaticBatchVariables("id")).thenReturn(new JsonObject());
+        Mockito.when(getter.getStaticBatchVariables("id")).thenReturn(new Batch());
 
         ResponseEntity<Object> responseEntity = controller.getStaticBatchVariablesForMachine("id");
         assertEquals(200, responseEntity.getStatusCode().value());

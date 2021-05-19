@@ -18,7 +18,7 @@ public interface IBatchGetterService {
     /**
      * Gets the {@code Batch} variables: {@code id}, {@code beerType}, {@code amount} and {@code speed} from the most recent {@code batch} that the given machine has produced.
      * @param id is the {@code connectionID} of the batch
-     * @return a {@code JsonObject} containing the variables if successful; otherwise null
+     * @return a {@code Batch} containing the variables if successful; otherwise null
      */
-    JsonObject getStaticBatchVariables(String id);
+    Batch getStaticBatchVariables(String id);
 }

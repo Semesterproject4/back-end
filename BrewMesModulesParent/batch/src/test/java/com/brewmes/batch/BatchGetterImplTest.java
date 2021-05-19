@@ -58,12 +58,12 @@ class BatchGetterImplTest {
     @Test
     void getStaticBatchVariables_success() {
         Mockito.when(batchRepository.findAll()).thenReturn(expected);
-        JsonObject jsonObject = batchGetterService.getStaticBatchVariables("connectionID");
+        Batch batch = batchGetterService.getStaticBatchVariables("connectionID");
 
-        assertEquals(id, jsonObject.get("id").getAsString());
-        assertEquals(20, jsonObject.get("amount").getAsInt());
-        assertEquals("Pilsner", jsonObject.get("type").getAsString());
-        assertEquals(100, jsonObject.get("speed").getAsDouble());
+        assertEquals(id, batch.getID());
+        assertEquals(20, batch.getAmountToProduce());
+        assertEquals("Pilsner", batch.getProductType().productName);
+        assertEquals(100, batch.getDesiredSpeed());
     }
 
     @Test
