@@ -1,6 +1,8 @@
 package com.brewmes.common.services;
 
 import com.brewmes.common.entities.Batch;
+import org.springframework.data.domain.Page;
+
 import java.util.List;
 
 
@@ -11,5 +13,5 @@ public interface IBatchGetterService {
      * @param size The desired size of the page
      * @return The list of {@code Batch}es
      */
-    List<Batch> getBatches(int page, int size);
+    Page<Batch> getBatches(int page, int size);
 }

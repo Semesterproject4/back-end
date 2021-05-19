@@ -6,6 +6,7 @@ import com.brewmes.common.services.IBatchReportService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.core.io.InputStreamResource;
+import org.springframework.data.domain.Page;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -41,7 +42,7 @@ public class BatchController {
      * @return The {@code ResponseEntity} with the {@code Batches} in a paginated format
      */
     @GetMapping
-    public ResponseEntity<List<Batch>> getBatches(@RequestParam(defaultValue = "0") int page, @RequestParam(defaultValue = "10") int size) {
+    public ResponseEntity<Page<Batch>> getBatches(@RequestParam(defaultValue = "0") int page, @RequestParam(defaultValue = "10") int size) {
         return new ResponseEntity<>(getter.getBatches(page, size), HttpStatus.OK);
     }
 

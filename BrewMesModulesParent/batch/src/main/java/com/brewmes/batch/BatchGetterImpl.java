@@ -16,8 +16,7 @@ public class BatchGetterImpl implements IBatchGetterService {
     BatchRepository batchRepository;
 
     @Override
-    public List<Batch> getBatches(int page, int size) {
-        Page<Batch> batchPage = batchRepository.findAll(PageRequest.of(page, size));
-        return batchPage.getContent();
+    public Page<Batch> getBatches(int page, int size) {
+        return batchRepository.findAll(PageRequest.of(page, size));
     }
 }

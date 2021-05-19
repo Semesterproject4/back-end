@@ -9,6 +9,8 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
 import org.springframework.http.ResponseEntity;
 
 import java.io.File;
@@ -56,9 +58,14 @@ class BatchControllerTest {
 
     @Test
     void getBatches() {
-        Mockito.when(getter.getBatches(5, 10)).thenReturn(new ArrayList<Batch>());
+        Batch batch = Mockito.mock(Batch.class);
+        List<Batch> batches = new ArrayList<>();
+        batches.add(batch);
 
-        ResponseEntity<List<Batch>> responseEntity = controller.getBatches(5, 10);
+        Mockito.when(getter.getBatches(5, 10)).thenReturn(new PageImpl<Batch>(batches) {
+        });
+
+        ResponseEntity<Page<Batch>> responseEntity = controller.getBatches(5, 10);
 
         assertEquals(200, responseEntity.getStatusCode().value());
     }
