@@ -8,16 +8,13 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 
-import java.util.List;
-
 @Service("batchGetter")
 public class BatchGetterImpl implements IBatchGetterService {
     @Autowired
     BatchRepository batchRepository;
 
     @Override
-    public List<Batch> getBatches(int page, int size) {
-        Page<Batch> batchPage = batchRepository.findAll(PageRequest.of(page, size));
-        return batchPage.getContent();
+    public Page<Batch> getBatches(int page, int size) {
+        return batchRepository.findAll(PageRequest.of(page, size));
     }
 }

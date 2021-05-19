@@ -10,6 +10,7 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
 
@@ -37,10 +38,11 @@ class BatchGetterImplTest {
 
     @Test
     void getBatches() {
-        Mockito.when(batchRepository.findAll(PageRequest.of(0, 2))).thenReturn(new PageImpl<>(expected));
+        Page<Batch> expectedPage = new PageImpl<>(expected);
+        Mockito.when(batchRepository.findAll(PageRequest.of(0, 2))).thenReturn(expectedPage);
 
-        List<Batch> batches = batchGetterService.getBatches(0, 2);
+        Page<Batch> batches = batchGetterService.getBatches(0, 2);
 
-        assertEquals(expected, batches);
+        assertEquals(expectedPage, batches);
     }
 }
