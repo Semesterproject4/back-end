@@ -3,6 +3,7 @@ package com.brewmes.api;
 import com.brewmes.common.entities.Batch;
 import com.brewmes.common.services.IBatchGetterService;
 import com.brewmes.common.services.IBatchReportService;
+import com.google.gson.JsonObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.core.io.InputStreamResource;
@@ -88,6 +89,24 @@ public class BatchController {
             return ResponseEntity.ok().headers(headers).contentLength(file.length()).contentType(MediaType.parseMediaType("application/pdf")).body(resource);
         } catch (FileNotFoundException e) {
             return new ResponseEntity<>("Error: File not found", HttpStatus.NOT_FOUND);
+        }
+    }
+
+    /**
+     * Gets {@code variables}: {@code id}, {@code type}, {@code amount} and {@code speed} from the latest {@code batch} and displays them in {@codeJsonObject} format
+     * @param id is the ID of the connection
+     * @return {@code 200 OK} and a {@code JsonObject} with the information if successful; otherwise {@code 404 NOT FOUND}
+     */
+    @GetMapping(value = "/batch-of-machine/{id}")
+    public ResponseEntity<Object> getStaticBatchVariablesForMachine(@PathVariable("id") String id) {
+        JsonObject jsonObject = getter.getStaticBatchVariables(id);
+        if (jsonObject != null) {
+            HttpHeaders headers = new HttpHeaders(); //NOSONAR
+
+            headers.add("Content-Type", "application/json");
+            return new ResponseEntity<>(jsonObject.toString(), headers, HttpStatus.OK);
+        } else {
+            return new ResponseEntity<>("Could not find any batch for that machine", HttpStatus.NOT_FOUND);
         }
     }
 }

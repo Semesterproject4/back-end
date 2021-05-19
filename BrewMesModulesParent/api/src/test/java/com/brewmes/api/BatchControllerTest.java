@@ -3,6 +3,7 @@ package com.brewmes.api;
 import com.brewmes.common.entities.Batch;
 import com.brewmes.common.services.IBatchGetterService;
 import com.brewmes.common.services.IBatchReportService;
+import com.google.gson.JsonObject;
 import org.junit.jupiter.api.*;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
@@ -101,6 +102,22 @@ class BatchControllerTest {
         Mockito.when(pdfService.prepareBatchReportService("id")).thenReturn("not_test.pdf");
 
         ResponseEntity<Object> responseEntity = controller.getBatchPdfReport("id");
+        assertEquals(404, responseEntity.getStatusCode().value());
+    }
+
+    @Test
+    void getStaticBatchVariablesForMachine_success() {
+        Mockito.when(getter.getStaticBatchVariables("id")).thenReturn(new JsonObject());
+
+        ResponseEntity<Object> responseEntity = controller.getStaticBatchVariablesForMachine("id");
+        assertEquals(200, responseEntity.getStatusCode().value());
+    }
+
+    @Test
+    void getStaticBatchVariablesForMachine_failure() {
+        Mockito.when(getter.getStaticBatchVariables("id")).thenReturn(null);
+
+        ResponseEntity<Object> responseEntity = controller.getStaticBatchVariablesForMachine("id");
         assertEquals(404, responseEntity.getStatusCode().value());
     }
 }

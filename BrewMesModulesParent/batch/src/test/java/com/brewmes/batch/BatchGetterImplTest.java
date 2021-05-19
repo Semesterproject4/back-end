@@ -3,6 +3,7 @@ package com.brewmes.batch;
 import com.brewmes.common.entities.Batch;
 import com.brewmes.common.util.Products;
 import com.brewmes.common_repository.BatchRepository;
+import com.google.gson.JsonObject;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -22,18 +23,26 @@ import static org.junit.jupiter.api.Assertions.*;
 @ExtendWith(MockitoExtension.class)
 class BatchGetterImplTest {
     private static List<Batch> expected = new ArrayList<>();
+    private static List<Batch> unexpected = new ArrayList<>();
     @Mock
     BatchRepository batchRepository;
     @InjectMocks
     BatchGetterImpl batchGetterService;
 
+    static String id;
+
     @BeforeAll
     static void setUp() {
         Batch batch = new Batch("connectionID", Products.PILSNER, 20, 100);
         Batch batch2 = new Batch("connectionID2", Products.WHEAT, 200, 20);
+        id = "123";
+        batch.setID(id);
+        batch2.setID("1234");
 
         expected.add(batch);
         expected.add(batch2);
+        unexpected.add(batch2);
+
     }
 
     @Test
@@ -44,5 +53,23 @@ class BatchGetterImplTest {
         Page<Batch> batches = batchGetterService.getBatches(0, 2);
 
         assertEquals(expectedPage, batches);
+    }
+
+    @Test
+    void getStaticBatchVariables_success() {
+        Mockito.when(batchRepository.findAll()).thenReturn(expected);
+        JsonObject jsonObject = batchGetterService.getStaticBatchVariables("connectionID");
+
+        assertEquals(id, jsonObject.get("id").getAsString());
+        assertEquals(20, jsonObject.get("amount").getAsInt());
+        assertEquals("Pilsner", jsonObject.get("type").getAsString());
+        assertEquals(100, jsonObject.get("speed").getAsDouble());
+    }
+
+    @Test
+    void getStaticBatchVariables_failure() {
+        Mockito.when(batchRepository.findAll()).thenReturn(unexpected);
+
+        assertNull(batchGetterService.getStaticBatchVariables("connectionID"));
     }
 }
