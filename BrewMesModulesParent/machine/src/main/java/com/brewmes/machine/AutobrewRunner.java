@@ -38,6 +38,9 @@ public class AutobrewRunner implements Runnable {
             } else if (state == MachineState.ABORTED) {
                 machineService.stopAutoBrew(connectionID);
                 break;
+            } catch (InterruptedException e) {
+                Thread.currentThread().interrupt();
+                break;
             }
         }
     }
