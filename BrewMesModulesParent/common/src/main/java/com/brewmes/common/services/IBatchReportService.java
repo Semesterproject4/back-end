@@ -7,5 +7,5 @@ public interface IBatchReportService {
      * @param id is a unique string id of a batch
      * @return the prepared batch report
      */
-    public String prepareBatchReportService(String id);
+    String prepareBatchReportService(String id);
 }

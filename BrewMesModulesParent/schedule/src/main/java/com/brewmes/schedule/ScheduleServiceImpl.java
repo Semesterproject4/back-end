@@ -12,7 +12,7 @@ import java.util.List;
 public class ScheduleServiceImpl implements IScheduleService {
 
     @Autowired
-    public ScheduleRepository scheduleRepository;
+    private ScheduleRepository scheduleRepository;
 
     @Override
     public boolean addToQueue(ScheduledBatch scheduledBatch) {

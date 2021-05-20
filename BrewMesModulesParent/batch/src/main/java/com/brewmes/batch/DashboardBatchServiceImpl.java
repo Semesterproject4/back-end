@@ -13,7 +13,7 @@ import java.util.Optional;
 public class DashboardBatchServiceImpl extends PrepareData {
 
     @Autowired
-    public BatchRepository batchRepository;
+    private BatchRepository batchRepository;
 
 
     @Override

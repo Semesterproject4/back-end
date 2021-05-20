@@ -13,7 +13,7 @@ import java.util.List;
 @Service("batchGetter")
 public class BatchGetterImpl implements IBatchGetterService {
     @Autowired
-    BatchRepository batchRepository;
+    private BatchRepository batchRepository;
 
     @Override
     public Page<Batch> getBatches(int page, int size) {
