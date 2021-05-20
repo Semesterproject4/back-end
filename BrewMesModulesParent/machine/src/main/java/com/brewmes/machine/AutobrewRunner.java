@@ -22,24 +22,27 @@ public class AutobrewRunner implements Runnable {
 
     @Override
     public void run() {
-        subscribeService.subscribeToMachineValues(connectionID);
         try {
-            Thread.sleep(5_000);
             while (true) {
-                MachineState state = subscribeService.getLatestMachineData(connectionID).getState();
-                if (state == MachineState.IDLE) {
-                    if (!scheduleService.queueIsEmpty()) {
-                        ScheduledBatch scheduledBatch = scheduleService.takeFirstInQueue();
-                        machineService.setMachineVariables(scheduledBatch.getSpeed(), scheduledBatch.getType(), scheduledBatch.getAmount(), connectionID);
-                        machineService.controlMachine(Command.START, connectionID);
+                if (subscribeService.getLatestMachineData(connectionID) == null) {
+                    subscribeService.subscribeToMachineValues(connectionID);
+                    Thread.sleep(5_000);
+                } else {
+                    MachineState state = subscribeService.getLatestMachineData(connectionID).getState();
+                    if (state == MachineState.IDLE) {
+                        if (!scheduleService.queueIsEmpty()) {
+                            ScheduledBatch scheduledBatch = scheduleService.takeFirstInQueue();
+                            machineService.setMachineVariables(scheduledBatch.getSpeed(), scheduledBatch.getType(), scheduledBatch.getAmount(), connectionID);
+                            machineService.controlMachine(Command.START, connectionID);
+                        }
+                    } else if (state == MachineState.COMPLETE) {
+                        machineService.controlMachine(Command.RESET, connectionID);
+                    } else if (state == MachineState.STOPPED) {
+                        machineService.controlMachine(Command.RESET, connectionID);
+                    } else if (state == MachineState.ABORTED) {
+                        machineService.stopAutoBrew(connectionID);
+                        break;
                     }
-                } else if (state == MachineState.COMPLETE) {
-                    machineService.controlMachine(Command.RESET, connectionID);
-                } else if (state == MachineState.STOPPED) {
-                    machineService.controlMachine(Command.RESET, connectionID);
-                } else if (state == MachineState.ABORTED) {
-                    machineService.stopAutoBrew(connectionID);
-                    break;
                 }
                 Thread.sleep(1_000);
             }
