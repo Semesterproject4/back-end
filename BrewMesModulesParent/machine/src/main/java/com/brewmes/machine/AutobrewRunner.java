@@ -8,10 +8,10 @@ import com.brewmes.common.util.Command;
 import com.brewmes.common.util.MachineState;
 
 public class AutobrewRunner implements Runnable {
-    private ISubscribeService subscribeService;
-    private IScheduleService scheduleService;
-    private IMachineService machineService;
-    private String connectionID;
+    private final ISubscribeService subscribeService;
+    private final IScheduleService scheduleService;
+    private final IMachineService machineService;
+    private final String connectionID;
 
     public AutobrewRunner(String connectionID, ISubscribeService subscribeService, IScheduleService scheduleService, IMachineService machineService) {
         this.connectionID = connectionID;
@@ -23,9 +23,9 @@ public class AutobrewRunner implements Runnable {
     @Override
     public void run() {
         subscribeService.subscribeToMachineValues(connectionID);
-        while (true) {
-            try {
-                Thread.sleep(1_000);
+        try {
+            Thread.sleep(5_000);
+            while (true) {
                 MachineState state = subscribeService.getLatestMachineData(connectionID).getState();
                 if (state == MachineState.IDLE) {
                     if (!scheduleService.queueIsEmpty()) {
@@ -41,9 +41,10 @@ public class AutobrewRunner implements Runnable {
                     machineService.stopAutoBrew(connectionID);
                     break;
                 }
-            } catch (InterruptedException e) {
-                Thread.currentThread().interrupt();
+                Thread.sleep(1_000);
             }
+        } catch (InterruptedException e) {
+            Thread.currentThread().interrupt();
         }
     }
 }
