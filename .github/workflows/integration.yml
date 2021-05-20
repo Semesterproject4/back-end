@@ -31,4 +31,4 @@ jobs:
         run: npm install newman 
       - name: Run test
         working-directory: ./integrationTest/testFiles/
-        run: npm test
+        run: npm test || exit 1
