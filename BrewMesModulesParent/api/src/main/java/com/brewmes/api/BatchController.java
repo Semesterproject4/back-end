@@ -90,4 +90,22 @@ public class BatchController {
             return new ResponseEntity<>("Error: File not found", HttpStatus.NOT_FOUND);
         }
     }
+
+    /**
+     * Gets {@code variables}: {@code id}, {@code type}, {@code amount} and {@code speed} from the latest {@code batch}
+     * @param id is the ID of the connection
+     * @return {@code 200 OK} and a {@code batch} with the information if successful; otherwise {@code 404 NOT FOUND}
+     */
+    @GetMapping(value = "/newest-batch-of-machine/{id}")
+    public ResponseEntity<Object> getStaticBatchVariablesForMachine(@PathVariable("id") String id) {
+        Batch batch = getter.getStaticBatchVariables(id);
+        if (batch != null) {
+            HttpHeaders headers = new HttpHeaders(); //NOSONAR
+
+            headers.add("Content-Type", "application/json");
+            return new ResponseEntity<>(batch, headers, HttpStatus.OK);
+        } else {
+            return new ResponseEntity<>("Could not find any batch for that machine", HttpStatus.NOT_FOUND);
+        }
+    }
 }
