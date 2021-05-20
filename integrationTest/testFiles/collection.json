@@ -1,6 +1,6 @@
 {
 	"info": {
-		"_postman_id": "bb98ddc5-d932-4769-9f88-f79332f9448c",
+		"_postman_id": "1eab5000-c30c-40af-90e1-271277dbe95a",
 		"name": "BrewMES_IntegrationTest",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
 	},
@@ -412,14 +412,14 @@
 									"\r",
 									"const jsonData = pm.response.json();\r",
 									"pm.test(\"test fields of get response\", () => {\r",
-									"    pm.expect(jsonData).to.be.an(\"array\");\r",
-									"    pm.response.to.have.jsonBody(\"[0].id\");\r",
-									"    pm.response.to.have.jsonBody(\"[0].productType\")\r",
-									"    pm.response.to.have.jsonBody(\"[0].amountToProduce\");\r",
-									"    pm.response.to.have.jsonBody(\"[0].desiredSpeed\")\r",
-									"    pm.response.to.have.jsonBody(\"[0].oee\")\r",
-									"    pm.response.to.have.jsonBody(\"[0].data\")\r",
-									"    pm.globals.set(\"batchID\", jsonData[0].id);\r",
+									"    pm.expect(jsonData.content).to.be.an(\"array\");\r",
+									"    pm.response.to.have.jsonBody(\"content[0].id\");\r",
+									"    pm.response.to.have.jsonBody(\"content[0].productType\")\r",
+									"    pm.response.to.have.jsonBody(\"content[0].amountToProduce\");\r",
+									"    pm.response.to.have.jsonBody(\"content[0].desiredSpeed\")\r",
+									"    pm.response.to.have.jsonBody(\"content[0].oee\")\r",
+									"    pm.response.to.have.jsonBody(\"content[0].data\")\r",
+									"    pm.globals.set(\"batchID\", jsonData.content[0].id);\r",
 									"});\r",
 									"\r",
 									""
