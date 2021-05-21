@@ -8,10 +8,10 @@ import com.brewmes.common.util.Command;
 import com.brewmes.common.util.MachineState;
 
 public class AutobrewRunner implements Runnable {
-    private ISubscribeService subscribeService;
-    private IScheduleService scheduleService;
-    private IMachineService machineService;
-    private String connectionID;
+    private final ISubscribeService subscribeService;
+    private final IScheduleService scheduleService;
+    private final IMachineService machineService;
+    private final String connectionID;
 
     public AutobrewRunner(String connectionID, ISubscribeService subscribeService, IScheduleService scheduleService, IMachineService machineService) {
         this.connectionID = connectionID;
@@ -22,28 +22,32 @@ public class AutobrewRunner implements Runnable {
 
     @Override
     public void run() {
-        subscribeService.subscribeToMachineValues(connectionID);
-        while (true) {
-            try {
-                Thread.sleep(1_000);
-                MachineState state = subscribeService.getLatestMachineData(connectionID).getState();
-                if (state == MachineState.IDLE) {
-                    if (!scheduleService.queueIsEmpty()) {
-                        ScheduledBatch scheduledBatch = scheduleService.takeFirstInQueue();
-                        machineService.setMachineVariables(scheduledBatch.getSpeed(), scheduledBatch.getType(), scheduledBatch.getAmount(), connectionID);
-                        machineService.controlMachine(Command.START, connectionID);
+        try {
+            while (true) {
+                if (subscribeService.getLatestMachineData(connectionID) == null) {
+                    subscribeService.subscribeToMachineValues(connectionID);
+                    Thread.sleep(5_000);
+                } else {
+                    MachineState state = subscribeService.getLatestMachineData(connectionID).getState();
+                    if (state == MachineState.IDLE) {
+                        if (!scheduleService.queueIsEmpty()) {
+                            ScheduledBatch scheduledBatch = scheduleService.takeFirstInQueue();
+                            machineService.setMachineVariables(scheduledBatch.getSpeed(), scheduledBatch.getType(), scheduledBatch.getAmount(), connectionID);
+                            machineService.controlMachine(Command.START, connectionID);
+                        }
+                    } else if (state == MachineState.COMPLETE) {
+                        machineService.controlMachine(Command.RESET, connectionID);
+                    } else if (state == MachineState.STOPPED) {
+                        machineService.controlMachine(Command.RESET, connectionID);
+                    } else if (state == MachineState.ABORTED) {
+                        machineService.stopAutoBrew(connectionID);
+                        break;
                     }
-                } else if (state == MachineState.COMPLETE) {
-                    machineService.controlMachine(Command.RESET, connectionID);
-                } else if (state == MachineState.STOPPED) {
-                    machineService.controlMachine(Command.RESET, connectionID);
-                } else if (state == MachineState.ABORTED) {
-                    machineService.stopAutoBrew(connectionID);
-                    break;
                 }
-            } catch (InterruptedException e) {
-                Thread.currentThread().interrupt();
+                Thread.sleep(1_000);
             }
+        } catch (InterruptedException e) {
+            Thread.currentThread().interrupt();
         }
     }
 }
