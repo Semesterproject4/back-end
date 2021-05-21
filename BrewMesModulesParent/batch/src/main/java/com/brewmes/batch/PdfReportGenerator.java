@@ -33,7 +33,7 @@ public class PdfReportGenerator {
     private static PdfWriter pdfWriter;
     private static DataOverTime dataOverTime;
     private static Batch batch;
-    static String xaxis = "Time (s)";
+    private static String xaxis = "Time (s)";
 
 
     private PdfReportGenerator() {

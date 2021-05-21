@@ -24,14 +24,14 @@ public class BatchController {
 
     @Autowired
     @Qualifier("dashboard")
-    IBatchReportService dashboardService;
+    private IBatchReportService dashboardService;
 
     @Autowired
     @Qualifier("pdf")
-    IBatchReportService pdfService;
+    private IBatchReportService pdfService;
 
     @Autowired
-    IBatchGetterService getter;
+    private IBatchGetterService getter;
 
     /**
      * Gets a paged view of the database

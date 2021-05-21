@@ -17,7 +17,7 @@ import java.util.List;
 public class ScheduleController {
 
     @Autowired
-    IScheduleService scheduleService;
+    private IScheduleService scheduleService;
 
     @PostMapping
     public ResponseEntity<String> addToQueue(@Valid @RequestBody ScheduledBatch scheduledBatch) {
