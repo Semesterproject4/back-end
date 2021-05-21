@@ -186,11 +186,6 @@ public class Subscription implements Runnable {
                     this.currentBatch.setData(new ArrayList<>());
                     this.currentBatch.setDesiredSpeed(this.desiredSpeed);
                 }
-                // if state is == 17. Save batch and remove the object reference.
-                else if ((state == MachineState.COMPLETE || state == MachineState.ABORTED || state == MachineState.STOPPED) && currentBatch != null) {
-                    this.saveBatch();
-                    this.currentBatch = null;
-                }
             }
             // status nodes written to batch, if it exists.
             else if (StatusNodes.PRODUCTS_IN_CURRENT_BATCH.nodeId.toParseableString().equals(id) && currentBatch != null) {
@@ -222,6 +217,12 @@ public class Subscription implements Runnable {
 
         if (this.currentBatch != null) {
             this.saveBatch();
+
+            // if state == 17, 9, or 2, remove the object reference.
+            MachineState state = latestMachineData.getState();
+            if ((state == MachineState.COMPLETE || state == MachineState.ABORTED || state == MachineState.STOPPED)) {
+                this.currentBatch = null;
+            }
         }
     }
 
