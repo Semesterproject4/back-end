@@ -218,7 +218,7 @@ public class Subscription implements Runnable {
         if (this.currentBatch != null) {
             this.saveBatch();
 
-            // if state is == 17 remove the object reference.
+            // if state == 17, 9, or 2, remove the object reference.
             MachineState state = latestMachineData.getState();
             if ((state == MachineState.COMPLETE || state == MachineState.ABORTED || state == MachineState.STOPPED)) {
                 this.currentBatch = null;
