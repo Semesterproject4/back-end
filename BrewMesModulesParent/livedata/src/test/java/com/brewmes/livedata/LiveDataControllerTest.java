@@ -29,19 +29,19 @@ class LiveDataControllerTest {
     }
 
     @Test
-    void livedataSuccess() throws InterruptedException {
+    void liveDataSuccess() throws InterruptedException {
         when(subscribeService.getLatestMachineData(ID)).thenReturn(machineData);
 
-        MachineData actual = liveDataController.livedata(ID);
+        MachineData actual = liveDataController.liveData(ID);
         MachineData expected = machineData;
 
         assertEquals(expected, actual);
     }
 
     @Test
-    void livedataFail() throws InterruptedException {
+    void liveDataFail() throws InterruptedException {
         when(subscribeService.getLatestMachineData(ID)).thenReturn(null);
 
-        assertNull(liveDataController.livedata(ID));
+        assertNull(liveDataController.liveData(ID));
     }
 }
