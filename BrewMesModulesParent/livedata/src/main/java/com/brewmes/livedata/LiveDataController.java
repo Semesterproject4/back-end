@@ -22,10 +22,10 @@ public class LiveDataController {
 
         MachineData machineData = subscribeService.getLatestMachineData(id);
 
-        while (machineData == null) {
+        if (machineData == null) {
             subscribeService.subscribeToMachineValues(id);
+            Thread.sleep(2000);
             machineData = subscribeService.getLatestMachineData(id);
-            Thread.sleep(500);
         }
         
         Thread.sleep(1000);
