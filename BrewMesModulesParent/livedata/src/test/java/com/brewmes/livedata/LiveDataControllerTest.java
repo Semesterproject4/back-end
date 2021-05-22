@@ -37,11 +37,4 @@ class LiveDataControllerTest {
 
         assertEquals(expected, actual);
     }
-
-    @Test
-    void liveDataFail() throws InterruptedException {
-        when(subscribeService.getLatestMachineData(ID)).thenReturn(null);
-
-        assertNull(liveDataController.liveData(ID));
-    }
 }
