@@ -62,9 +62,15 @@ class BatchGetterImplTest {
     }
 
     @Test
-    void getStaticBatchVariables_failure() {
+    void getStaticBatchVariables_failureNull() {
         Mockito.when(batchRepository.findByConnectionID("connectionID")).thenReturn(null);
 
+        assertNull(batchGetterService.getStaticBatchVariables("connectionID"));
+    }
+
+    @Test
+    void getStaticBatchVariables_FailureEmptyList() {
+        Mockito.when(batchRepository.findByConnectionID("connectionID")).thenReturn(new ArrayList<>());
         assertNull(batchGetterService.getStaticBatchVariables("connectionID"));
     }
 }
