@@ -2,6 +2,10 @@ package com.brewmes.batch;
 
 import com.brewmes.common.entities.Batch;
 
+import java.math.BigDecimal;
+import java.math.RoundingMode;
+import java.text.DecimalFormat;
+
 public class DataOverTime {
     private Batch batch;
     private double oee;
@@ -15,6 +19,15 @@ public class DataOverTime {
     private double minHumidity;
     private double maxHumidity;
 
+    public static double round(double value, int places) {
+        if (places < 0) throw new IllegalArgumentException();
+
+        BigDecimal bd = BigDecimal.valueOf(value);
+        bd = bd.setScale(places, RoundingMode.HALF_UP);
+        return bd.doubleValue();
+    }
+
+
     public Batch getBatch() {
         return batch;
     }
@@ -24,7 +37,7 @@ public class DataOverTime {
     }
 
     public double getAvgVibration() {
-        return avgVibration;
+        return round(avgVibration, 2);
     }
 
     public void setAvgVibration(double avgVibration) {
@@ -32,7 +45,7 @@ public class DataOverTime {
     }
 
     public double getMinVibration() {
-        return minVibration;
+        return round(minVibration, 2);
     }
 
     public void setMinVibration(double minVibration) {
@@ -40,7 +53,7 @@ public class DataOverTime {
     }
 
     public double getMaxVibration() {
-        return maxVibration;
+        return round(maxVibration, 2);
     }
 
     public void setMaxVibration(double maxVibration) {
@@ -48,7 +61,7 @@ public class DataOverTime {
     }
 
     public double getAvgTemp() {
-        return avgTemp;
+        return round(avgTemp, 2);
     }
 
     public void setAvgTemp(double avgTemp) {
@@ -56,7 +69,7 @@ public class DataOverTime {
     }
 
     public double getMinTemp() {
-        return minTemp;
+        return round(minTemp, 2);
     }
 
     public void setMinTemp(double minTemp) {
@@ -64,7 +77,7 @@ public class DataOverTime {
     }
 
     public double getMaxTemp() {
-        return maxTemp;
+        return round(maxTemp, 2);
     }
 
     public void setMaxTemp(double maxTemp) {
@@ -72,7 +85,7 @@ public class DataOverTime {
     }
 
     public double getAvgHumidity() {
-        return avgHumidity;
+        return round(avgHumidity, 2);
     }
 
     public void setAvgHumidity(double avgHumidity) {
@@ -80,7 +93,7 @@ public class DataOverTime {
     }
 
     public double getMinHumidity() {
-        return minHumidity;
+        return round(minHumidity, 2);
     }
 
     public void setMinHumidity(double minHumidity) {
@@ -88,7 +101,7 @@ public class DataOverTime {
     }
 
     public double getMaxHumidity() {
-        return maxHumidity;
+        return round(maxHumidity, 2);
     }
 
     public void setMaxHumidity(double maxHumidity) {
@@ -96,7 +109,7 @@ public class DataOverTime {
     }
 
     public double getOee() {
-        return oee;
+        return round(oee, 2);
     }
 
     public void setOee(double oee) {
