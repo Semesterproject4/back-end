@@ -53,7 +53,7 @@ class PrepareDataTest {
         double expected = ((ACCEPTED_PRODUCTS * idealCycleTime) / plannedProductionTime) * 100;
         double actual = overTime.getOee();
 
-        assertEquals(expected, actual);
+        assertEquals(DataOverTime.round(expected, 2), actual);
     }
 
     @Test

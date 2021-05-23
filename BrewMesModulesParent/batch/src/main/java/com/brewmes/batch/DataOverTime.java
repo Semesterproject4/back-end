@@ -4,7 +4,6 @@ import com.brewmes.common.entities.Batch;
 
 import java.math.BigDecimal;
 import java.math.RoundingMode;
-import java.text.DecimalFormat;
 
 public class DataOverTime {
     private Batch batch;
