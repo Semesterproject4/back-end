@@ -2,7 +2,6 @@ package com.brewmes.batch;
 
 import com.brewmes.common.entities.Batch;
 import com.brewmes.common.entities.MachineData;
-import com.brewmes.common.util.Products;
 import com.itextpdf.awt.DefaultFontMapper;
 import com.itextpdf.text.Font;
 import com.itextpdf.text.Image;
@@ -111,7 +110,7 @@ public class PdfReportGenerator {
 
         addEmptyLine(oee, 1);
 
-        oee.add(new Paragraph("The Overall Equipment Effectiveness (OEE) of the batch is: " + batch.getOee() + "%"));
+        oee.add(new Paragraph("The Overall Equipment Effectiveness (OEE) of the batch is: " + dataOverTime.getOee() + "%"));
 
         addEmptyLine(oee, 1);
 

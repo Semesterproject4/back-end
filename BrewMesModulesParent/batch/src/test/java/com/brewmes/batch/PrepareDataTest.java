@@ -9,6 +9,7 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 class PrepareDataTest {
     private static final double DESIRED_SPEED = 200.0;
@@ -47,13 +48,21 @@ class PrepareDataTest {
     }
 
     @Test
+    void round_throwIllegalArgumentException() {
+        Exception exception = assertThrows(IllegalArgumentException.class, () -> {
+            DataOverTime.round(10.0, -2);
+        });
+        assertEquals(IllegalArgumentException.class, exception.getClass());
+    }
+
+    @Test
     void calculateOeeTest() {
         double plannedProductionTime = (AMOUNT_TO_PRODUCE / DESIRED_SPEED) * 60.0;
         double idealCycleTime = (1.0 / MAX_MACHINE_SPEED) * 60;
         double expected = ((ACCEPTED_PRODUCTS * idealCycleTime) / plannedProductionTime) * 100;
         double actual = overTime.getOee();
 
-        assertEquals(expected, actual);
+        assertEquals(DataOverTime.round(expected, 2), actual);
     }
 
     @Test
