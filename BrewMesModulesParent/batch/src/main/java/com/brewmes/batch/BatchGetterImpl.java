@@ -23,7 +23,7 @@ public class BatchGetterImpl implements IBatchGetterService {
     public Batch getStaticBatchVariables(String id) {
         List<Batch> batchList = batchRepository.findByConnectionID(id);
 
-        if (batchList != null) {
+        if (batchList != null && !batchList.isEmpty()) {
             Collections.reverse(batchList);
             Batch returnBatch = new Batch();
             returnBatch.setID(batchList.get(0).getID());
