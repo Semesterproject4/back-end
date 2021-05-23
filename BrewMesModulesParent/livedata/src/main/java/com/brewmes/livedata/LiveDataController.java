@@ -24,6 +24,7 @@ public class LiveDataController {
 
         if (machineData == null) {
             subscribeService.subscribeToMachineValues(id);
+            Thread.sleep(2000);
             machineData = subscribeService.getLatestMachineData(id);
         }
         
