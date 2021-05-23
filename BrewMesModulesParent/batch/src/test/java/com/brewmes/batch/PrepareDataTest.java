@@ -9,6 +9,7 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 class PrepareDataTest {
     private static final double DESIRED_SPEED = 200.0;
@@ -44,6 +45,14 @@ class PrepareDataTest {
         };
 
         overTime = prepareData.prepareData(batch);
+    }
+
+    @Test
+    void round_throwIllegalArgumentException() {
+        Exception exception = assertThrows(IllegalArgumentException.class, () -> {
+            DataOverTime.round(10.0, -2);
+        });
+        assertEquals(IllegalArgumentException.class, exception.getClass());
     }
 
     @Test
