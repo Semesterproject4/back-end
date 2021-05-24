@@ -2,6 +2,7 @@ package com.brewmes.subscriber;
 
 import com.brewmes.common.entities.Connection;
 import com.brewmes.common.entities.MachineData;
+import com.brewmes.common.services.ILiveDataService;
 import com.brewmes.common.services.ISubscribeService;
 import com.brewmes.common_repository.BatchRepository;
 import com.brewmes.common_repository.ConnectionRepository;
@@ -20,9 +21,9 @@ public class MachineSubscriber implements ISubscribeService {
     protected final Map<String, Thread> activeThreads = new HashMap<>();
     protected final Map<String, Subscription> activeSubscriptions = new HashMap<>();
 
+
     @Autowired
-    @Qualifier("brokerMessagingTemplate")
-    SimpMessagingTemplate template;
+    private ILiveDataService liveDataService;
 
     @Autowired
     private ConnectionRepository connectionRepo;
@@ -44,7 +45,7 @@ public class MachineSubscriber implements ISubscribeService {
     }
 
     protected void createSubscription(String connectionID, Connection connection) {
-        Subscription subscription = new Subscription(connection, batchRepository, template);
+        Subscription subscription = new Subscription(connection, batchRepository, liveDataService);
         Thread thread = new Thread(subscription);
         thread.start();
         activeThreads.put(connectionID, thread);

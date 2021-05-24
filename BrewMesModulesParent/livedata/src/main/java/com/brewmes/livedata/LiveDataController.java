@@ -10,7 +10,6 @@ import org.springframework.web.bind.annotation.CrossOrigin;
 @Controller
 public class LiveDataController {
 
-
     @Autowired
     private ISubscribeService subscribeService;
 

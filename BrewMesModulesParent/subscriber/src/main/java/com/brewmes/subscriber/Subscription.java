@@ -4,6 +4,7 @@ import com.brewmes.common.entities.Batch;
 import com.brewmes.common.entities.Connection;
 import com.brewmes.common.entities.Ingredients;
 import com.brewmes.common.entities.MachineData;
+import com.brewmes.common.services.ILiveDataService;
 import com.brewmes.common.util.MachineState;
 import com.brewmes.common.util.Products;
 import com.brewmes.common.util.machinenodes.AdminNodes;
@@ -44,13 +45,13 @@ public class Subscription implements Runnable {
     private Batch currentBatch;
     private Ingredients currentIngredients;
     private float desiredSpeed;
-    private SimpMessagingTemplate template;
+    private ILiveDataService liveDataService;
 
-    public Subscription(Connection connection, BatchRepository batchRepository, SimpMessagingTemplate template) {
+    public Subscription(Connection connection, BatchRepository batchRepository, ILiveDataService liveDataService) {
         this.connection = connection;
         this.batchRepository = batchRepository;
         this.desiredSpeed = -1;
-        this.template = template;
+        this.liveDataService = liveDataService;
     }
 
     @Override
@@ -228,7 +229,7 @@ public class Subscription implements Runnable {
             }
         }
 
-        template.convertAndSend("/topic/" + this.connection.getId() + "/livedata", this.latestMachineData);
+       liveDataService.publish(this.latestMachineData, this.connection.getId());
     }
 
     private void saveBatch() {
