@@ -8,5 +8,5 @@ public interface ILiveDataService {
      * @param machineData The machineData object to publish.
      * @param connectionID The connectionID to publish to.
      */
-    public void publish(MachineData machineData, String connectionID);
+    void publish(MachineData machineData, String connectionID);
 }

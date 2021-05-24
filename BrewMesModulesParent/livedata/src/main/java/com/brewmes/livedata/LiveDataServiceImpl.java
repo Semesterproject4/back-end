@@ -8,12 +8,12 @@ import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.stereotype.Service;
 
 @Service
-public class LiveDataPublisher implements ILiveDataService {
+public class LiveDataServiceImpl implements ILiveDataService {
 
 
     @Autowired
     @Qualifier("brokerMessagingTemplate")
-    SimpMessagingTemplate template;
+    private SimpMessagingTemplate template;
 
 
     @Override

@@ -7,8 +7,6 @@ import com.brewmes.common.services.ISubscribeService;
 import com.brewmes.common_repository.BatchRepository;
 import com.brewmes.common_repository.ConnectionRepository;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Qualifier;
-import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.stereotype.Service;
 
 import java.util.HashMap;
