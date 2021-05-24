@@ -31,6 +31,7 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.concurrent.ExecutionException;
 import java.util.logging.Logger;
+import org.springframework.messaging.simp.SimpMessagingTemplate;
 
 public class Subscription implements Runnable {
     private static final Logger LOGGER = Logger.getLogger("com.brewmes.subscription");
@@ -43,11 +44,13 @@ public class Subscription implements Runnable {
     private Batch currentBatch;
     private Ingredients currentIngredients;
     private float desiredSpeed;
+    private SimpMessagingTemplate template;
 
-    public Subscription(Connection connection, BatchRepository batchRepository) {
+    public Subscription(Connection connection, BatchRepository batchRepository, SimpMessagingTemplate template) {
         this.connection = connection;
         this.batchRepository = batchRepository;
         this.desiredSpeed = -1;
+        this.template = template;
     }
 
     @Override
@@ -224,6 +227,8 @@ public class Subscription implements Runnable {
                 this.currentBatch = null;
             }
         }
+
+        template.convertAndSend("/topic/" + this.connection.getId() + "/livedata", this.latestMachineData);
     }
 
     private void saveBatch() {

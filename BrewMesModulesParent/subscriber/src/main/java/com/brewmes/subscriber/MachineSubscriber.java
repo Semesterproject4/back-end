@@ -6,6 +6,8 @@ import com.brewmes.common.services.ISubscribeService;
 import com.brewmes.common_repository.BatchRepository;
 import com.brewmes.common_repository.ConnectionRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.stereotype.Service;
 
 import java.util.HashMap;
@@ -17,6 +19,10 @@ import java.util.Optional;
 public class MachineSubscriber implements ISubscribeService {
     protected final Map<String, Thread> activeThreads = new HashMap<>();
     protected final Map<String, Subscription> activeSubscriptions = new HashMap<>();
+
+    @Autowired
+    @Qualifier("brokerMessagingTemplate")
+    SimpMessagingTemplate template;
 
     @Autowired
     private ConnectionRepository connectionRepo;
@@ -38,7 +44,7 @@ public class MachineSubscriber implements ISubscribeService {
     }
 
     protected void createSubscription(String connectionID, Connection connection) {
-        Subscription subscription = new Subscription(connection, batchRepository);
+        Subscription subscription = new Subscription(connection, batchRepository, template);
         Thread thread = new Thread(subscription);
         thread.start();
         activeThreads.put(connectionID, thread);
