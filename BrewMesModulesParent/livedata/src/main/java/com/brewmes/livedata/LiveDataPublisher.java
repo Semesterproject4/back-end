@@ -19,6 +19,5 @@ public class LiveDataPublisher implements ILiveDataService {
     @Override
     public void publish(MachineData machineData, String connectionID) {
         template.convertAndSend("/topic/" + connectionID + "/livedata", machineData);
-
     }
 }
