@@ -1,47 +1,31 @@
 package com.brewmes.livedata;
 
-import com.brewmes.common.entities.MachineData;
 import com.brewmes.common.services.ISubscribeService;
-import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
-import static org.junit.jupiter.api.Assertions.*;
-import static org.mockito.Mockito.when;
+import static org.mockito.Mockito.*;
 
 @ExtendWith(MockitoExtension.class)
 class LiveDataControllerTest {
 
     private static final String ID = "SomeId";
-    private static MachineData machineData;
+
     @Mock
     ISubscribeService subscribeService;
+
     @InjectMocks
     LiveDataController liveDataController;
 
-    @BeforeAll
-    public static void setUp() {
-        machineData = new MachineData();
-
-    }
-
     @Test
-    void liveDataSuccess() throws InterruptedException {
-        when(subscribeService.getLatestMachineData(ID)).thenReturn(machineData);
-
-        MachineData actual = liveDataController.liveData(ID);
-        MachineData expected = machineData;
-
-        assertEquals(expected, actual);
+    void liveDataTest() {
+        when(subscribeService.subscribeToMachineValues(ID)).thenReturn(true);
+        liveDataController.liveData(ID);
+        verify(subscribeService, times(1)).subscribeToMachineValues(ID);
     }
 
-    @Test
-    void liveDataFail() throws InterruptedException {
-        when(subscribeService.getLatestMachineData(ID)).thenReturn(null);
 
-        assertNull(liveDataController.liveData(ID));
-    }
 }

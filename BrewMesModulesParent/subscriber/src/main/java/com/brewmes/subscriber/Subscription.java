@@ -4,6 +4,7 @@ import com.brewmes.common.entities.Batch;
 import com.brewmes.common.entities.Connection;
 import com.brewmes.common.entities.Ingredients;
 import com.brewmes.common.entities.MachineData;
+import com.brewmes.common.services.ILiveDataService;
 import com.brewmes.common.util.MachineState;
 import com.brewmes.common.util.Products;
 import com.brewmes.common.util.machinenodes.AdminNodes;
@@ -31,6 +32,7 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.concurrent.ExecutionException;
 import java.util.logging.Logger;
+import org.springframework.messaging.simp.SimpMessagingTemplate;
 
 public class Subscription implements Runnable {
     private static final Logger LOGGER = Logger.getLogger("com.brewmes.subscription");
@@ -43,11 +45,13 @@ public class Subscription implements Runnable {
     private Batch currentBatch;
     private Ingredients currentIngredients;
     private float desiredSpeed;
+    private ILiveDataService liveDataService;
 
-    public Subscription(Connection connection, BatchRepository batchRepository) {
+    public Subscription(Connection connection, BatchRepository batchRepository, ILiveDataService liveDataService) {
         this.connection = connection;
         this.batchRepository = batchRepository;
         this.desiredSpeed = -1;
+        this.liveDataService = liveDataService;
     }
 
     @Override
@@ -224,6 +228,8 @@ public class Subscription implements Runnable {
                 this.currentBatch = null;
             }
         }
+
+       liveDataService.publish(this.latestMachineData, this.connection.getId());
     }
 
     private void saveBatch() {
