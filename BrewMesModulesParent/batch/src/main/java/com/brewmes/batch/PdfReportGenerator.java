@@ -145,9 +145,11 @@ public class PdfReportGenerator {
         int width = 500;
         int height = 400;
 
+        String humidityString = "Humidity";
+
         // Create line chart of humidity over time
         XYSeriesCollection dataset = new XYSeriesCollection();
-        XYSeries series = new XYSeries("Humidity");
+        XYSeries series = new XYSeries(humidityString);
         long totalTime = 0L;
 
         if (!batch.getData().isEmpty()) {
@@ -163,7 +165,7 @@ public class PdfReportGenerator {
             }
         }
         dataset.addSeries(series);
-        JFreeChart lineChart = ChartFactory.createXYLineChart("Humidity", xaxis, "Humidity"
+        JFreeChart lineChart = ChartFactory.createXYLineChart(humidityString, xaxis, humidityString
                 , dataset, PlotOrientation.VERTICAL, false, true, false);
         makeTables(document, humidity, width, height, lineChart, dataOverTime.getAvgHumidity(), dataOverTime.getMinHumidity(), dataOverTime.getMaxHumidity());
     }
@@ -175,9 +177,11 @@ public class PdfReportGenerator {
         int width = 500;
         int height = 400;
 
+        String vibrationString = "Vibration";
+
         // Create line chart of vibration over time
         XYSeriesCollection dataset = new XYSeriesCollection();
-        XYSeries series = new XYSeries("Vibration");
+        XYSeries series = new XYSeries(vibrationString);
         long totalTime = 0L;
         if (!batch.getData().isEmpty()) {
             LocalDateTime startTime;
@@ -192,7 +196,7 @@ public class PdfReportGenerator {
             }
         }
         dataset.addSeries(series);
-        JFreeChart lineChart = ChartFactory.createXYLineChart("Vibration", xaxis, "Vibration"
+        JFreeChart lineChart = ChartFactory.createXYLineChart(vibrationString, xaxis, vibrationString
                 , dataset, PlotOrientation.VERTICAL, false, true, false);
         makeTables(document, vibration, width, height, lineChart, dataOverTime.getAvgVibration(), dataOverTime.getMinVibration(), dataOverTime.getMaxVibration());
     }
@@ -204,8 +208,10 @@ public class PdfReportGenerator {
         int width = 500;
         int height = 400;
 
+        String temperatureString = "Temperature";
+
         XYSeriesCollection dataset = new XYSeriesCollection();
-        XYSeries series = new XYSeries("Temperature");
+        XYSeries series = new XYSeries(temperatureString);
         long totalTime = 0;
 
         if (!batch.getData().isEmpty()) {
@@ -221,7 +227,7 @@ public class PdfReportGenerator {
             }
         }
         dataset.addSeries(series);
-        JFreeChart lineChart = ChartFactory.createXYLineChart("Temperature", xaxis, "Temperature"
+        JFreeChart lineChart = ChartFactory.createXYLineChart(temperatureString, xaxis, temperatureString
                 , dataset, PlotOrientation.VERTICAL, false, true, false);
         makeTables(document, temperature, width, height, lineChart, dataOverTime.getAvgTemp(), dataOverTime.getMinTemp(), dataOverTime.getMaxTemp());
     }
