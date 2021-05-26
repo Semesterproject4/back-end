@@ -32,7 +32,6 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.concurrent.ExecutionException;
 import java.util.logging.Logger;
-import org.springframework.messaging.simp.SimpMessagingTemplate;
 
 public class Subscription implements Runnable {
     private static final Logger LOGGER = Logger.getLogger("com.brewmes.subscription");
