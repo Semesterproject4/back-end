@@ -51,7 +51,7 @@ public class ScheduleController {
         }
     }
   
-    @PatchMapping("/prioritizeQueue")
+    @PatchMapping("/prioritize-queue")
     public ResponseEntity<Object> prioritizeQueue(@RequestBody @Valid ScheduledBatch[] prioritizedList) {
         boolean success = scheduleService.prioritizeQueue(Arrays.asList(prioritizedList));
 
