@@ -24,14 +24,14 @@ public class MachineSubscriber implements ISubscribeService {
     private ILiveDataService liveDataService;
 
     @Autowired
-    private ConnectionRepository connectionRepo;
+    private ConnectionRepository connectionRepository;
 
     @Autowired
     private BatchRepository batchRepository;
 
     @Override
     public boolean subscribeToMachineValues(String connectionID) {
-        Optional<Connection> connection = connectionRepo.findById(connectionID);
+        Optional<Connection> connection = connectionRepository.findById(connectionID);
 
         if (connection.isPresent()) {
             if (!activeThreads.containsKey(connectionID) || activeThreads.get(connectionID).isInterrupted()) {
