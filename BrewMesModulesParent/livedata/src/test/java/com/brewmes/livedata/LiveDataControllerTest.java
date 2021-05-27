@@ -26,7 +26,7 @@ class LiveDataControllerTest {
     LiveDataController liveDataController;
 
     @Test
-    void liveDataTest_true() {
+    void liveDataTest_noData() {
         when(subscribeService.subscribeToMachineValues(ID)).thenReturn(true);
         liveDataController.liveData(ID);
         verify(subscribeService, times(1)).subscribeToMachineValues(ID);
