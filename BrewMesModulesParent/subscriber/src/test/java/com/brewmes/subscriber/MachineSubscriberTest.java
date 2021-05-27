@@ -82,7 +82,7 @@ class MachineSubscriberTest {
         Thread thread = new Thread(new SubscriptionStub());
         subSpy.activeThreads.put(GOOD_ID, thread);
 
-        assertFalse(subSpy.subscribeToMachineValues(GOOD_ID));
+        assertTrue(subSpy.subscribeToMachineValues(GOOD_ID));
         assertTrue(subSpy.activeThreads.containsKey(GOOD_ID));
     }
 
