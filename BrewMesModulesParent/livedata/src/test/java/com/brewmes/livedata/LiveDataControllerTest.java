@@ -33,7 +33,7 @@ class LiveDataControllerTest {
     }
 
     @Test
-    void liveDataTest_null() {
+    void liveDataTest_dataIsPresent() {
         when(subscribeService.subscribeToMachineValues(ID)).thenReturn(true);
 
         MachineData machineData = new MachineData();
