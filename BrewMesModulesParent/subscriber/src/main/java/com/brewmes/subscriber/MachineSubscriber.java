@@ -36,8 +36,12 @@ public class MachineSubscriber implements ISubscribeService {
         if (connection.isPresent()) {
             if (!activeThreads.containsKey(connectionID) || activeThreads.get(connectionID).isInterrupted()) {
                 createSubscription(connectionID, connection.get());
+                return true;
             }
-            return true;
+            if (activeSubscriptions.containsKey(connectionID)) {
+                liveDataService.publish(getLatestMachineData(connectionID), connectionID);
+                return true;
+            }
         }
         return false;
     }
